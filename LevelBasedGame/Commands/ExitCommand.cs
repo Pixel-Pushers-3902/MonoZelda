@@ -11,8 +11,7 @@ public class ExitCommand : ICommand
 
     public GameState Execute()
     {
-        controller.Quit = true;
-        return GameState.Still;
+        return GameState.Quit;
     }
 
     public GameState UnExecute()

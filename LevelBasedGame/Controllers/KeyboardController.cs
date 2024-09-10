@@ -8,11 +8,9 @@ public class KeyboardController : IController
 
     private KeyboardState keyboardState;
     private GameState gameState;
-    private bool quit;
 
     public KeyboardController()
     {
-        quit = false;
         gameState = GameState.Start;
 }
 
@@ -38,18 +36,6 @@ public class KeyboardController : IController
         set
         {
             gameState = value;
-        }
-    }
-
-    public bool Quit
-    {
-        get
-        {
-            return quit;
-        }
-        set
-        {
-            quit = value;
         }
     }
 
@@ -83,7 +69,7 @@ public class KeyboardController : IController
             newState = movingAnimatedCommand.Execute();
             newState = movingAnimatedCommand.Execute();
         }
-        if (gameState == GameState.Start || gameState != newState || quit == true)
+        if (gameState != newState)
         {
             gameState = newState;
             return true;

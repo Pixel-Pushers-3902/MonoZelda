@@ -11,6 +11,7 @@ public enum GameState
     StillAnimated,
     Moving,
     MovingAnimated,
+    Quit,
 }
 
 namespace LevelBasedGame
@@ -65,7 +66,7 @@ namespace LevelBasedGame
             keyboardController.KeyboardState = Keyboard.GetState();
             if (keyboardController.Update())
             {
-                if (keyboardController.Quit)
+                if (keyboardController.GameState == GameState.Quit)
                 {
                     Exit();
                 }
@@ -79,7 +80,7 @@ namespace LevelBasedGame
             mouseController.MouseState = Mouse.GetState();
             if (mouseController.Update())
             {
-                if (mouseController.Quit)
+                if (mouseController.GameState == GameState.Quit)
                 {
                     Exit();
                 }
