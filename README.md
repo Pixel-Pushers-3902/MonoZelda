@@ -5,6 +5,6 @@ Monogame implementation of OG Zelda.
 - Josh S
 - Calvin L
 - Carson Miller
--
+- Joshua Klasmeier
 -
 - Robbie G
