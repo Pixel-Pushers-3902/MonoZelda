@@ -4,6 +4,7 @@
 
 #Visual Studio files
 LevelBasedGame/.vs/*
+*.vs
 *.pidb
 *.userprefs
 *.[Oo]bj
