@@ -30,11 +30,11 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore LevelBasedGame/LevelBasedGame.sln
 
-      - name: Build the project
+      - name: Build the solution
         run: dotnet build LevelBasedGame/LevelBasedGame.sln --configuration Release
 
       - name: Publish the project
-        run: dotnet publish LevelBasedGame/LevelBasedGame.sln --configuration Release --runtime win-x64 --self-contained true --output ./Release
+        run: dotnet publish LevelBasedGame/LevelBasedGame.csproj --configuration Release --runtime win-x64 --self-contained true --output ./Release
 
       - uses: actions/upload-artifact@v4
         name: Upload Artifact
