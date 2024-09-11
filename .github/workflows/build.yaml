@@ -29,7 +29,7 @@ jobs:
       - name: Publish the project
         run: dotnet publish --configuration Release --runtime win-x64 --output ./bin/Release
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         name: Upload Artifact
         with:
           name: build
