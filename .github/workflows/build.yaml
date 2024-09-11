@@ -1,4 +1,5 @@
 name: Build MonoGame
+run-name: Building ${{ github.head_ref }} for ${{ github.actor }} 🚀
 on:
     pull_request:
       types: [opened, synchronize, closed]
