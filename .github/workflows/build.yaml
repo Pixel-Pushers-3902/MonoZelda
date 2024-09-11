@@ -1,0 +1,48 @@
+name: Build MonoGame
+run-name: Building ${{ github.head_ref }} for ${{ github.actor }} 🚀
+on:
+    pull_request:
+      types: [opened, synchronize, closed]
+      branches: [main, Sprint*]
+      paths-ignore:
+        - '**.md'
+jobs:
+  Build-Windows:
+    name: Build - ${{ github.head_ref }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.0.x' # Using .NET SDK 8.0
+
+      - name: Install Mono
+        run: sudo apt-get install -y mono-complete
+
+      - name: Install Arial font
+        run: |
+          sudo apt-get install -y cabextract
+          wget https://downloads.sourceforge.net/corefonts/arial32.exe
+          cabextract arial32.exe -d /usr/share/fonts/truetype/msttcorefonts
+          sudo fc-cache -f -v
+
+      - name: Restore dependencies
+        run: dotnet restore LevelBasedGame/LevelBasedGame.sln
+
+      - name: Build the solution
+        run: dotnet build LevelBasedGame/LevelBasedGame.sln --configuration Release
+
+      - name: Publish the project
+        run: dotnet publish LevelBasedGame/LevelBasedGame.csproj --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true --output ./Release
+
+      - name: Output Release content
+        run: ls -l ./Release
+
+      - uses: actions/upload-artifact@v4
+        name: Upload Artifact
+        with:
+          name: build-${{ github.head_ref }}
+          path: ./Release/**
