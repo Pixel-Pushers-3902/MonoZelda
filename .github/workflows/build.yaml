@@ -7,23 +7,30 @@ on:
         - '**.md'
 jobs:
   Build-Windows:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
 
-      - name: Build android project
-        uses: igotinfected-ci/build-monogame@v2
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
         with:
-          solution-path: '${{ github.workspace }}\LevelBasedGame\LevelBasedGame.sln'
-          content-mgcb-path: '${{ github.workspace }}\LevelBasedGame\Content'
-          content-mgcb-platform: "Windows"
-          csproj-path: '${{ github.workspace }}\LevelBasedGame\LevelBasedGame.csproj'
-          build-target: "win-x64"
-          build-configuration: "Release"
-          
-      - uses: actions/upload-artifact@v4
+          dotnet-version: '8.0.x' # Using .NET SDK 8.0
+
+      - name: Install Mono
+        run: sudo apt-get install -y mono-complete
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build the project
+        run: dotnet build --configuration Release
+
+      - name: Publish the project
+        run: dotnet publish --configuration Release --output ./bin/Release
+
+      - uses: actions/upload-artifact@v2
         name: Upload Artifact
         with:
-            name: build
-            path: bin/Release/**
+          name: build
+          path: ./bin/Release/**
