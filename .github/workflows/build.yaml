@@ -21,16 +21,16 @@ jobs:
         run: sudo apt-get install -y mono-complete
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore LevelBasedGame/LevelBasedGame.sln
 
       - name: Build the project
-        run: dotnet build --configuration Release
+        run: dotnet build LevelBasedGame/LevelBasedGame.sln --configuration Release
 
       - name: Publish the project
-        run: dotnet publish --configuration Release --runtime win-x64 --output ./bin/Release
+        run: dotnet publish LevelBasedGame/LevelBasedGame.sln --configuration Release --runtime win-x64 --output ./Release
 
       - uses: actions/upload-artifact@v4
         name: Upload Artifact
         with:
           name: build
-          path: ./bin/Release/**
+          path: ./Release/**
