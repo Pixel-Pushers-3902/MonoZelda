@@ -9,11 +9,9 @@ public class MouseController : IController
 
     private MouseState mouseState;
     private GameState gameState;
-    private bool quit;
 
     public MouseController()
     {
-        quit = false;
         gameState = GameState.Start;
     }
 
@@ -39,18 +37,6 @@ public class MouseController : IController
         set
         {
             gameState = value;
-        }
-    }
-
-    public bool Quit
-    {
-        get
-        {
-            return quit;
-        }
-        set
-        {
-            quit = value;
         }
     }
 
@@ -88,7 +74,7 @@ public class MouseController : IController
 
         }
 
-        if (gameState != newState || quit == true)
+        if (gameState != newState)
         {
             gameState = newState;
             return true;
