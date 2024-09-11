@@ -36,6 +36,9 @@ jobs:
       - name: Publish the project
         run: dotnet publish LevelBasedGame/LevelBasedGame.csproj --configuration Release --runtime win-x64 --self-contained true -property:PublishTrimmed=true --output ./Release
 
+      - name: Output Release content
+        run: ls -l ./Release
+        
       - uses: actions/upload-artifact@v4
         name: Upload Artifact
         with:
