@@ -2,5 +2,9 @@
 
 public interface IController
 {
-	Boolean Update();
+    // Properties
+    GameState GameState { get; set; }
+
+    // Methods
+    Boolean Update();
 }
