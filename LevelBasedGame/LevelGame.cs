@@ -1,4 +1,5 @@
 ﻿using LevelBasedGame.Controllers;
+using LevelBasedGame.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -22,6 +23,7 @@ namespace LevelBasedGame
         private MouseController mouseController;
         private GameState currentState;
 
+        SpriteDict spriteDict;
 
         public LevelGame()
         {
@@ -41,6 +43,9 @@ namespace LevelBasedGame
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            
+            SpriteSheetParser parser = new(Content.Load<Texture2D>("player"));
+            spriteDict = parser.Parse();
         }
 
         protected override void Update(GameTime gameTime)
@@ -100,6 +105,9 @@ namespace LevelBasedGame
 
             // Sprite drawing based on state
             spriteBatch.Begin();
+
+            spriteDict.Draw(spriteBatch, gameTime);
+
             spriteBatch.End();
             
             base.Draw(gameTime);
