@@ -1,4 +1,5 @@
 ﻿using LevelBasedGame.Controllers;
+using LevelBasedGame.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -30,6 +31,7 @@ namespace LevelBasedGame
         private int frameClock;
         private SpriteFont basicFont;
 
+        SpriteDict spriteDict;
 
         public LevelGame()
         {
@@ -57,6 +59,9 @@ namespace LevelBasedGame
             stillAnimatedSprite = new StillAnimatedSprite(texture, 6, frameClock);
             movingSprite = new MovingSprite(texture, 6, 3);
             movingAnimatedSprite = new MovingAnimatedSprite(texture, 6, 3, frameClock);
+
+            SpriteSheetParser parser = new(Content.Load<Texture2D>("player"));
+            spriteDict = parser.Parse();
         }
 
         protected override void Update(GameTime gameTime)
@@ -105,21 +110,28 @@ namespace LevelBasedGame
 
             // Sprite drawing based on state
             spriteBatch.Begin();
+
+            spriteDict.Draw(spriteBatch, gameTime);
+
             if (currentState == GameState.Still)
             {
-                stillSprite.Draw(spriteBatch, new Vector2(272, 112));
+                //stillSprite.Draw(spriteBatch, new Vector2(272, 112));
+                spriteDict.SetSprite("magicalsword_right");
             }
             else if (currentState == GameState.StillAnimated)
             {
-                stillAnimatedSprite.Draw(spriteBatch, new Vector2(272, 112));
+                //stillAnimatedSprite.Draw(spriteBatch, new Vector2(272, 112));
+                spriteDict.SetSprite("magicalsword_up");
             }
             else if (currentState == GameState.Moving)
             {
-                movingSprite.Draw(spriteBatch, new Vector2(272 + movingSprite.Displacement, 112));
+                //movingSprite.Draw(spriteBatch, new Vector2(272 + movingSprite.Displacement, 112));
+                spriteDict.SetSprite("magicalsword_left");
             }
             else if (currentState == GameState.MovingAnimated)
             {
-                movingAnimatedSprite.Draw(spriteBatch, new Vector2(272 + movingAnimatedSprite.Displacement, 112));
+                //movingAnimatedSprite.Draw(spriteBatch, new Vector2(272 + movingAnimatedSprite.Displacement, 112));
+                spriteDict.SetSprite("magicalsword_down");
             }
             spriteBatch.DrawString(basicFont, "Credits", new Vector2(20, 375), Color.Black);
             spriteBatch.DrawString(basicFont, "Program Made By: Robert Greenslade", new Vector2(20, 405), Color.Black);
