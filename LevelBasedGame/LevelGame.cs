@@ -46,7 +46,7 @@ namespace LevelBasedGame
         protected override void Update(GameTime gameTime)
         {
             // Keyboard controller update loop
-            keyboardController.KeyboardState = Keyboard.GetState();
+            keyboardController.CurrentKeyboardState = Keyboard.GetState();
             if (keyboardController.Update())
             {
                 if (keyboardController.GameState == GameState.Quit)
