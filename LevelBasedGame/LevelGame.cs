@@ -8,10 +8,8 @@ using System.Diagnostics;
 public enum GameState
 {
     Start,
-    Still,
-    StillAnimated,
-    Moving,
-    MovingAnimated,
+    Reset,
+    Quit,
 }
 
 namespace LevelBasedGame
@@ -24,12 +22,6 @@ namespace LevelBasedGame
         private KeyboardController keyboardController;
         private MouseController mouseController;
         private GameState currentState;
-        private StillSprite stillSprite;
-        private StillAnimatedSprite stillAnimatedSprite;
-        private MovingSprite movingSprite;
-        private MovingAnimatedSprite movingAnimatedSprite;
-        private int frameClock;
-        private SpriteFont basicFont;
 
         SpriteDict spriteDict;
 
@@ -38,10 +30,9 @@ namespace LevelBasedGame
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            currentState = GameState.Still;
+            currentState = GameState.Start;
             keyboardController = new KeyboardController();
             mouseController = new MouseController();
-            frameClock = 10;
         }
 
         protected override void Initialize()
@@ -49,30 +40,28 @@ namespace LevelBasedGame
             base.Initialize();
         }
 
-        protected override void LoadContent()
-        {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            Texture2D texture = Content.Load<Texture2D>("Sprites/pvz_sprite");
-            basicFont = Content.Load<SpriteFont>("Fonts/Basic");
-            stillSprite = new StillSprite(texture, 6);
-            stillAnimatedSprite = new StillAnimatedSprite(texture, 6, frameClock);
-            movingSprite = new MovingSprite(texture, 6, 3);
-            movingAnimatedSprite = new MovingAnimatedSprite(texture, 6, 3, frameClock);
-
+            
             SpriteSheetParser parser = new(Content.Load<Texture2D>("player"));
             spriteDict = parser.Parse();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            // Keyboord controller update loop
-            keyboardController.KeyboardState = Keyboard.GetState();
+            // Keyboard controller update loop
+            keyboardController.CurrentKeyboardState = Keyboard.GetState();
             if (keyboardController.Update())
             {
-                if (keyboardController.Quit)
+                if (keyboardController.GameState == GameState.Quit)
                 {
                     Exit();
+                }
+                else if (keyboardController.GameState == GameState.Reset)
+                {
+                    // Reset Logic here
+                    Debug.WriteLine("Resetting to Start state");
+
+                    // Set keyboardController state to Start
+                    keyboardController.GameState = GameState.Start;
                 }
                 else
                 {
@@ -81,12 +70,21 @@ namespace LevelBasedGame
                 }
             }
 
+            // Mouse controller update loop
             mouseController.MouseState = Mouse.GetState();
             if (mouseController.Update())
             {
-                if (mouseController.Quit)
+                if (mouseController.GameState == GameState.Quit)
                 {
                     Exit();
+                }
+                else if (mouseController.GameState == GameState.Reset)
+                {
+                    // Reset Logic here
+                    Debug.WriteLine("Resetting to Start state");
+
+                    // Set mouseController state to Start
+                    mouseController.GameState = GameState.Start;
                 }
                 else
                 {
@@ -94,12 +92,6 @@ namespace LevelBasedGame
                     keyboardController.GameState = currentState;
                 }
             }
-
-            // Sprite update code
-            stillSprite.Update();
-            stillAnimatedSprite.Update();
-            movingSprite.Update();
-            movingAnimatedSprite.Update();
 
             base.Update(gameTime);
         }
@@ -113,29 +105,6 @@ namespace LevelBasedGame
 
             spriteDict.Draw(spriteBatch, gameTime);
 
-            if (currentState == GameState.Still)
-            {
-                //stillSprite.Draw(spriteBatch, new Vector2(272, 112));
-                spriteDict.SetSprite("magicalsword_right");
-            }
-            else if (currentState == GameState.StillAnimated)
-            {
-                //stillAnimatedSprite.Draw(spriteBatch, new Vector2(272, 112));
-                spriteDict.SetSprite("magicalsword_up");
-            }
-            else if (currentState == GameState.Moving)
-            {
-                //movingSprite.Draw(spriteBatch, new Vector2(272 + movingSprite.Displacement, 112));
-                spriteDict.SetSprite("magicalsword_left");
-            }
-            else if (currentState == GameState.MovingAnimated)
-            {
-                //movingAnimatedSprite.Draw(spriteBatch, new Vector2(272 + movingAnimatedSprite.Displacement, 112));
-                spriteDict.SetSprite("magicalsword_down");
-            }
-            spriteBatch.DrawString(basicFont, "Credits", new Vector2(20, 375), Color.Black);
-            spriteBatch.DrawString(basicFont, "Program Made By: Robert Greenslade", new Vector2(20, 405), Color.Black);
-            spriteBatch.DrawString(basicFont, "Sprites From: https://community.facer.io/", new Vector2(20, 435), Color.Black);
             spriteBatch.End();
             
             base.Draw(gameTime);

@@ -2,7 +2,9 @@
 
 public interface IController
 {
-	Boolean Quit { get; set; }
+    // Properties
+    GameState GameState { get; set; }
 
-	Boolean Update();
+    // Methods
+    Boolean Update();
 }
