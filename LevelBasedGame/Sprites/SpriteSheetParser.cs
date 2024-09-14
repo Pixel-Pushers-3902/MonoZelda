@@ -4,37 +4,31 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
 
 namespace LevelBasedGame.Sprites {
-    internal class SpriteSheetParser
+    internal static class SpriteSheetParser
     {
-        private Texture2D sheet;
-
-        public SpriteSheetParser(Texture2D sheet) {
-            this.sheet = sheet;
-        }
-
-        public SpriteDict Parse() {
-            SpriteDict spriteDict = new(sheet, new Point(100, 100));
-            string fileName = "Content/Sprite Source Rects - Player.csv";
-            using TextFieldParser textFieldParser = new(fileName);
+        public static void Parse(SpriteDict toPopulate, string CSVname) {
+            //set up text parser
+            using TextFieldParser textFieldParser = new(CSVname);
             textFieldParser.TextFieldType = FieldType.Delimited;
             textFieldParser.SetDelimiters(",");
+
+            //loop through csv file
             while (!textFieldParser.EndOfData) {
-                string[] rows = textFieldParser.ReadFields();
-                Debug.WriteLine(rows[0]);
-                spriteDict.Add(ParseSprite(rows), rows[0]);
+                string[] fields = textFieldParser.ReadFields();
+                toPopulate.Add(ParseSprite(fields), fields[0]);
             }
-            return spriteDict;
         }
 
         private static Sprite ParseSprite(string[] rows) {
-            int x = int.Parse(rows[1]);
-            int y = int.Parse(rows[2]);
-            int width = int.Parse(rows[3]);
-            int height = int.Parse(rows[4]);
+            //scale up source rect data by 4 since image is upscaled by 4
+            int x = int.Parse(rows[1]) * 4;
+            int y = int.Parse(rows[2]) * 4;
+            int width = int.Parse(rows[3]) * 4;
+            int height = int.Parse(rows[4]) * 4;
             int frameCount = int.Parse(rows[5]);
-            //TODO: parse anchor rows[6]
+            Sprite.AnchorType anchor = Sprite.StringToAnchorType(rows[6]);
             Rectangle sourceRect = new(x, y, width, height);
-            return new Sprite(sourceRect, Sprite.AnchorType.center, frameCount);
+            return new Sprite(sourceRect, anchor, frameCount);
         }
     }
 }

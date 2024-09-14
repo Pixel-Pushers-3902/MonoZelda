@@ -12,38 +12,38 @@ magicshield_down,288,16,16,16,2,center
 magicshield_right,320,16,16,16,2,center
 magicshield_up,64,16,16,16,2,center
 magicshield_left,352,16,16,16,2,center
-woodensword_down,0,48,16,32,4,center top
-woodensword_right,64,48,32,16,4,center left
-woodensword_up,192,48,16,32,4,center bottom
-woodensword_left,64,64,32,16,4,center right
-woodensword_magicshield_down,256,48,16,32,2,center top
-woodensword_magicshield_right,288,48,32,16,2,center left
-woodensword_magicshield_up,192,48,16,32,4,center bottom
-woodensword_magicshield_left,288,64,32,16,2,center right
-whitesword_down,0,96,16,32,4,center top
-whitesword_right,64,96,32,16,4,center left
-whitesword_up,192,96,16,32,4,center bottom
-whitesword_left,64,112,32,16,4,center right
-whitesword_magicshield_down,256,96,16,32,2,center top
-whitesword_magicshield_right,288,96,32,16,2,center left
-whitesword_magicshield_up,192,96,16,32,4,center bottom
-whitesword_magicshield_left,288,112,32,16,2,center right
-magicalsword_down,0,144,16,32,4,center top
-magicalsword_right,64,144,32,16,4,center left
-magicalsword_up,192,144,16,32,4,center bottom
-magicalsword_left,64,160,32,16,4,center right
-magicalsword_magicshield_down,256,144,16,32,2,center top
-magicalsword_magicshield_right,288,144,32,16,2,center left
-magicalsword_magicshield_up,192,144,16,32,4,center bottom
-magicalsword_magicshield_left,288,160,32,16,2,center right
-magicrod_down,0,192,16,32,4,center top
-magicrod_right,64,192,32,16,4,center left
-magicrod_up,192,192,16,32,4,center bottom
-magicrod_left,64,208,32,16,4,center right
-magicrod_magicshield_down,256,192,16,32,2,center top
-magicrod_magicshield_right,288,192,32,16,2,center left
-magicrod_magicshield_up,192,192,16,32,4,center bottom
-magicrod_magicshield_left,288,208,32,16,2,center right
+woodensword_down,0,48,16,32,4,top quarter
+woodensword_right,64,48,32,16,4,left quarter
+woodensword_up,192,48,16,32,4,bottom quarter
+woodensword_left,64,64,32,16,4,right quarter
+woodensword_magicshield_down,256,48,16,32,2,top quarter
+woodensword_magicshield_right,288,48,32,16,2,left quarter
+woodensword_magicshield_up,192,48,16,32,4,bottom quarter
+woodensword_magicshield_left,288,64,32,16,2,right quarter
+whitesword_down,0,96,16,32,4,top quarter
+whitesword_right,64,96,32,16,4,left quarter
+whitesword_up,192,96,16,32,4,bottom quarter
+whitesword_left,64,112,32,16,4,right quarter
+whitesword_magicshield_down,256,96,16,32,2,top quarter
+whitesword_magicshield_right,288,96,32,16,2,left quarter
+whitesword_magicshield_up,192,96,16,32,4,bottom quarter
+whitesword_magicshield_left,288,112,32,16,2,right quarter
+magicalsword_down,0,144,16,32,4,top quarter
+magicalsword_right,64,144,32,16,4,left quarter
+magicalsword_up,192,144,16,32,4,bottom quarter
+magicalsword_left,64,160,32,16,4,right quarter
+magicalsword_magicshield_down,256,144,16,32,2,top quarter
+magicalsword_magicshield_right,288,144,32,16,2,left quarter
+magicalsword_magicshield_up,192,144,16,32,4,bottom quarter
+magicalsword_magicshield_left,288,160,32,16,2,right quarter
+magicrod_down,0,192,16,32,4,top quarter
+magicrod_right,64,192,32,16,4,left quarter
+magicrod_up,192,192,16,32,4,bottom quarter
+magicrod_left,64,208,32,16,4,right quarter
+magicrod_magicshield_down,256,192,16,32,2,top quarter
+magicrod_magicshield_right,288,192,32,16,2,left quarter
+magicrod_magicshield_up,192,192,16,32,4,bottom quarter
+magicrod_magicshield_left,288,208,32,16,2,right quarter
 woodensword_item_up,0,224,16,16,1,center
 woodensword_item_right,16,224,16,16,1,center
 woodensword_idk,32,224,16,16,1,center
