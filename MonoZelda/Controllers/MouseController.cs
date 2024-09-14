@@ -1,9 +1,7 @@
-﻿using LevelBasedGame.Commands;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Diagnostics;
+﻿using Microsoft.Xna.Framework.Input;
 
-namespace LevelBasedGame.Controllers;
+namespace PixelPushers.MonoZelda.Controllers;
+
 public class MouseController : IController
 {
 

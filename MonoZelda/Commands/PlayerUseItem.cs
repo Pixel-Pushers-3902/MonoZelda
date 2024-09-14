@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using PixelPushers.MonoZelda.Controllers;
 
-namespace LevelBasedGame.Commands;
+namespace PixelPushers.MonoZelda.Commands;
+
 public class PlayerUseItem : ICommand
 {
     IController controller;

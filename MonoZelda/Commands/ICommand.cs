@@ -1,5 +1,4 @@
-﻿using LevelBasedGame;
-using System;
+﻿namespace PixelPushers.MonoZelda.Commands;
 
 public interface ICommand
 {

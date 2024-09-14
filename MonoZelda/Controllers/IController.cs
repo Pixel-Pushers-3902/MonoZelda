@@ -1,5 +1,7 @@
 ﻿using System;
 
+namespace PixelPushers.MonoZelda.Controllers;
+
 public interface IController
 {
     // Properties

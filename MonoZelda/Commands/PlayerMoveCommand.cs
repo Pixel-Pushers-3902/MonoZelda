@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Numerics;
+using Microsoft.Xna.Framework;
+using PixelPushers.MonoZelda.Controllers;
 
-namespace LevelBasedGame.Commands;
+namespace PixelPushers.MonoZelda.Commands;
+
 public class PlayerMoveCommand : ICommand
 {
     IController controller;

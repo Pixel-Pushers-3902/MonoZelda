@@ -30,13 +30,13 @@ jobs:
           sudo fc-cache -f -v
 
       - name: Restore dependencies
-        run: dotnet restore LevelBasedGame/LevelBasedGame.sln
+        run: dotnet restore MonoZelda.sln
 
       - name: Build the solution
-        run: dotnet build LevelBasedGame/LevelBasedGame.sln --configuration Release
+        run: dotnet build MonoZelda.sln --configuration Release
 
       - name: Publish the project
-        run: dotnet publish LevelBasedGame/LevelBasedGame.csproj --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true --output ./Release
+        run: dotnet publish MonoZelda/MonoZelda.csproj --configuration Release --runtime win-x64 --self-contained true -p:PublishSingleFile=true --output ./Release
 
       - name: Output Release content
         run: ls -l ./Release
