@@ -8,7 +8,7 @@ on:
         - '**.md'
 jobs:
   Build-Windows:
-    name: Build - ${{ github.head_ref }}
+    name: Build MonoZelda
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
