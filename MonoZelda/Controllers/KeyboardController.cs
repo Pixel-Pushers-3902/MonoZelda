@@ -1,10 +1,9 @@
-﻿using LevelBasedGame.Commands;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Numerics;
+using PixelPushers.MonoZelda.Commands;
 
-namespace LevelBasedGame.Controllers;
+namespace PixelPushers.MonoZelda.Controllers;
+
 public class KeyboardController : IController
 {
     private KeyboardState previousKeyboardState;

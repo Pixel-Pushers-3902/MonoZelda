@@ -1,17 +1,19 @@
 ﻿using System;
+using PixelPushers.MonoZelda.Controllers;
 
-namespace LevelBasedGame.Commands;
-public class ResetCommand : ICommand
+namespace PixelPushers.MonoZelda.Commands;
+
+public class ExitCommand : ICommand
 {
     IController controller;
-    public ResetCommand(IController controller)
+    public ExitCommand(IController controller)
     {
         this.controller = controller;
     }
 
     public GameState Execute()
     {
-        return GameState.Reset;
+        return GameState.Quit;
     }
 
     public GameState UnExecute()
