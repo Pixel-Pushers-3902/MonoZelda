@@ -24,10 +24,10 @@ public class MonoZeldaGame : Game
     private MouseController mouseController;
     private CommandManager commandManager;
     private GameState currentState;
+    private PlayerController playerController;
 
-    SpriteDict playerSpriteDict1;
-    SpriteDict playerSpriteDict2;
-    SpriteDict playerSpriteDict3;
+    SpriteDict playerSpriteDict;
+  
 
     public MonoZeldaGame()
     {
@@ -68,6 +68,11 @@ public class MonoZeldaGame : Game
 
         // create the cycle commands
         commandManager.ReplaceCommand(CommandEnum.BlockCycleCommand, new BlockCycleCommand(demoTile));
+
+        //create spritedict to pass into player controller
+        string playerCSVFileName = "Content/Sprite Source Rects - Player.csv";
+        playerSpriteDict = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 1, new Point(100, 100));
+        playerController = new PlayerController(keyboardController, playerSpriteDict);
     }
 
     protected override void Update(GameTime gameTime)
@@ -117,7 +122,7 @@ public class MonoZeldaGame : Game
                 keyboardController.GameState = currentState;
             }
         }
-
+        playerController.Update();
         base.Update(gameTime);
     }
 
@@ -129,25 +134,26 @@ public class MonoZeldaGame : Game
         spriteBatch.Begin();
 
         //hardcoded keyboard controls because i don't know how the command system is supposed to be used lol
-        if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.W))
-        {
-            playerSpriteDict1.SetSprite("whitesword_up");
-        }
-        if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.A))
-        {
-            playerSpriteDict1.SetSprite("whitesword_left");
-        }
-        if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.S))
-        {
-            playerSpriteDict1.SetSprite("whitesword_down");
-        }
-        if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.D))
-        {
-            playerSpriteDict1.SetSprite("whitesword_right");
-        }
+        //if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.W))
+        //{
+        //    playerSpriteDict.SetSprite("whitesword_magicshield_down");
+        //}
+        //if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.A))
+        //{
+        //    playerSpriteDict1.SetSprite("whitesword_left");
+        //}
+        //if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.S))
+        //{
+        //    playerSpriteDict1.SetSprite("whitesword_down");
+        //}
+        //if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.D))
+        //{
+        //    playerSpriteDict1.SetSprite("whitesword_right");
+        //}
 
-        //call to SpriteDrawer to draw all SpriteDicts
-        SpriteDrawer.Draw(spriteBatch, gameTime);
+
+        //call to Player Controller Drawer
+        playerController.Draw(spriteBatch, gameTime);
 
         spriteBatch.End();
         
