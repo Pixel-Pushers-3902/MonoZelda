@@ -30,7 +30,7 @@ public class MonoZeldaGame : Game
     private MouseController mouseController;
     private CommandManager commandManager;
     private GameState currentState;
-    private Player player;
+    private PlayerController playerController;
 
     SpriteDict playerSpriteDict;
   
@@ -41,15 +41,9 @@ public class MonoZeldaGame : Game
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
         currentState = GameState.Start;
-        player = new Player();
+        keyboardController = new KeyboardController();
+        mouseController = new MouseController();
 
-
-        // Init Commands
-        CommandManager commandManager = new CommandManager();
-        keyboardController = new KeyboardController(commandManager,player);
-        mouseController = new MouseController(commandManager);
-
-        
     }
 
     protected override void Initialize()
@@ -79,18 +73,9 @@ public class MonoZeldaGame : Game
         commandManager.ReplaceCommand(CommandEnum.BlockCycleCommand, new BlockCycleCommand(demoTile));
 
         //create spritedict to pass into player controller
-        string playerCSVFileName = "Content/Sprite Source Rects - Player.csv";
-        playerSpriteDict = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 1, new Point(100, 100));
-        playerController = new PlayerController(keyboardController, playerSpriteDict);
-        //create spritedict
         string playerCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Player.csv";
         playerSpriteDict = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 1, new Point(100, 100));
-        player.SetPlayerSpriteDict(playerSpriteDict);
-        //create 2 sprite dicts that are drawn on top of each other to showcase the priority system
-        //playerSpriteDict2 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 2, new Point(84, 116));
-        //playerSpriteDict2.SetSprite("boomerang_blue");
-        //playerSpriteDict3 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 0, new Point(116, 116));
-        //playerSpriteDict3.SetSprite("boomerang");
+        playerController = new PlayerController(keyboardController, playerSpriteDict);
     }
 
     protected override void Update(GameTime gameTime)
@@ -140,6 +125,7 @@ public class MonoZeldaGame : Game
                 keyboardController.GameState = currentState;
             }
         }
+        playerController.Update();
         base.Update(gameTime);
     }
 
@@ -167,10 +153,10 @@ public class MonoZeldaGame : Game
         //{
         //    playerSpriteDict1.SetSprite("whitesword_right");
         //}
-        playerSpriteDict.Draw(spriteBatch, gameTime);
 
 
         //call to Player Controller Drawer
+        playerController.Draw(spriteBatch, gameTime);
 
         spriteBatch.End();
         
