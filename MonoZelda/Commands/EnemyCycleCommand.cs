@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Numerics;
+using PixelPushers.MonoZelda.Controllers;
 
-namespace LevelBasedGame.Commands;
-public class BlockCycleCommand : ICommand
+namespace PixelPushers.MonoZelda.Commands;
+
+public class EnemyCycleCommand : ICommand
 {
     IController controller;
     int cycleAddition;
-    public BlockCycleCommand(IController controller, int cycleAddition)
+    public EnemyCycleCommand(IController controller, int cycleAddition)
     {
         this.controller = controller;
         this.cycleAddition = cycleAddition;
@@ -15,8 +16,8 @@ public class BlockCycleCommand : ICommand
 
     public GameState Execute()
     {
-        // Apply cycle addition to block list
-        Debug.WriteLine("Block list cycling by " + cycleAddition);
+        // Apply cycle addition to enemy list
+        Debug.WriteLine("Enemy list cycling by " + cycleAddition);
 
         // Keep GameState the same inside the controller
         return controller.GameState;
