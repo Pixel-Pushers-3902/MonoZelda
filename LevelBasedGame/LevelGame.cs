@@ -1,4 +1,5 @@
 ﻿using LevelBasedGame.Controllers;
+using LevelBasedGame.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -22,6 +23,9 @@ namespace LevelBasedGame
         private MouseController mouseController;
         private GameState currentState;
 
+        SpriteDict playerSpriteDict1;
+        SpriteDict playerSpriteDict2;
+        SpriteDict playerSpriteDict3;
 
         public LevelGame()
         {
@@ -41,6 +45,14 @@ namespace LevelBasedGame
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            //create 3 sprite dicts that are drawn on top of each other to showcase the priority system
+            string playerCSVFileName = "Content/Sprite Source Rects - Player.csv";
+            playerSpriteDict1 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 1, new Point(100, 100));
+            playerSpriteDict2 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 2, new Point(84, 116));
+            playerSpriteDict2.SetSprite("boomerang_blue");
+            playerSpriteDict3 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 0, new Point(116, 116));
+            playerSpriteDict3.SetSprite("boomerang");
         }
 
         protected override void Update(GameTime gameTime)
@@ -100,6 +112,24 @@ namespace LevelBasedGame
 
             // Sprite drawing based on state
             spriteBatch.Begin();
+
+            //hardcoded keyboard controls because i don't know how the command system is supposed to be used lol
+            if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.W)) {
+                playerSpriteDict1.SetSprite("whitesword_up");
+            }
+            if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.A)) {
+                playerSpriteDict1.SetSprite("whitesword_left");
+            }
+            if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.S)) {
+                playerSpriteDict1.SetSprite("whitesword_down");
+            }
+            if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.D)) {
+                playerSpriteDict1.SetSprite("whitesword_right");
+            }
+
+            //call to SpriteDrawer to draw all SpriteDicts
+            SpriteDrawer.Draw(spriteBatch, gameTime);
+
             spriteBatch.End();
             
             base.Draw(gameTime);
