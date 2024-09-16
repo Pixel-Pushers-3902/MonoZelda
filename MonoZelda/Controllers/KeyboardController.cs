@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using PixelPushers.MonoZelda.Commands;
+using PixelPushers.MonoZelda.Items;
 
 namespace PixelPushers.MonoZelda.Controllers;
 
@@ -9,10 +10,14 @@ public class KeyboardController : IController
     private KeyboardState previousKeyboardState;
     private KeyboardState currentKeyboardState;
     private GameState gameState;
+    private Item GameItems;
+    private ItemList previousItem;
 
-    public KeyboardController()
+    public KeyboardController(Item items)
     {
         gameState = GameState.Start;
+        GameItems = items;
+        previousItem = ItemList.None;
 }
 
     // Properties
@@ -158,13 +163,41 @@ public class KeyboardController : IController
             // Check for Item cycle input
             if (OneShotPressed(Keys.I))
             {
-                ICommand itemCycleCommand = new ItemCycleCommand(this, 1);
-                newState = itemCycleCommand.Execute();
+                // store value of previous item
+                previousItem = GameItems.CurrentItem;
+
+                // If statement to check whether the previous item was BluePotion, in which case
+                // item needs to start from Compass again.
+                if (previousItem == ItemList.BluePotion)
+                {
+                    ICommand itemCycleCommand = new ItemCycleCommand(this, -14, GameItems);
+                    newState = itemCycleCommand.Execute();
+                }
+                else
+                {
+                    ICommand itemCycleCommand = new ItemCycleCommand(this, 1, GameItems);
+                    newState = itemCycleCommand.Execute();
+                }
+                System.Diagnostics.Debug.WriteLine("Current Item is: " + (int)GameItems.CurrentItem);
             }
             else if (OneShotPressed(Keys.U))
             {
-                ICommand itemCycleCommand = new ItemCycleCommand(this, -1);
-                newState = itemCycleCommand.Execute();
+                // store value of previous item
+                previousItem = GameItems.CurrentItem;
+
+                // If statement to check whether the previous item was Compass, in which case
+                // item needs to start from BluePotion again.
+                if (previousItem == ItemList.Compass)
+                {
+                    ICommand itemCycleCommand = new ItemCycleCommand(this, 14, GameItems);
+                    newState = itemCycleCommand.Execute();
+                }
+                else
+                {
+                    ICommand itemCycleCommand = new ItemCycleCommand(this, -1, GameItems);
+                    newState = itemCycleCommand.Execute();
+                }
+                System.Diagnostics.Debug.WriteLine("Current Item is: " + (int)GameItems.CurrentItem);
             }
 
             // Check for Enemy / NPC cycle input

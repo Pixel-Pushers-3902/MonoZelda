@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
+using PixelPushers.MonoZelda.Items;
 
 namespace PixelPushers.MonoZelda;
 
@@ -14,6 +15,26 @@ public enum GameState
     Quit,
 }
 
+public enum ItemList
+{
+    None = -1,
+    Compass,
+    Map,
+    Key,
+    HeartContainer,
+    TriforcePiece,
+    Boomerang,
+    Bow,
+    Heart,
+    Rupee,
+    Arrow,
+    Bomb,
+    Fairy,
+    Clock,
+    BlueCandle,
+    BluePotion,
+}
+
 public class MonoZeldaGame : Game
 {
     private GraphicsDeviceManager graphics;
@@ -21,6 +42,7 @@ public class MonoZeldaGame : Game
     private KeyboardController keyboardController;
     private MouseController mouseController;
     private GameState currentState;
+    private Item GameItems;
 
     SpriteDict playerSpriteDict1;
     SpriteDict playerSpriteDict2;
@@ -32,7 +54,8 @@ public class MonoZeldaGame : Game
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
         currentState = GameState.Start;
-        keyboardController = new KeyboardController();
+        GameItems = new Item();
+        keyboardController = new KeyboardController(GameItems);
         mouseController = new MouseController();
     }
 
@@ -111,6 +134,12 @@ public class MonoZeldaGame : Game
 
         // Sprite drawing based on state
         spriteBatch.Begin();
+
+        /*
+        Code to draw items according to the currentItem (tentative). 
+        ItemDict will be a SpriteDict for items
+        GameItems.setSpriteItemDict(ItemDict,spriteBatch,gameTime)
+        */
 
         //hardcoded keyboard controls because i don't know how the command system is supposed to be used lol
         if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.W))
