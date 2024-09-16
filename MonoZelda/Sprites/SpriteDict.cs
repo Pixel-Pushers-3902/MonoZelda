@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PixelPushers.MonoZelda.Sprites;
 
-internal class SpriteDict
+public class SpriteDict
 {
     public Point Position { get; set; }
     public bool Enabled { get; set; }
