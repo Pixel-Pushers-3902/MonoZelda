@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
+using MonoZelda.Enemies;
 using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
 
@@ -21,6 +22,7 @@ public class MonoZeldaGame : Game
     private KeyboardController keyboardController;
     private MouseController mouseController;
     private GameState currentState;
+    private IEnemy enemy;
 
     SpriteDict playerSpriteDict1;
     SpriteDict playerSpriteDict2;
@@ -52,6 +54,8 @@ public class MonoZeldaGame : Game
         playerSpriteDict2.SetSprite("boomerang_blue");
         playerSpriteDict3 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 0, new Point(116, 116));
         playerSpriteDict3.SetSprite("boomerang");
+
+        enemy = new Keese(playerSpriteDict1);
     }
 
     protected override void Update(GameTime gameTime)
@@ -101,7 +105,7 @@ public class MonoZeldaGame : Game
                 keyboardController.GameState = currentState;
             }
         }
-
+        enemy.Update();
         base.Update(gameTime);
     }
 
@@ -113,6 +117,7 @@ public class MonoZeldaGame : Game
         spriteBatch.Begin();
 
         //hardcoded keyboard controls because i don't know how the command system is supposed to be used lol
+        /*
         if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.W))
         {
             playerSpriteDict1.SetSprite("whitesword_up");
@@ -129,9 +134,11 @@ public class MonoZeldaGame : Game
         {
             playerSpriteDict1.SetSprite("whitesword_right");
         }
+        */
+        enemy.Draw(spriteBatch, gameTime);
 
         //call to SpriteDrawer to draw all SpriteDicts
-        SpriteDrawer.Draw(spriteBatch, gameTime);
+        //SpriteDrawer.Draw(spriteBatch, gameTime);
 
         spriteBatch.End();
         
