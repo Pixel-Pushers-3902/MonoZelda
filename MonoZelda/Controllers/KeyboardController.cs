@@ -9,11 +9,13 @@ public class KeyboardController : IController
     private KeyboardState previousKeyboardState;
     private KeyboardState currentKeyboardState;
     private GameState gameState;
+    private MonoZeldaGame myGame;
 
-    public KeyboardController()
+    public KeyboardController(MonoZeldaGame game)
     {
         gameState = GameState.Start;
-}
+        myGame = game;
+    }
 
     // Properties
     public KeyboardState CurrentKeyboardState
@@ -170,12 +172,12 @@ public class KeyboardController : IController
             // Check for Enemy / NPC cycle input
             if (OneShotPressed(Keys.P))
             {
-                ICommand enemyCycleCommand = new EnemyCycleCommand(this, 1);
+                ICommand enemyCycleCommand = new EnemyCycleCommand(this, 1, myGame);
                 newState = enemyCycleCommand.Execute();
             }
             else if (OneShotPressed(Keys.O))
             {
-                ICommand enemyCycleCommand = new EnemyCycleCommand(this, -1);
+                ICommand enemyCycleCommand = new EnemyCycleCommand(this, -1, myGame);
                 newState = enemyCycleCommand.Execute();
             }
         }

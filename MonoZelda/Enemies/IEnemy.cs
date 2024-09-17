@@ -10,6 +10,8 @@ namespace MonoZelda.Enemies
 {
     public interface IEnemy
     {
+        public void SetOgPos();
+
         public void ChangeVertDirection();
 
         public void ChangeHorDirection();
