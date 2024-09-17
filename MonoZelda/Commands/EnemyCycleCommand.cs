@@ -8,16 +8,19 @@ public class EnemyCycleCommand : ICommand
 {
     IController controller;
     int cycleAddition;
-    public EnemyCycleCommand(IController controller, int cycleAddition)
+    private MonoZeldaGame myGame;
+    public EnemyCycleCommand(IController controller, int cycleAddition, MonoZeldaGame game)
     {
         this.controller = controller;
         this.cycleAddition = cycleAddition;
+        myGame = game;
     }
 
     public GameState Execute()
     {
         // Apply cycle addition to enemy list
-        Debug.WriteLine("Enemy list cycling by " + cycleAddition);
+        myGame.enemyController.CycleEnemy(cycleAddition);
+        myGame.enemy = myGame.enemyController.SetEnemy();
 
         // Keep GameState the same inside the controller
         return controller.GameState;

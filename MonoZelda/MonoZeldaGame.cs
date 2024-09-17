@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
+using MonoZelda.Controllers;
 using MonoZelda.Enemies;
 using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
@@ -21,8 +22,9 @@ public class MonoZeldaGame : Game
     private SpriteBatch spriteBatch;
     private KeyboardController keyboardController;
     private MouseController mouseController;
+    public EnemyController enemyController;
     private GameState currentState;
-    private IEnemy enemy;
+    public IEnemy enemy;
 
     SpriteDict playerSpriteDict1;
     SpriteDict playerSpriteDict2;
@@ -34,12 +36,15 @@ public class MonoZeldaGame : Game
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
         currentState = GameState.Start;
-        keyboardController = new KeyboardController();
+        keyboardController = new KeyboardController(this);
         mouseController = new MouseController();
     }
 
     protected override void Initialize()
     {
+        enemyController = new EnemyController(this);
+        enemy = enemyController.SetEnemy();
+
         base.Initialize();
     }
 
@@ -55,7 +60,6 @@ public class MonoZeldaGame : Game
         playerSpriteDict3 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 0, new Point(116, 116));
         playerSpriteDict3.SetSprite("boomerang");
 
-        enemy = new Keese(playerSpriteDict1);
     }
 
     protected override void Update(GameTime gameTime)
@@ -105,6 +109,7 @@ public class MonoZeldaGame : Game
                 keyboardController.GameState = currentState;
             }
         }
+
         enemy.Update();
         base.Update(gameTime);
     }
