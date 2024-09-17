@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
+using PixelPushers.MonoZelda.Commands;
 
 namespace PixelPushers.MonoZelda;
 
@@ -32,8 +33,13 @@ public class MonoZeldaGame : Game
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
         currentState = GameState.Start;
-        keyboardController = new KeyboardController();
-        mouseController = new MouseController();
+
+        // Init Commands
+        CommandManager commandManager = new CommandManager();
+        keyboardController = new KeyboardController(commandManager);
+        mouseController = new MouseController(commandManager);
+
+        
     }
 
     protected override void Initialize()

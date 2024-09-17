@@ -9,10 +9,8 @@ public class PlayerMoveCommand : ICommand
 {
     IController controller;
     Vector2 scalarVector;
-    public PlayerMoveCommand(IController controller, Vector2 scalarVector)
+    public PlayerMoveCommand()
     {
-        this.controller = controller;
-        this.scalarVector = scalarVector;
     }
 
     public GameState Execute()
@@ -27,5 +25,15 @@ public class PlayerMoveCommand : ICommand
     public GameState UnExecute()
     {
         throw new NotImplementedException();
+    }
+
+    public void SetScalarVector(Vector2 scalarVector)
+    {
+        this.scalarVector = scalarVector;
+    }
+
+    public void SetController(IController controller)
+    {
+        this.controller = controller;
     }
 }
