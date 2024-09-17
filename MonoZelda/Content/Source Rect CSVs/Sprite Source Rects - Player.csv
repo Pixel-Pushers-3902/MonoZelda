@@ -1,3 +1,4 @@
+Sprite,X,Y,W,H,Frames,Anchor
 walk_down,0,16,16,16,2,center
 walk_right,32,16,16,16,2,center
 walk_up,64,16,16,16,2,center
