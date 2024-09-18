@@ -10,6 +10,9 @@ public class KeyboardController : IController
     private KeyboardState currentKeyboardState;
     private GameState gameState;
 
+    // TODO: Hack to expose the block commands
+    public ICommand BlockCycleCommand;
+
     public KeyboardController()
     {
         gameState = GameState.Start;
@@ -146,13 +149,11 @@ public class KeyboardController : IController
             // Check for Block / Obstacle cycle input
             if (OneShotPressed(Keys.Y))
             {
-                ICommand blockCycleCommand = new BlockCycleCommand(this, 1);
-                newState = blockCycleCommand.Execute();
+                BlockCycleCommand.Execute();
             }
             else if (OneShotPressed(Keys.T))
             {
-                ICommand blockCycleCommand = new BlockCycleCommand(this, -1);
-                newState = blockCycleCommand.Execute();
+                BlockCycleCommand.UnExecute();
             }
 
             // Check for Item cycle input
