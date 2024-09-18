@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
+using MonoZelda.Player;
 using PixelPushers.MonoZelda.PlayersNameSpace;
 using MonoGame.Framework.Utilities.Deflate;
 using System.Runtime.InteropServices;

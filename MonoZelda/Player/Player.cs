@@ -5,19 +5,23 @@ using Microsoft.Xna.Framework;
 
 
 
-namespace PixelPushers.MonoZelda.PlayersNameSpace;
+namespace MonoZelda.Player;
 
-public class Player
+public class Player : IPlayer
 {
     private Direction playerDirection;
     private SpriteDict playerSpriteDict;
     private Vector2 playerPostition;
     private float playerSpeed = 3.0f;
+    private const int AttackDurationInFrames = 10; // Set attack duration to 10 frames
+
     public Player()
     {
         playerPostition = new Vector2(100, 100);
 
     }
+
+    
 
     public void SetPlayerSpriteDict(SpriteDict spriteDict)
     {
@@ -28,7 +32,7 @@ public class Player
     {
         // Get and print the player's direction
         playerDirection = moveCommand.PlayerDirection;
-        
+
         Debug.WriteLine($"Player is moving in the {playerDirection} direction.");
         //update player position
         playerPostition += playerSpeed * moveCommand.PlayerVector;
@@ -42,6 +46,28 @@ public class Player
         playerDirection = standCommand.PlayerDirection;
         SetStandingPlayerSprite(standCommand);
     }
+
+    public void AttackingPlayer(PlayerAttackCommand attackCommand)
+    {
+        Debug.WriteLine("HES ATTACKING");
+        switch (playerDirection)
+        {
+            case Direction.Up:
+                playerSpriteDict.SetSprite("woodensword_up");
+                break;
+            case Direction.Down:
+                playerSpriteDict.SetSprite("woodensword_down");
+                break;
+            case Direction.Left:
+                playerSpriteDict.SetSprite("woodensword_left");
+                break;
+            case Direction.Right:
+                playerSpriteDict.SetSprite("woodensword_right");
+                break;
+        }
+    }
+
+
     private void SetStandingPlayerSprite(PlayerStandingCommand standCommand)
     {
         if (playerSpriteDict == null)
@@ -67,7 +93,7 @@ public class Player
 
 
 
-        playerSpriteDict.Position = this.playerPostition.ToPoint();
+        playerSpriteDict.Position = playerPostition.ToPoint();
     }
 
 
@@ -94,10 +120,10 @@ public class Player
                 playerSpriteDict.SetSprite("walk_right");
                 break;
         }
-    
-        
-        
-        playerSpriteDict.Position = this.playerPostition.ToPoint();
+
+
+
+        playerSpriteDict.Position = playerPostition.ToPoint();
     }
     public Direction PlayerDirection
     {
