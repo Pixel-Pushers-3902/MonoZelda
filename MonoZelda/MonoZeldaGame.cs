@@ -12,8 +12,6 @@ using PixelPushers.MonoZelda.Tiles;
 using PixelPushers.MonoZelda.PlayersNameSpace;
 
 
-
-
 namespace PixelPushers.MonoZelda;
 
 public enum GameState

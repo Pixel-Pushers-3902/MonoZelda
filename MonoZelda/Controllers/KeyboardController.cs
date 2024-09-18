@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using MonoZelda.Player;
 using PixelPushers.MonoZelda.Commands;
-using PixelPushers.MonoZelda.PlayersNameSpace;
+using System.Diagnostics;
 
 
 namespace PixelPushers.MonoZelda.Controllers;
@@ -13,11 +13,15 @@ public class KeyboardController : IController
     private KeyboardState currentKeyboardState;
     private GameState gameState;
     private Player player;
+    private int zHoldFrames; // Counter for holding Z key
+
 
     public KeyboardController(Player player)
     {
         gameState = GameState.Start;
         this.player = player;
+        zHoldFrames = 0; // Initialize counter
+
     }
 
     // Properties
@@ -60,7 +64,6 @@ public class KeyboardController : IController
 
     public bool Update()
     {
-        commandManager.SetController(this);
         GameState newState = gameState;
         if (currentKeyboardState.IsKeyDown(Keys.Q))
         {
@@ -76,11 +79,11 @@ public class KeyboardController : IController
         {
 
             // Player attack input
-            if (attackFrames > 0)
+            if (zHoldFrames > 0)
             {
                 ICommand playerAttackCommand = new PlayerAttackCommand(this, 1, player);
                 newState = playerAttackCommand.Execute();
-                attackFrames--; // Decrement the hold counter
+                zHoldFrames--; // Decrement the hold counter
             }
             // Check for Player item swap input
             if (OneShotPressed(Keys.D1))
@@ -111,46 +114,53 @@ public class KeyboardController : IController
                 playerUseItemCommand.SetItemIndex(4);
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
-            if(attackFrames == 0)
+            if(zHoldFrames == 0)
             {
-                // Player move forward command
-                ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(0, -1), player);
-                newState = playerMoveCommand.Execute();
+                // Check for Player movement input
+                if (currentKeyboardState.IsKeyDown(Keys.W) || currentKeyboardState.IsKeyDown(Keys.Up))
+                {
+                    // Player move forward command
+                    ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(0, -1), player);
+                    newState = playerMoveCommand.Execute();
+                }
+                else if (currentKeyboardState.IsKeyDown(Keys.S) || currentKeyboardState.IsKeyDown(Keys.Down))
+                {
+                    // Player move backward command
+                    ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(0, 1), player);
+                    newState = playerMoveCommand.Execute();
+                }
+                else if (currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.Right))
+                {
+                    // Player move right command
+                    ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(1, 0), player);
+                    newState = playerMoveCommand.Execute();
+                }
+                else if (currentKeyboardState.IsKeyDown(Keys.A) || currentKeyboardState.IsKeyDown(Keys.Left))
+                {
+                    // Player move left command
+                    ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(-1, 0), player);
+                    newState = playerMoveCommand.Execute();
+                }
+                else
+                {
+                    // Player move left
+                    ICommand playerStandCommand = new PlayerStandingCommand(this, player);
+                    newState = playerStandCommand.Execute();
+                }
             }
-            else if (currentKeyboardState.IsKeyDown(Keys.S) || currentKeyboardState.IsKeyDown(Keys.Down))
-            {
-                // Player move backward command
-                ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(0, 1),player);
-                newState = playerMoveCommand.Execute();
-            }
-            else if (currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.Right))
-            {
-                // Player move right command
-                ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(1, 0), player);
-                newState = playerMoveCommand.Execute();
-            }
-            else if (currentKeyboardState.IsKeyDown(Keys.A) || currentKeyboardState.IsKeyDown(Keys.Left))
-            {
-                // Player move left command
-                ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(-1, 0),player);
-                newState = playerMoveCommand.Execute();
-            }
-            else
-            {
-                // Player move left
-                ICommand playerStandCommand = new PlayerStandingCommand(this, player);
-                newState = playerStandCommand.Execute();
-            }
+           
 
             // Check for Player attack input
             if (OneShotPressed(Keys.Z))
             {
                 
-                attackFrames = 20; 
+                zHoldFrames = 20; // Set hold counter to 10 frames
             }
             else if (OneShotPressed(Keys.N))
             {
-                attackFrames = 20;
+                // Player primary attack
+                ICommand playerAttackCommand = new PlayerAttackCommand(this, 2,player);
+                newState = playerAttackCommand.Execute();
             }
 
             // Check for Player damage applied

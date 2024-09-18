@@ -3,7 +3,6 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using MonoZelda.Player;
 using PixelPushers.MonoZelda.Controllers;
-using PixelPushers.MonoZelda.PlayersNameSpace;
 
 namespace PixelPushers.MonoZelda.Commands;
 public enum Direction

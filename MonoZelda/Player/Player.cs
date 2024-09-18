@@ -12,7 +12,7 @@ public class Player : IPlayer
     private Direction playerDirection;
     private SpriteDict playerSpriteDict;
     private Vector2 playerPostition;
-    private float playerSpeed = 4.0f;
+    private float playerSpeed = 3.0f;
     private const int AttackDurationInFrames = 10; // Set attack duration to 10 frames
 
     public Player()
