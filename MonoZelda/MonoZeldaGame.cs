@@ -60,6 +60,14 @@ public class MonoZeldaGame : Game
         playerSpriteDict2.SetSprite("boomerang_blue");
         playerSpriteDict3 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 0, new Point(116, 116));
         playerSpriteDict3.SetSprite("boomerang");
+
+        // Setup TileDemo
+        // TODO: Swich to the tile sprite sheent when it exists.
+        var tileDict = new SpriteDict(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 0, new Point(300, 300));
+        var demoTile = new TileCycleDemo(tileDict, new Point(300, 300));
+        // create the cycle commands
+        // TODO: Better way to register commands
+        keyboardController.BlockCycleCommand = new TileCycleCommand(demoTile);
     }
 
     protected override void Update(GameTime gameTime)
