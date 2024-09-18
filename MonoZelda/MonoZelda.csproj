@@ -5,10 +5,13 @@
     <RollForward>Major</RollForward>
     <PublishReadyToRun>false</PublishReadyToRun>
     <TieredCompilation>false</TieredCompilation>
+    <ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <RootNamespace>PixelPushers.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+		<PackageId>PixelPushers.$(AssemblyName)</PackageId>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Icon.ico" />

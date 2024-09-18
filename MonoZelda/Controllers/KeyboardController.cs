@@ -159,15 +159,15 @@ public class KeyboardController : IController
             // Check for Block / Obstacle cycle input
             if (OneShotPressed(Keys.Y))
             {
-                BlockCycleCommand blockCycleCommand = (BlockCycleCommand) commandManager.CommandMap[CommandEnum.BlockCycleCommand];
-                blockCycleCommand.SetCycleAddition(1);
-                commandManager.Execute(CommandEnum.BlockCycleCommand);
+                var cycleCommand = (BlockCycleCommand)commandManager.CommandMap[CommandEnum.BlockCycleCommand];
+                cycleCommand.SetCycleAddition(1);
+                cycleCommand.Execute();
             }
             else if (OneShotPressed(Keys.T))
             {
-                BlockCycleCommand blockCycleCommand = (BlockCycleCommand) commandManager.CommandMap[CommandEnum.BlockCycleCommand];
-                blockCycleCommand.SetCycleAddition(-1);
-                commandManager.Execute(CommandEnum.BlockCycleCommand);
+                var cycleCommand = (BlockCycleCommand)commandManager.CommandMap[CommandEnum.BlockCycleCommand];
+                cycleCommand.SetCycleAddition(-1);
+                cycleCommand.Execute();
             }
 
             // Check for Item cycle input
