@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using PixelPushers.MonoZelda.Commands;
+using PixelPushers.MonoZelda.PlayersNameSpace;
+
 
 namespace PixelPushers.MonoZelda.Controllers;
 
@@ -10,6 +12,7 @@ public class KeyboardController : IController
     private KeyboardState currentKeyboardState;
     private GameState gameState;
     private CommandManager commandManager;
+    private Player player;
 
     public KeyboardController(CommandManager commandManager)
     {
@@ -17,6 +20,8 @@ public class KeyboardController : IController
         this.commandManager = commandManager;
 
 }
+        this.player = player;
+    }
 
     // Properties
     public KeyboardState CurrentKeyboardState
@@ -109,10 +114,14 @@ public class KeyboardController : IController
                 PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand) commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
                 playerMoveCommand.SetScalarVector(new Vector2(1, 0));
                 commandManager.Execute(CommandEnum.PlayerMoveCommand);
+                ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(0, -1), player);
+                newState = playerMoveCommand.Execute();
             }
             else if (currentKeyboardState.IsKeyDown(Keys.S) || currentKeyboardState.IsKeyDown(Keys.Down))
             {
                 // Player move backward command
+                ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(0, 1),player);
+                newState = playerMoveCommand.Execute();
                 PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand) commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
                 playerMoveCommand.SetScalarVector(new Vector2(-1, 0));
                 commandManager.Execute(CommandEnum.PlayerMoveCommand);
@@ -123,6 +132,8 @@ public class KeyboardController : IController
                 PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand) commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
                 playerMoveCommand.SetScalarVector(new Vector2(0, 1));
                 commandManager.Execute(CommandEnum.PlayerMoveCommand);
+                ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(1, 0), player);
+                newState = playerMoveCommand.Execute();
             }
             else if (currentKeyboardState.IsKeyDown(Keys.A) || currentKeyboardState.IsKeyDown(Keys.Left))
             {
@@ -130,6 +141,14 @@ public class KeyboardController : IController
                 PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand) commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
                 playerMoveCommand.SetScalarVector(new Vector2(0, -1));
                 commandManager.Execute(CommandEnum.PlayerMoveCommand);
+                ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(-1, 0),player);
+                newState = playerMoveCommand.Execute();
+            }
+            else
+            {
+                // Player move left
+                ICommand playerStandCommand = new PlayerStandingCommand(this, player);
+                newState = playerStandCommand.Execute();
             }
 
             // Check for Player attack input
