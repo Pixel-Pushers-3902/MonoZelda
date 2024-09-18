@@ -9,6 +9,7 @@ using MonoGame.Framework.Utilities.Deflate;
 using System.Runtime.InteropServices;
 using PixelPushers.MonoZelda.Commands;
 using PixelPushers.MonoZelda.Tiles;
+using PixelPushers.MonoZelda.PlayersNameSpace;
 
 
 
@@ -30,7 +31,7 @@ public class MonoZeldaGame : Game
     private MouseController mouseController;
     private CommandManager commandManager;
     private GameState currentState;
-    private PlayerController playerController;
+    private Player player;
 
     SpriteDict playerSpriteDict;
   
@@ -41,7 +42,8 @@ public class MonoZeldaGame : Game
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
         currentState = GameState.Start;
-        keyboardController = new KeyboardController();
+        player = new Player();
+        keyboardController = new KeyboardController(player);
         mouseController = new MouseController();
 
     }
@@ -76,6 +78,7 @@ public class MonoZeldaGame : Game
         string playerCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Player.csv";
         playerSpriteDict = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 1, new Point(100, 100));
         playerController = new PlayerController(keyboardController, playerSpriteDict);
+        player.SetPlayerSpriteDict(playerSpriteDict);
     }
 
     protected override void Update(GameTime gameTime)
@@ -125,7 +128,6 @@ public class MonoZeldaGame : Game
                 keyboardController.GameState = currentState;
             }
         }
-        playerController.Update();
         base.Update(gameTime);
     }
 
@@ -153,10 +155,10 @@ public class MonoZeldaGame : Game
         //{
         //    playerSpriteDict1.SetSprite("whitesword_right");
         //}
+        playerSpriteDict.Draw(spriteBatch, gameTime);
 
 
         //call to Player Controller Drawer
-        playerController.Draw(spriteBatch, gameTime);
 
         spriteBatch.End();
         
