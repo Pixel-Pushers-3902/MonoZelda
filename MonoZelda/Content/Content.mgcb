@@ -44,7 +44,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/player.png
 
-#begin Sprites/pvz_walking_spritesheet.png
+#begin Sprites/tiles_dungeon1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -54,5 +54,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/pvz_walking_spritesheet.png;Sprites/pvz_sprite.png
+/build:Sprites/tiles_dungeon1.png
 

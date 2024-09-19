@@ -29,7 +29,10 @@
     <None Update="Content\Source Rect CSVs\Sprite Source Rects - Player.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Content\Sprites\enemies.png">
+    <None Update="Content\Source Rect CSVs\Sprite Source Rects - Tiles Dungeon1.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Sprites\tiles_dungeon1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

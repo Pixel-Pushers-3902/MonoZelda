@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
+using MonoGame.Framework.Utilities.Deflate;
+using System.Runtime.InteropServices;
 
 namespace PixelPushers.MonoZelda;
 
@@ -25,9 +27,6 @@ public class MonoZeldaGame : Game
     SpriteDict playerSpriteDict1;
     SpriteDict playerSpriteDict2;
     SpriteDict playerSpriteDict3;
-    SpriteDict enemySpriteDict1;
-    SpriteDict enemySpriteDict2;
-    SpriteDict enemySpriteDict3;
 
     public MonoZeldaGame()
     {
@@ -55,14 +54,6 @@ public class MonoZeldaGame : Game
         playerSpriteDict2.SetSprite("boomerang_blue");
         playerSpriteDict3 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 0, new Point(116, 116));
         playerSpriteDict3.SetSprite("boomerang");
-
-        string enemyCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Enemies.csv";
-        enemySpriteDict1 = new(Content.Load<Texture2D>("Sprites/enemies"), enemyCSVFileName, 1, new Point(200, 100));
-        enemySpriteDict1.SetSprite("gibdo");
-        enemySpriteDict2 = new(Content.Load<Texture2D>("Sprites/enemies"), enemyCSVFileName, 2, new Point(200, 200));
-        enemySpriteDict2.SetSprite("zol_brown");
-        enemySpriteDict3 = new(Content.Load<Texture2D>("Sprites/enemies"), enemyCSVFileName, 0, new Point(200, 300));
-        enemySpriteDict3.SetSprite("boomerang");
     }
 
     protected override void Update(GameTime gameTime)

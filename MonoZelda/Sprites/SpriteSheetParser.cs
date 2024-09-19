@@ -6,10 +6,10 @@ namespace PixelPushers.MonoZelda.Sprites;
 
 internal static class SpriteSheetParser
 {
-    public static void Parse(SpriteDict toPopulate, string CSVname)
+    public static void Parse(SpriteDict toPopulate, string csvName)
     {
         //set up text parser
-        using TextFieldParser textFieldParser = new(CSVname);
+        using TextFieldParser textFieldParser = new(csvName);
         textFieldParser.TextFieldType = FieldType.Delimited;
         textFieldParser.SetDelimiters(",");
 

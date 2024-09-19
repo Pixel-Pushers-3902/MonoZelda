@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PixelPushers.MonoZelda.Sprites;
 
-internal class SpriteDict
+public class SpriteDict
 {
     public Point Position { get; set; }
     public bool Enabled { get; set; }
@@ -13,11 +13,11 @@ internal class SpriteDict
     private readonly Dictionary<string, Sprite> dict = new();
     private string currentSprite = "";
 
-    public SpriteDict(Texture2D texture, string CSVname, int priority, Point position)
+    public SpriteDict(Texture2D texture, string csvName, int priority, Point position)
     {
         this.texture = texture;
         Position = position;
-        SpriteSheetParser.Parse(this, CSVname);
+        SpriteSheetParser.Parse(this, csvName);
         SpriteDrawer.RegisterSpriteDict(this, priority);
     }
 
