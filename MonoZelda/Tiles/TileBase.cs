@@ -29,7 +29,7 @@ internal abstract class TileBase : ITile
     {
         if(_spriteDict != null)
         {
-            _spriteDict.SetSprite(name);
-        }
+        _spriteDict.SetSprite(name);
     }
+}
 }

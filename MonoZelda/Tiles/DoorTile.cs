@@ -13,13 +13,18 @@ internal class DoorTile : TileBase, IInteractiveTile
     }
 
     public DoorTile(TileFacing facing) : base()
-    {
+        {
         _facing = facing;       
     }
 
     public void Interact(object player)
     {
         throw new NotImplementedException();
+    }
+
+    public void Destory()
+    {
+        _spriteDict = null;
     }
 }
 

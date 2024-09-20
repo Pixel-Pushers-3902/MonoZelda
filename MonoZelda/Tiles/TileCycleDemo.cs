@@ -15,6 +15,7 @@ internal class TileCycleDemo : TileBase, ICycleable
     {
         _tileTypes = Enum.GetValues(typeof(TileType)) as TileType[];
 
+        // Set the current tile index to the last tile type so that the first call to Next() will set the first tile
         _currentTileIndex = 0;
         _position = position;
 
