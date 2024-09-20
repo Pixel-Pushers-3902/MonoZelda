@@ -8,10 +8,8 @@ public class PlayerTakeDamageCommand : ICommand
 {
     IController controller;
     int damage;
-    public PlayerTakeDamageCommand(IController controller, int damage)
+    public PlayerTakeDamageCommand()
     {
-        this.controller = controller;
-        this.damage = damage;
     }
 
     public GameState Execute()
@@ -26,5 +24,15 @@ public class PlayerTakeDamageCommand : ICommand
     public GameState UnExecute()
     {
         throw new NotImplementedException();
+    }
+
+    public void SetDamage(int damage) 
+    {
+        this.damage = damage;
+    }
+
+    public void SetController(IController controller)
+    {
+        this.controller = controller;
     }
 }
