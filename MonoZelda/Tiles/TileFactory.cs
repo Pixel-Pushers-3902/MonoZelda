@@ -5,23 +5,28 @@ namespace PixelPushers.MonoZelda.Tiles;
 
 internal static class TileFactory 
 {
-    public static ITile CreateTile(SpriteDict d, TileType type, Point position) 
+    public static ITile CreateTile<T>(SpriteDict spriteDictionary, TileType sprite, Point position) where T : TileBase, new()
     {
-        ITile tile = null;
-        switch (type)
+        ITile tile = new T()
         {
-            case TileType.fire:
-                tile = new FireTile(d);
-                break;
+            Position = position
+        };
+
+        if (spriteDictionary != null)
+        {
+            tile.UsesSpriteDictionary(spriteDictionary);
+            tile.SetSprite(sprite.ToString());
         }
 
-        if(tile != null)
+        return tile;
+    }
+
+    public static ITile UsesSpriteDictionary(this ITile tile, SpriteDict d)
+    {
+        if (tile is TileBase b)
         {
-            tile.Position = position;
+            b.SetSpriteDict(d);
         }
-
-        d.SetSprite(type.ToString());
-
         return tile;
     }
 }

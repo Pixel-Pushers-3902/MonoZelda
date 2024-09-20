@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using PixelPushers.MonoZelda.Sprites;
+using System;
 
 namespace PixelPushers.MonoZelda.Tiles;
 
@@ -14,11 +15,10 @@ internal class TileCycleDemo : TileBase, ICycleable
     {
         _tileTypes = Enum.GetValues(typeof(TileType)) as TileType[];
 
-        // Set the current tile index to the last tile type so that the first call to Next() will set the first tile
         _currentTileIndex = 0;
         _position = position;
 
-        DemoTile = TileFactory.CreateTile(spriteDict, _tileTypes[_currentTileIndex], _position);
+        DemoTile = TileFactory.CreateTile<DoorTile>(spriteDict, TileType.door_closed_east, _position);
     }
 
     public void Next()

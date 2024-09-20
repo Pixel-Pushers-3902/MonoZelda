@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PixelPushers.MonoZelda.Tiles
 {
-    internal interface ICycleable
+    public interface ICycleable
     {
         void Next();
         void Previous();

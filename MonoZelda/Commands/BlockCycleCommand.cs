@@ -2,21 +2,38 @@
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using PixelPushers.MonoZelda.Controllers;
+using PixelPushers.MonoZelda.Tiles;
 
 namespace PixelPushers.MonoZelda.Commands;
 
 public class BlockCycleCommand : ICommand
 {
     IController controller;
+    ICycleable cycleable;
     int cycleAddition;
     public BlockCycleCommand()
     {
     }
 
+    public BlockCycleCommand(ICycleable _tile)
+    {
+        cycleable = _tile;
+    }
+
     public GameState Execute()
     {
-        // Apply cycle addition to block list
-        Debug.WriteLine("Block list cycling by " + cycleAddition);
+        if (cycleable != null)
+        {
+            if(cycleAddition > 0)
+            {
+                cycleable.Next();
+            }
+            else
+            {
+                cycleable.Previous();
+            }
+        }
+
 
         // Keep GameState the same inside the controller
         return controller.GameState;

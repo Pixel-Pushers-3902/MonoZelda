@@ -10,6 +10,16 @@ internal abstract class TileBase : ITile
 
     private SpriteDict _spriteDict;
 
+    public TileBase()
+    {
+
+    }
+
+    public void SetSpriteDict(SpriteDict s)
+    {
+        _spriteDict = s;
+    }
+
     public TileBase(SpriteDict tileSprite)
     {
         _spriteDict = tileSprite;
@@ -17,6 +27,9 @@ internal abstract class TileBase : ITile
 
     public void SetSprite(string name)
     {
-        _spriteDict.SetSprite(name);
+        if(_spriteDict != null)
+        {
+            _spriteDict.SetSprite(name);
+        }
     }
 }

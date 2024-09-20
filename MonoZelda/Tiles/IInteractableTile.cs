@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace PixelPushers.MonoZelda.Tiles;
 
 internal interface IInteractiveTile : ITile
