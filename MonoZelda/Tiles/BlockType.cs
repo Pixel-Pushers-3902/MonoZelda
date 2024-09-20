@@ -1,6 +1,6 @@
 namespace PixelPushers.MonoZelda.Tiles;
 
-public enum TileType
+public enum BlockType
 {
     tile_block1,
     tile_block2,

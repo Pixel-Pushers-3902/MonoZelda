@@ -5,7 +5,7 @@ namespace PixelPushers.MonoZelda.Tiles;
 
 internal static class TileFactory 
 {
-    public static ITile CreateTile<T>(SpriteDict spriteDictionary, TileType sprite, Point position) where T : TileBase, new()
+    public static ITile CreateTile<T>(SpriteDict spriteDictionary, BlockType sprite, Point position) where T : TileBase, new()
     {
         ITile tile = new T()
         {
