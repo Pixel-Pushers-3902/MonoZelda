@@ -14,7 +14,7 @@ public class KeyboardController : IController
     private GameState gameState;
     private CommandManager commandManager;
     private Player player;
-    private int zHoldFrames; // Counter for holding Z key
+    private int attackFrames; 
 
     public KeyboardController(CommandManager commandManager)
     {
@@ -23,7 +23,7 @@ public class KeyboardController : IController
 
 }
         this.player = player;
-        zHoldFrames = 0; // Initialize counter
+        attackFrames = 0; 
 
     }
 
@@ -83,11 +83,11 @@ public class KeyboardController : IController
         {
 
             // Player attack input
-            if (zHoldFrames > 0)
+            if (attackFrames > 0)
             {
                 ICommand playerAttackCommand = new PlayerAttackCommand(this, 1, player);
                 newState = playerAttackCommand.Execute();
-                zHoldFrames--; // Decrement the hold counter
+                attackFrames--; // Decrement the hold counter
             }
             // Check for Player item swap input
             if (OneShotPressed(Keys.D1))
@@ -118,7 +118,7 @@ public class KeyboardController : IController
                 playerUseItemCommand.SetItemIndex(4);
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
-            if(zHoldFrames == 0)
+            if(attackFrames == 0)
             {
                 // Check for Player movement input
                 if (currentKeyboardState.IsKeyDown(Keys.W) || currentKeyboardState.IsKeyDown(Keys.Up))
@@ -158,13 +158,11 @@ public class KeyboardController : IController
             if (OneShotPressed(Keys.Z))
             {
                 
-                zHoldFrames = 20; // Set hold counter to 10 frames
+                attackFrames = 20; 
             }
             else if (OneShotPressed(Keys.N))
             {
-                // Player primary attack
-                ICommand playerAttackCommand = new PlayerAttackCommand(this, 2,player);
-                newState = playerAttackCommand.Execute();
+                attackFrames = 20;
             }
 
             // Check for Player damage applied
