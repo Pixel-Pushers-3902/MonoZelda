@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using PixelPushers.MonoZelda.Controllers;
 
 namespace PixelPushers.MonoZelda.Commands;
@@ -8,10 +9,8 @@ public class BlockCycleCommand : ICommand
 {
     IController controller;
     int cycleAddition;
-    public BlockCycleCommand(IController controller, int cycleAddition)
+    public BlockCycleCommand()
     {
-        this.controller = controller;
-        this.cycleAddition = cycleAddition;
     }
 
     public GameState Execute()
@@ -26,5 +25,15 @@ public class BlockCycleCommand : ICommand
     public GameState UnExecute()
     {
         throw new NotImplementedException();
+    }
+
+    public void SetCycleAddition(int cycleAddition)
+    {
+        this.cycleAddition = cycleAddition;
+    }
+
+    public void SetController(IController controller)
+    {
+        this.controller = controller;
     }
 }

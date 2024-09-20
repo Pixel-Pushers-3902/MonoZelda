@@ -6,9 +6,8 @@ namespace PixelPushers.MonoZelda.Commands;
 public class ExitCommand : ICommand
 {
     IController controller;
-    public ExitCommand(IController controller)
+    public ExitCommand()
     {
-        this.controller = controller;
     }
 
     public GameState Execute()
@@ -19,5 +18,10 @@ public class ExitCommand : ICommand
     public GameState UnExecute()
     {
         throw new NotImplementedException();
+    }
+
+    public void SetController(IController controller)
+    {
+        this.controller = controller;
     }
 }

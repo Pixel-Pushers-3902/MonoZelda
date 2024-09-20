@@ -8,10 +8,8 @@ public class ItemCycleCommand : ICommand
 {
     IController controller;
     int cycleAddition;
-    public ItemCycleCommand(IController controller, int cycleAddition)
+    public ItemCycleCommand()
     {
-        this.controller = controller;
-        this.cycleAddition = cycleAddition;
     }
 
     public GameState Execute()
@@ -26,5 +24,15 @@ public class ItemCycleCommand : ICommand
     public GameState UnExecute()
     {
         throw new NotImplementedException();
+    }
+
+    public void SetCycleAddition(int cycleAddition)
+    {
+        this.cycleAddition = cycleAddition;
+    }
+
+    public void SetController(IController controller)
+    {
+        this.controller = controller;
     }
 }
