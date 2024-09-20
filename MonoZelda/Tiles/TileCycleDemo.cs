@@ -7,19 +7,18 @@ namespace PixelPushers.MonoZelda.Tiles;
 internal class TileCycleDemo : TileBase, ICycleable
 {
     private int _currentTileIndex;
-    private TileType[] _tileTypes;
+    private BlockType[] _tileTypes;
     private Point _position;
     private ITile DemoTile;
 
     public TileCycleDemo(SpriteDict spriteDict, Point position) : base(spriteDict)
     {
-        _tileTypes = Enum.GetValues(typeof(TileType)) as TileType[];
+        _tileTypes = Enum.GetValues(typeof(BlockType)) as BlockType[];
 
-        // Set the current tile index to the last tile type so that the first call to Next() will set the first tile
         _currentTileIndex = 0;
         _position = position;
 
-        DemoTile = TileFactory.CreateTile<DoorTile>(spriteDict, TileType.door_closed_east, _position);
+        DemoTile = TileFactory.CreateTile<RoomExit>(spriteDict, BlockType.tile_black, _position);
     }
 
     public void Next()
@@ -40,8 +39,6 @@ internal class TileCycleDemo : TileBase, ICycleable
 
     public void Previous()
     {
-        // Destory the current tile
-
         // Increment the current tile index
         if (_currentTileIndex == 0)
         {
