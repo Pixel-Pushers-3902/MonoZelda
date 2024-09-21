@@ -24,6 +24,7 @@ public class MonoZeldaGame : Game
     private SpriteBatch spriteBatch;
     private KeyboardController keyboardController;
     private MouseController mouseController;
+    public EnemyController enemyController;
     private GameState currentState;
     private IEnemy enemy;
 
@@ -48,6 +49,9 @@ public class MonoZeldaGame : Game
 
     protected override void Initialize()
     {
+        enemyController = new EnemyController(this);
+        enemy = enemyController.Enemy;
+
         base.Initialize();
     }
 

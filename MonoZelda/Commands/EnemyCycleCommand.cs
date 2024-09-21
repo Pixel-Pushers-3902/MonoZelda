@@ -8,14 +8,16 @@ public class EnemyCycleCommand : ICommand
 {
     IController controller;
     int cycleAddition;
-    public EnemyCycleCommand()
+    public EnemyCycleCommand(IController controller, int cycleAddition)
     {
+        this.controller = controller;
+        this.cycleAddition = cycleAddition;
     }
 
     public GameState Execute()
     {
         // Apply cycle addition to enemy list
-        Debug.WriteLine("Enemy list cycling by " + cycleAddition);
+        myGame.enemyController.Update(cycleAddition);
 
         // Keep GameState the same inside the controller
         return controller.GameState;

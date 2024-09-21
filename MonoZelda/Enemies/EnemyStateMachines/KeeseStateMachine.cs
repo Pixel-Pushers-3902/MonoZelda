@@ -12,56 +12,75 @@ namespace MonoZelda.Enemies.EnemyStateMachines
 {
     public class KeeseStateMachine
     {
-        public bool FacingUp { get; private set; } = true;
-        public bool FacingLeft { get; private set; } = true;
-        public bool IsAttacking { get; private set; } = true; //could make decorator
+        public enum VertDirection { Up, Down, None }
+        public enum HorDirection { Left, Right, None }
+        public VertDirection CurrentVert { get; private set; } = VertDirection.None;
+        public HorDirection CurrentHor { get; private set; } = HorDirection.None;
 
-        private readonly SpriteDict keeseSpriteDict; //set once keese sprite dict is implemented;
-        private Point position = new Point(100, 100);
-
-        public KeeseStateMachine(SpriteDict keeseSpriteDict)
+        public void ChangeVertDirection(VertDirection newVert)
         {
-            this.keeseSpriteDict = keeseSpriteDict;
-
-            keeseSpriteDict.SetSprite("walk_right");
+            CurrentVert = newVert;
         }
 
-        public void ChangeVertDirection()
+        public void ChangeHorDirection(HorDirection newHor)
         {
-            FacingUp = !FacingUp;
-        }
-
-        public void ChangeHorDirection()
-        {
-            FacingLeft = !FacingLeft;
+            CurrentHor = newHor;
         }
 
         public static void Attack() //not used
         {
+            FacingLeft = !FacingLeft;
         }
 
-        public void Update()
+        public Point Update(Point position)
         {
-            if (FacingLeft)
+            if (CurrentVert == VertDirection.None)
             {
-                position.X += 2;
-            }else
-            {
-                position.X -= 2;
+                if (CurrentHor == HorDirection.Right)
+                {
+                    position.X += 1;
+                }
+                else if (CurrentHor == HorDirection.Left)
+                {
+                    position.X -= 1;
+                }
             }
-
-            if (FacingUp)
+            else if (CurrentVert == VertDirection.Up)
             {
-                position.Y += 2;
+                if (CurrentHor == HorDirection.Right)
+                {
+                    position.Y -= 1;
+                    position.X += 1;
+                }
+                else if (CurrentHor == HorDirection.Left)
+                {
+                    position.Y -= 1;
+                    position.X -= 1;
+                }
+                else
+                {
+                    position.Y -= 1;
+                }
             }
             else
             {
-                position.Y -= 2;
+                if (CurrentHor == HorDirection.Right)
+                {
+                    position.Y += 1;
+                    position.X += 1;
+                }
+                else if (CurrentHor == HorDirection.Left)
+                {
+                    position.Y += 1;
+                    position.X -= 1;
+                }
+                else
+                {
+                    position.Y += 1;
+                }
             }
 
-            keeseSpriteDict.Position = position;
-
-        }
+            return position;
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {

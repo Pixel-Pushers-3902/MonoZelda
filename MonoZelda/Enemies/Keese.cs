@@ -12,44 +12,74 @@ namespace MonoZelda.Enemies
 {
     public class Keese : IEnemy
     {
-        private KeeseStateMachine stateMachine;
-        private int horDelay;
-        private int vertDelay;
-        private Random rnd = new Random();
+        private readonly KeeseStateMachine stateMachine;
+        private int horDelay = 0;
+        private int vertDelay = 0;
+        private readonly Random rnd = new();
+        private Point pos = new(250, 250); //will change
+        private readonly SpriteDict keeseSpriteDict;
+        private KeeseStateMachine.VertDirection vertDirection = KeeseStateMachine.VertDirection.None;
+        private KeeseStateMachine.HorDirection horDirection = KeeseStateMachine.HorDirection.None;
 
         public Keese(SpriteDict spriteDict)
         {
-            stateMachine = new KeeseStateMachine(spriteDict);
-
-            horDelay = 0;
-            vertDelay = 0;
+            stateMachine = new KeeseStateMachine();
+            keeseSpriteDict = spriteDict;
+            keeseSpriteDict.SetSprite("walk_down"); //using link sprites for now
         }
 
-        public void Attack()
+        public void SetOgPos() //sets to spawn position (eventually could be used for re-entering rooms)
+        {
+            pos.X = 250;
+            pos.Y = 250;
+        }
+
+        public void Attack() // not used
         {
             throw new NotImplementedException();
         }
 
         public void ChangeHorDirection()
         {
-            stateMachine.ChangeHorDirection();
+            stateMachine.ChangeHorDirection(horDirection);
         }
 
         public void ChangeVertDirection()
         {
-            stateMachine.ChangeVertDirection();
+            stateMachine.ChangeVertDirection(vertDirection);
         }
 
         public void Update()
         {
-            if (horDelay >= rnd.Next(150,300))
+            //keese can move diagonally and dont stop
+            if (horDelay >= rnd.Next(50, 100))
             {
+                switch (rnd.Next(1, 3))
+                {
+                    case 1:
+                        horDirection = KeeseStateMachine.HorDirection.Left;
+                        break;
+                    case 2:
+                        horDirection = KeeseStateMachine.HorDirection.Right;
+                        break;
+                }
+
                 ChangeHorDirection();
                 horDelay = 0;
             }
 
-            if (vertDelay >= rnd.Next(150,300))
+            if (vertDelay >= rnd.Next(50, 100))
             {
+                switch (rnd.Next(1, 3))
+                {
+                    case 1:
+                        vertDirection = KeeseStateMachine.VertDirection.Up;
+                        break;
+                    case 2:
+                        vertDirection = KeeseStateMachine.VertDirection.Down;
+                        break;
+                }
+
                 ChangeVertDirection();
                 vertDelay = 0;
             }
@@ -57,12 +87,13 @@ namespace MonoZelda.Enemies
             horDelay += rnd.Next(3);
             vertDelay += rnd.Next(3);
 
-            stateMachine.Update();
+            pos = stateMachine.Update(pos); //gets position updates from state machine
+            keeseSpriteDict.Position = pos; //updates sprite position
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            stateMachine.Draw(spriteBatch, gameTime);
+            keeseSpriteDict.Draw(spriteBatch, gameTime);
         }
     }
 }
