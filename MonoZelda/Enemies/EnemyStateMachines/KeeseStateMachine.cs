@@ -16,12 +16,6 @@ namespace MonoZelda.Enemies.EnemyStateMachines
         public enum HorDirection { Left, Right, None }
         public VertDirection CurrentVert { get; private set; } = VertDirection.None;
         public HorDirection CurrentHor { get; private set; } = HorDirection.None;
-        public bool IsAttacking { get; private set; } = true;
-
-
-        public KeeseStateMachine()
-        {
-        }
 
         public void ChangeVertDirection(VertDirection newVert)
         {

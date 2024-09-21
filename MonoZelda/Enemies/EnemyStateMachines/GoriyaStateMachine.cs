@@ -16,11 +16,7 @@ namespace MonoZelda.Enemies.EnemyStateMachines
         public enum HorDirection { Left, Right, None }
         public VertDirection CurrentVert { get; private set; } = VertDirection.None;
         public HorDirection CurrentHor { get; private set; } = HorDirection.Right;
-        public bool IsAttacking { get; private set; } = true;
-
-        public GoriyaStateMachine()
-        {
-        }
+        public bool IsAttacking { get; private set; } = true; //will use when implemented attack animation (I think)
 
         public void ChangeVertDirection(VertDirection newVert)
         {
@@ -32,14 +28,16 @@ namespace MonoZelda.Enemies.EnemyStateMachines
             CurrentHor = newHor;
         }
 
-        public void Attack() //not used
+        public void Attack()
         {
+            //when attacking goriya is not moving.
             CurrentVert = VertDirection.None;
             CurrentHor = HorDirection.None;
         }
 
         public Point Update(Point position)
         {
+            //could possibly change later but I think this is pretty good.
             if (CurrentVert == VertDirection.None)
             {
                 if (CurrentHor == HorDirection.Right)
@@ -65,6 +63,7 @@ namespace MonoZelda.Enemies.EnemyStateMachines
 
         public void UpdateSprite(SpriteDict goriyaSpriteDict)
         {
+            //determines what sprite to draw based on directions.
             if (CurrentHor == HorDirection.None)
             {
                 switch (CurrentVert)

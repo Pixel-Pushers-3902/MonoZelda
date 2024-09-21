@@ -43,7 +43,7 @@ public class MonoZeldaGame : Game
     protected override void Initialize()
     {
         enemyController = new EnemyController(this);
-        enemy = enemyController.SetEnemy();
+        enemy = enemyController.Enemy;
 
         base.Initialize();
     }
@@ -111,6 +111,7 @@ public class MonoZeldaGame : Game
         }
 
         enemy.Update();
+        enemy = enemyController.Enemy;
         base.Update(gameTime);
     }
 

@@ -13,11 +13,11 @@ namespace MonoZelda.Enemies
     public class Keese : IEnemy
     {
         private readonly KeeseStateMachine stateMachine;
-        private int horDelay;
-        private int vertDelay;
+        private int horDelay = 0;
+        private int vertDelay = 0;
         private readonly Random rnd = new();
-        private Point pos = new Point(250, 250);
-        private SpriteDict keeseSpriteDict;
+        private Point pos = new(250, 250); //will change
+        private readonly SpriteDict keeseSpriteDict;
         private KeeseStateMachine.VertDirection vertDirection = KeeseStateMachine.VertDirection.None;
         private KeeseStateMachine.HorDirection horDirection = KeeseStateMachine.HorDirection.None;
 
@@ -26,18 +26,15 @@ namespace MonoZelda.Enemies
             stateMachine = new KeeseStateMachine();
             keeseSpriteDict = spriteDict;
             keeseSpriteDict.SetSprite("walk_down"); //using link sprites for now
-
-            horDelay = 100;
-            vertDelay = 0;
         }
 
-        public void SetOgPos()
+        public void SetOgPos() //sets to spawn position (eventually could be used for re-entering rooms)
         {
             pos.X = 250;
             pos.Y = 250;
         }
 
-        public void Attack()
+        public void Attack() // not used
         {
             throw new NotImplementedException();
         }
@@ -54,6 +51,7 @@ namespace MonoZelda.Enemies
 
         public void Update()
         {
+            //keese can move diagonally and dont stop
             if (horDelay >= rnd.Next(50, 100))
             {
                 switch (rnd.Next(1, 3))
@@ -89,8 +87,8 @@ namespace MonoZelda.Enemies
             horDelay += rnd.Next(3);
             vertDelay += rnd.Next(3);
 
-            pos = stateMachine.Update(pos);
-            keeseSpriteDict.Position = pos;
+            pos = stateMachine.Update(pos); //gets position updates from state machine
+            keeseSpriteDict.Position = pos; //updates sprite position
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
