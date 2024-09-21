@@ -29,7 +29,6 @@ namespace MonoZelda.Enemies.EnemyStateMachines
 
         public static void Attack() //not used
         {
-            FacingLeft = !FacingLeft;
         }
 
         public Point Update(Point position)
@@ -81,10 +80,7 @@ namespace MonoZelda.Enemies.EnemyStateMachines
             }
 
             return position;
-
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
-        {
-            keeseSpriteDict.Draw(spriteBatch, gameTime);
         }
+
     }
 }

@@ -69,10 +69,10 @@ namespace MonoZelda.Enemies.EnemyStateMachines
                 switch (CurrentVert)
                 {
                     case VertDirection.Up:
-                        goriyaSpriteDict.SetSprite("walk_up");
+                        goriyaSpriteDict.SetSprite("goriya_red_up");
                         break;
                     case VertDirection.Down:
-                        goriyaSpriteDict.SetSprite("walk_down");
+                        goriyaSpriteDict.SetSprite("goriya_red_down");
                         break;
                 }
             }
@@ -81,10 +81,10 @@ namespace MonoZelda.Enemies.EnemyStateMachines
                 switch (CurrentHor)
                 {
                     case HorDirection.Left:
-                        goriyaSpriteDict.SetSprite("walk_left");
+                        goriyaSpriteDict.SetSprite("goriya_red_left");
                         break;
                     case HorDirection.Right:
-                        goriyaSpriteDict.SetSprite("walk_right");
+                        goriyaSpriteDict.SetSprite("goriya_red_right");
                         break;
                 }
             }

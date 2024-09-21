@@ -7,6 +7,7 @@ using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
 using MonoGame.Framework.Utilities.Deflate;
 using System.Runtime.InteropServices;
+using MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Commands;
 
 namespace PixelPushers.MonoZelda;
@@ -24,13 +25,11 @@ public class MonoZeldaGame : Game
     private SpriteBatch spriteBatch;
     private KeyboardController keyboardController;
     private MouseController mouseController;
-    public EnemyController enemyController;
+    private EnemyController enemyController;
     private GameState currentState;
     private IEnemy enemy;
 
-    SpriteDict playerSpriteDict1;
-    SpriteDict playerSpriteDict2;
-    SpriteDict playerSpriteDict3;
+    private SpriteDict enemySpriteDict;
 
     public MonoZeldaGame()
     {
@@ -44,14 +43,16 @@ public class MonoZeldaGame : Game
         keyboardController = new KeyboardController(commandManager);
         mouseController = new MouseController(commandManager);
 
-        
+        enemyController = new EnemyController(commandManager);
+        EnemyCycleCommand enemyCycleCommand = (EnemyCycleCommand) commandManager.CommandMap[CommandEnum.EnemyCycleCommand];
+        enemyCycleCommand.SetCycler(enemyController);
+
+
     }
 
     protected override void Initialize()
     {
-        enemyController = new EnemyController(this);
         enemy = enemyController.Enemy;
-
         base.Initialize();
     }
 
@@ -59,16 +60,11 @@ public class MonoZeldaGame : Game
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        //create 3 sprite dicts that are drawn on top of each other to showcase the priority system
-        string playerCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Player.csv";
-        playerSpriteDict1 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 1, new Point(100, 100));
-        playerSpriteDict2 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 2, new Point(84, 116));
-        playerSpriteDict2.SetSprite("boomerang_blue");
-        playerSpriteDict3 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 0, new Point(116, 116));
-        playerSpriteDict3.SetSprite("boomerang");
-
-        enemy = new Keese(playerSpriteDict1);
+        string enemyCsvFileName = "Content/Source Rect CSVs/Sprite Source Rects - Enemies.csv";
+        enemySpriteDict = new(Content.Load<Texture2D>("Sprites/enemies"), enemyCsvFileName, 1, new Point(100, 100));
+        enemyController.SetSpriteDicts(enemySpriteDict);
     }
+
 
     protected override void Update(GameTime gameTime)
     {
@@ -94,7 +90,7 @@ public class MonoZeldaGame : Game
                 mouseController.GameState = currentState;
             }
         }
-
+        
         // Mouse controller update loop
         mouseController.MouseState = Mouse.GetState();
         if (mouseController.Update())
@@ -117,7 +113,8 @@ public class MonoZeldaGame : Game
                 keyboardController.GameState = currentState;
             }
         }
-        enemy.Update();
+
+        enemyController.Update();
         base.Update(gameTime);
     }
 
@@ -128,29 +125,7 @@ public class MonoZeldaGame : Game
         // Sprite drawing based on state
         spriteBatch.Begin();
 
-        //hardcoded keyboard controls because i don't know how the command system is supposed to be used lol
-        /*
-        if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.W))
-        {
-            playerSpriteDict1.SetSprite("whitesword_up");
-        }
-        if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.A))
-        {
-            playerSpriteDict1.SetSprite("whitesword_left");
-        }
-        if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.S))
-        {
-            playerSpriteDict1.SetSprite("whitesword_down");
-        }
-        if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.D))
-        {
-            playerSpriteDict1.SetSprite("whitesword_right");
-        }
-        */
-        enemy.Draw(spriteBatch, gameTime);
-
-        //call to SpriteDrawer to draw all SpriteDicts
-        //SpriteDrawer.Draw(spriteBatch, gameTime);
+        enemySpriteDict.Draw(spriteBatch, gameTime);
 
         spriteBatch.End();
         

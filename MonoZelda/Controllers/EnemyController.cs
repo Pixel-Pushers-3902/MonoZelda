@@ -8,18 +8,20 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoZelda.Enemies;
 using PixelPushers.MonoZelda;
+using PixelPushers.MonoZelda.Commands;
 using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
 
 namespace MonoZelda.Controllers
 {
-    public class EnemyController // will extend IController once command map is implemented.
+    public class EnemyController
     {
         public IEnemy Enemy;
-        private readonly IEnemy[] enemyArr;
+        private IEnemy[] enemyArr;
         private int index;
-        private readonly int length;
-        private readonly MonoZeldaGame myGame;
+        private int length;
+        private readonly CommandManager commandManager;
+        private SpriteDict spriteDict;
 
         private GameState gameState;
 
@@ -35,23 +37,26 @@ namespace MonoZelda.Controllers
             }
         }
 
-        public EnemyController(MonoZeldaGame game)
+        public EnemyController(CommandManager commandManager)
         {
-            myGame = game;
-            string playerCsvFileName = "Content/Sprite Source Rects - Player.csv";
-            SpriteDict keeseSpriteDict = new(myGame.Content.Load<Texture2D>("Sprites/player"), playerCsvFileName, 1, new Point(100, 100));
-            SpriteDict goriyaSpriteDict = new(myGame.Content.Load<Texture2D>("Sprites/player"), playerCsvFileName, 1, new Point(100, 100));
+            this.commandManager = commandManager;
+        }
+
+        public void SetSpriteDicts(SpriteDict spriteDict)
+        {
+            this.spriteDict = spriteDict;
+
             enemyArr = new IEnemy[]
             {
-                new Keese(keeseSpriteDict),
-                new Goriya(goriyaSpriteDict)
+                new Keese(spriteDict),
+                new Goriya(spriteDict)
             };
+
             index = 0;
-            Enemy = enemyArr[index];
             length = enemyArr.Length;
         }
 
-        public bool Update(int cycle) //should be able to get cycle iteration directly from command once commandMap implemented.
+        public void SetCycle(int cycle)
         {
             index += cycle;
             if (index >= length)
@@ -62,8 +67,12 @@ namespace MonoZelda.Controllers
             {
                 index = length - 1;
             }
-            Enemy = enemyArr[index];
-            Enemy.SetOgPos();
+            enemyArr[index].SetOgPos();
+        }
+
+        public bool Update()
+        {
+            enemyArr[index].Update();
             return true;
         }
     }

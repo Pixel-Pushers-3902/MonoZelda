@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PixelPushers.MonoZelda.Sprites;
 
 namespace MonoZelda.Enemies
 {
@@ -19,7 +20,6 @@ namespace MonoZelda.Enemies
         public void Attack();
 
         public void Update();
-
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime);
+        
     }
 }

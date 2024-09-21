@@ -19,7 +19,7 @@ namespace MonoZelda.Enemies
         private int attacking = 0; //delay while attacking
         private readonly Random rnd = new();
         private Point pos = new(250, 250); // will change later
-        private readonly SpriteDict goriyaSpriteDict;
+        private SpriteDict goriyaSpriteDict;
         //vertDirection and horDirection should only be None at the same time when attacking and should never have a value other than None at the same time.
         private GoriyaStateMachine.VertDirection vertDirection = GoriyaStateMachine.VertDirection.None;
         private GoriyaStateMachine.HorDirection horDirection = GoriyaStateMachine.HorDirection.Right;
@@ -28,13 +28,14 @@ namespace MonoZelda.Enemies
         {
             this.goriyaSpriteDict = spriteDict;
             stateMachine = new GoriyaStateMachine();
-            goriyaSpriteDict.SetSprite("walk_left"); //using link sprites for now
         }
+
 
         public void SetOgPos() //sets to spawn position (eventually could be used for re-entering rooms)
         {
             pos.X = 250;
             pos.Y = 250;
+            goriyaSpriteDict.SetSprite("red_goriya_left");
         }
 
         public void Attack()
@@ -143,11 +144,6 @@ namespace MonoZelda.Enemies
             stateMachine.UpdateSprite(goriyaSpriteDict);
             pos = stateMachine.Update(pos); // calls to stateMachine for position updates
             goriyaSpriteDict.Position = pos; // updates position
-        }
-
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
-        {
-            goriyaSpriteDict.Draw(spriteBatch, gameTime);
         }
     }
 }

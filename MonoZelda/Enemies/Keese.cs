@@ -17,7 +17,7 @@ namespace MonoZelda.Enemies
         private int vertDelay = 0;
         private readonly Random rnd = new();
         private Point pos = new(250, 250); //will change
-        private readonly SpriteDict keeseSpriteDict;
+        private SpriteDict keeseSpriteDict;
         private KeeseStateMachine.VertDirection vertDirection = KeeseStateMachine.VertDirection.None;
         private KeeseStateMachine.HorDirection horDirection = KeeseStateMachine.HorDirection.None;
 
@@ -25,11 +25,13 @@ namespace MonoZelda.Enemies
         {
             stateMachine = new KeeseStateMachine();
             keeseSpriteDict = spriteDict;
-            keeseSpriteDict.SetSprite("walk_down"); //using link sprites for now
+            keeseSpriteDict.SetSprite("keese_blue");
         }
+
 
         public void SetOgPos() //sets to spawn position (eventually could be used for re-entering rooms)
         {
+            keeseSpriteDict.SetSprite("keese_blue");
             pos.X = 250;
             pos.Y = 250;
         }
@@ -89,11 +91,6 @@ namespace MonoZelda.Enemies
 
             pos = stateMachine.Update(pos); //gets position updates from state machine
             keeseSpriteDict.Position = pos; //updates sprite position
-        }
-
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
-        {
-            keeseSpriteDict.Draw(spriteBatch, gameTime);
         }
     }
 }
