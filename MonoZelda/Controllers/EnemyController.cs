@@ -8,17 +8,32 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoZelda.Enemies;
 using PixelPushers.MonoZelda;
+using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
 
 namespace MonoZelda.Controllers
 {
-    public class EnemyController
+    public class EnemyController // will extend IController once command map is implemented.
     {
-        private IEnemy enemy;
+        public IEnemy Enemy;
         private readonly IEnemy[] enemyArr;
         private int index;
         private readonly int length;
         private readonly MonoZeldaGame myGame;
+
+        private GameState gameState;
+
+        public GameState GameState
+        {
+            get
+            {
+                return gameState;
+            }
+            set
+            {
+                gameState = value;
+            }
+        }
 
         public EnemyController(MonoZeldaGame game)
         {
@@ -32,26 +47,24 @@ namespace MonoZelda.Controllers
                 new Goriya(goriyaSpriteDict)
             };
             index = 0;
-            enemy = enemyArr[index];
+            Enemy = enemyArr[index];
             length = enemyArr.Length;
         }
 
-        public void CycleEnemy(int cycle)
+        public bool Update(int cycle) //should be able to get cycle iteration directly from command once commandMap implemented.
         {
             index += cycle;
             if (index >= length)
             {
                 index = 0;
-            }else if (index < 0)
-            {
-                index = length-1;
             }
-        }
-
-        public IEnemy SetEnemy()
-        {
-            enemyArr[index].SetOgPos();
-            return enemyArr[index];
+            else if (index < 0)
+            {
+                index = length - 1;
+            }
+            Enemy = enemyArr[index];
+            Enemy.SetOgPos();
+            return true;
         }
     }
 }

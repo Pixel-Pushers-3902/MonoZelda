@@ -13,13 +13,14 @@ namespace MonoZelda.Enemies
     internal class Goriya : IEnemy
     {
         private readonly GoriyaStateMachine stateMachine;
-        private int horDelay;
-        private int vertDelay;
-        private int attackDelay;
-        private int attacking = 0;
+        private int horDelay = 0;
+        private int vertDelay = 0;
+        private int attackDelay = 0; //delay before attacking
+        private int attacking = 0; //delay while attacking
         private readonly Random rnd = new();
-        private Point pos;
-        private SpriteDict goriyaSpriteDict;
+        private Point pos = new(250, 250); // will change later
+        private readonly SpriteDict goriyaSpriteDict;
+        //vertDirection and horDirection should only be None at the same time when attacking and should never have a value other than None at the same time.
         private GoriyaStateMachine.VertDirection vertDirection = GoriyaStateMachine.VertDirection.None;
         private GoriyaStateMachine.HorDirection horDirection = GoriyaStateMachine.HorDirection.Right;
 
@@ -28,14 +29,9 @@ namespace MonoZelda.Enemies
             this.goriyaSpriteDict = spriteDict;
             stateMachine = new GoriyaStateMachine();
             goriyaSpriteDict.SetSprite("walk_left"); //using link sprites for now
-
-            horDelay = 0;
-            vertDelay = 0;
-            attackDelay = 0;
-            pos = new Point(250, 250);
         }
 
-        public void SetOgPos()
+        public void SetOgPos() //sets to spawn position (eventually could be used for re-entering rooms)
         {
             pos.X = 250;
             pos.Y = 250;
@@ -44,7 +40,7 @@ namespace MonoZelda.Enemies
         public void Attack()
         {
             
-            if (attacking <= 100)
+            if (attacking <= 100) //while enemy is attacking it cant move. Eventually change to GameTime
             {
                 horDelay = 0;
                 vertDelay = 0;
@@ -69,9 +65,9 @@ namespace MonoZelda.Enemies
             stateMachine.ChangeVertDirection(vertDirection);
         }
 
-        public void Update()
+        public void Update() //might eventually split this into multiple methods, controlling random movement is more extensive than I thought.
         {
-            if (attackDelay >= 200)
+            if (attackDelay >= 200) //eventually change to GameTime
             {
                 attackDelay = 0;
                 stateMachine.Attack();
@@ -84,6 +80,7 @@ namespace MonoZelda.Enemies
                     switch (rnd.Next(1, 4))
                     {
                         case 1:
+                            //if horDirection becomes None then vertDirection cannot be None
                             horDirection = GoriyaStateMachine.HorDirection.None;
                             switch (rnd.Next(1, 3))
                             {
@@ -115,6 +112,7 @@ namespace MonoZelda.Enemies
                     switch (rnd.Next(1, 4))
                     {
                         case 1:
+                            //if vertDirection becomes None then horDirection cannot be None
                             vertDirection = GoriyaStateMachine.VertDirection.None;
                             switch (rnd.Next(1,3))
                             {
@@ -143,8 +141,8 @@ namespace MonoZelda.Enemies
             attackDelay++;
 
             stateMachine.UpdateSprite(goriyaSpriteDict);
-            pos = stateMachine.Update(pos);
-            goriyaSpriteDict.Position = pos;
+            pos = stateMachine.Update(pos); // calls to stateMachine for position updates
+            goriyaSpriteDict.Position = pos; // updates position
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)

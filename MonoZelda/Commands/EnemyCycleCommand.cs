@@ -6,9 +6,9 @@ namespace PixelPushers.MonoZelda.Commands;
 
 public class EnemyCycleCommand : ICommand
 {
-    IController controller;
-    int cycleAddition;
-    private MonoZeldaGame myGame;
+    private readonly IController controller;
+    private readonly int cycleAddition;
+    private readonly MonoZeldaGame myGame;
     public EnemyCycleCommand(IController controller, int cycleAddition, MonoZeldaGame game)
     {
         this.controller = controller;
@@ -19,8 +19,7 @@ public class EnemyCycleCommand : ICommand
     public GameState Execute()
     {
         // Apply cycle addition to enemy list
-        myGame.enemyController.CycleEnemy(cycleAddition);
-        myGame.enemy = myGame.enemyController.SetEnemy();
+        myGame.enemyController.Update(cycleAddition);
 
         // Keep GameState the same inside the controller
         return controller.GameState;
