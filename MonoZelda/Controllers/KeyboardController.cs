@@ -16,12 +16,10 @@ public class KeyboardController : IController
     private Player player;
     private int attackFrames; 
 
-    public KeyboardController(CommandManager commandManager)
+    public KeyboardController(CommandManager commandManager, Player player)
     {
         gameState = GameState.Start;
         this.commandManager = commandManager;
-
-}
         this.player = player;
         attackFrames = 0; 
 

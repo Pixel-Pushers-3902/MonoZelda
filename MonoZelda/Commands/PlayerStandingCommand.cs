@@ -35,9 +35,12 @@ namespace PixelPushers.MonoZelda.Commands
         {
             get { return lastDirection; }
         }
+        public void SetController(IController controller)
+        {
+            this.controller = controller;
+        }
 
-       
 
-       
+
     }
 }
