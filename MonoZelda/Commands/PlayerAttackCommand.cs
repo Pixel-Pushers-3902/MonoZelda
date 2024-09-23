@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using MonoZelda.Player;
 using PixelPushers.MonoZelda.Controllers;
 
 namespace PixelPushers.MonoZelda.Commands;
@@ -8,15 +9,21 @@ public class PlayerAttackCommand : ICommand
 {
     IController controller;
     int attackIdx;
-    public PlayerAttackCommand()
-    {
-    }
+    private Player player; // Player reference
 
-    public GameState Execute()
+    public PlayerAttackCommand(IController controller, int attackIdx, Player player)
+    {
+        this.controller = controller;
+        this.attackIdx = attackIdx;
+        this.player = player; // Player reference
+
+}
+
+public GameState Execute()
     {
         // Perform state change for player to attack
         Debug.WriteLine("Player using attack " + attackIdx);
-
+        player.AttackingPlayer(this);
         // Keep GameState the same inside the controller
         return controller.GameState;
     }

@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using MonoZelda.Player;
 using PixelPushers.MonoZelda.Commands;
+using System.Diagnostics;
+
 
 namespace PixelPushers.MonoZelda.Controllers;
 
@@ -9,14 +12,19 @@ public class KeyboardController : IController
     private KeyboardState previousKeyboardState;
     private KeyboardState currentKeyboardState;
     private GameState gameState;
+    private Player player;
+    private int attackFrames;
     private CommandManager commandManager;
 
-    public KeyboardController(CommandManager commandManager)
+
+    public KeyboardController(CommandManager commandManager, Player player)
     {
         gameState = GameState.Start;
+        this.player = player;
+        attackFrames = 0;
         this.commandManager = commandManager;
 
-}
+    }
 
     // Properties
     public KeyboardState CurrentKeyboardState
@@ -72,6 +80,14 @@ public class KeyboardController : IController
         }
         else
         {
+
+            // Player attack input
+            if (attackFrames > 0)
+            {
+                ICommand playerAttackCommand = new PlayerAttackCommand(this, 1, player);
+                newState = playerAttackCommand.Execute();
+                attackFrames--; // Decrement the hold counter
+            }
             // Check for Player item swap input
             if (OneShotPressed(Keys.D1))
             {
@@ -101,51 +117,51 @@ public class KeyboardController : IController
                 playerUseItemCommand.SetItemIndex(4);
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
-
-            // Check for Player movement input
-            if (currentKeyboardState.IsKeyDown(Keys.W) || currentKeyboardState.IsKeyDown(Keys.Up))
+            if(attackFrames == 0)
             {
-                // Player move forward command
-                PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand) commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
-                playerMoveCommand.SetScalarVector(new Vector2(1, 0));
-                commandManager.Execute(CommandEnum.PlayerMoveCommand);
+                // Check for Player movement input
+                if (currentKeyboardState.IsKeyDown(Keys.W) || currentKeyboardState.IsKeyDown(Keys.Up))
+                {
+                    // Player move forward command
+                    ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(0, -1), player);
+                    newState = playerMoveCommand.Execute();
+                }
+                else if (currentKeyboardState.IsKeyDown(Keys.S) || currentKeyboardState.IsKeyDown(Keys.Down))
+                {
+                    // Player move backward command
+                    ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(0, 1), player);
+                    newState = playerMoveCommand.Execute();
+                }
+                else if (currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.Right))
+                {
+                    // Player move right command
+                    ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(1, 0), player);
+                    newState = playerMoveCommand.Execute();
+                }
+                else if (currentKeyboardState.IsKeyDown(Keys.A) || currentKeyboardState.IsKeyDown(Keys.Left))
+                {
+                    // Player move left command
+                    ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(-1, 0), player);
+                    newState = playerMoveCommand.Execute();
+                }
+                else
+                {
+                    // Player move left
+                    ICommand playerStandCommand = new PlayerStandingCommand(this, player);
+                    newState = playerStandCommand.Execute();
+                }
             }
-            else if (currentKeyboardState.IsKeyDown(Keys.S) || currentKeyboardState.IsKeyDown(Keys.Down))
-            {
-                // Player move backward command
-                PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand) commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
-                playerMoveCommand.SetScalarVector(new Vector2(-1, 0));
-                commandManager.Execute(CommandEnum.PlayerMoveCommand);
-            }
-            else if (currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.Right))
-            {
-                // Player move right command
-                PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand) commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
-                playerMoveCommand.SetScalarVector(new Vector2(0, 1));
-                commandManager.Execute(CommandEnum.PlayerMoveCommand);
-            }
-            else if (currentKeyboardState.IsKeyDown(Keys.A) || currentKeyboardState.IsKeyDown(Keys.Left))
-            {
-                // Player move left command
-                PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand) commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
-                playerMoveCommand.SetScalarVector(new Vector2(0, -1));
-                commandManager.Execute(CommandEnum.PlayerMoveCommand);
-            }
+           
 
             // Check for Player attack input
             if (OneShotPressed(Keys.Z))
             {
-                // Player primary attack
-                PlayerAttackCommand playerAttackCommand = (PlayerAttackCommand) commandManager.CommandMap[CommandEnum.PlayerAttackCommand];
-                playerAttackCommand.SetAttackIndex(1);
-                commandManager.Execute(CommandEnum.PlayerAttackCommand);
+                
+                attackFrames = 20; 
             }
             else if (OneShotPressed(Keys.N))
             {
-                // Player primary attack
-                PlayerAttackCommand playerAttackCommand = (PlayerAttackCommand) commandManager.CommandMap[CommandEnum.PlayerAttackCommand];
-                playerAttackCommand.SetAttackIndex(2);
-                commandManager.Execute(CommandEnum.PlayerAttackCommand);
+                attackFrames = 20;
             }
 
             // Check for Player damage applied

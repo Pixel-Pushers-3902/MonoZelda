@@ -6,6 +6,8 @@ using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
 using PixelPushers.MonoZelda.Commands;
 using PixelPushers.MonoZelda.Tiles;
+using MonoZelda.Player;
+
 
 namespace PixelPushers.MonoZelda;
 
@@ -24,10 +26,10 @@ public class MonoZeldaGame : Game
     private MouseController mouseController;
     private CommandManager commandManager;
     private GameState currentState;
+    private Player player;
 
-    SpriteDict playerSpriteDict1;
-    SpriteDict playerSpriteDict2;
-    SpriteDict playerSpriteDict3;
+    SpriteDict playerSpriteDict;
+  
 
     public MonoZeldaGame()
     {
@@ -35,13 +37,12 @@ public class MonoZeldaGame : Game
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
         currentState = GameState.Start;
-
-        // Init Commands
+        player = new Player();
         commandManager = new CommandManager();
-        keyboardController = new KeyboardController(commandManager);
+
+        keyboardController = new KeyboardController(commandManager, player);
         mouseController = new MouseController(commandManager);
 
-        
     }
 
     protected override void Initialize()
@@ -53,14 +54,6 @@ public class MonoZeldaGame : Game
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        //create 3 sprite dicts that are drawn on top of each other to showcase the priority system
-        string playerCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Player.csv";
-        playerSpriteDict1 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 1, new Point(100, 100));
-        playerSpriteDict2 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 2, new Point(84, 116));
-        playerSpriteDict2.SetSprite("boomerang_blue");
-        playerSpriteDict3 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 0, new Point(116, 116));
-        playerSpriteDict3.SetSprite("boomerang");
-
         // Setup TileDemo
         string blocksCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Tiles Dungeon1.csv";
         var tileDict = new SpriteDict(Content.Load<Texture2D>("Sprites/tiles_dungeon1"), blocksCSVFileName, 0, new Point(300, 300));
@@ -68,6 +61,11 @@ public class MonoZeldaGame : Game
 
         // create the cycle commands
         commandManager.ReplaceCommand(CommandEnum.BlockCycleCommand, new BlockCycleCommand(demoTile));
+
+        //create spritedict to pass into player controller
+        string playerCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Player.csv";
+        playerSpriteDict = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 1, new Point(100, 100));
+        player.SetPlayerSpriteDict(playerSpriteDict);
     }
 
     protected override void Update(GameTime gameTime)
@@ -117,7 +115,6 @@ public class MonoZeldaGame : Game
                 keyboardController.GameState = currentState;
             }
         }
-
         base.Update(gameTime);
     }
 
@@ -128,23 +125,8 @@ public class MonoZeldaGame : Game
         // Sprite drawing based on state
         spriteBatch.Begin();
 
-        //hardcoded keyboard controls because i don't know how the command system is supposed to be used lol
-        if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.W))
-        {
-            playerSpriteDict1.SetSprite("whitesword_up");
-        }
-        if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.A))
-        {
-            playerSpriteDict1.SetSprite("whitesword_left");
-        }
-        if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.S))
-        {
-            playerSpriteDict1.SetSprite("whitesword_down");
-        }
-        if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.D))
-        {
-            playerSpriteDict1.SetSprite("whitesword_right");
-        }
+        // Draw player
+        playerSpriteDict.Draw(spriteBatch, gameTime);
 
         //call to SpriteDrawer to draw all SpriteDicts
         SpriteDrawer.Draw(spriteBatch, gameTime);
