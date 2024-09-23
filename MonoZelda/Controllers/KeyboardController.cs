@@ -10,14 +10,13 @@ public class KeyboardController : IController
     private KeyboardState previousKeyboardState;
     private KeyboardState currentKeyboardState;
     private GameState gameState;
-    private Item GameItems;
-    private ItemList previousItem;
+    private CommandManager commandManager;
 
-    public KeyboardController(Item items)
+    public KeyboardController(CommandManager commandManager)
     {
         gameState = GameState.Start;
-        GameItems = items;
-        previousItem = ItemList.None;
+        this.commandManager = commandManager;
+
 }
 
     // Properties
@@ -60,18 +59,17 @@ public class KeyboardController : IController
 
     public bool Update()
     {
+        commandManager.SetController(this);
         GameState newState = gameState;
         if (currentKeyboardState.IsKeyDown(Keys.Q))
         {
             // Exit Command
-            ICommand exitCommand = new ExitCommand(this);
-            newState = exitCommand.Execute();
+            commandManager.Execute(CommandEnum.ExitCommand);
         }
         else if (OneShotPressed(Keys.R))
         {
             // Reset Command
-            ICommand resetCommand = new ResetCommand(this);
-            newState = resetCommand.Execute();
+            commandManager.Execute(CommandEnum.ResetCommand);
         }
         else
         {
@@ -79,137 +77,126 @@ public class KeyboardController : IController
             if (OneShotPressed(Keys.D1))
             {
                 // Player item 1 equip
-                ICommand playerUseItem = new PlayerUseItem(this, 1);
-                newState = playerUseItem.Execute();
+                PlayerUseItemCommand playerUseItemCommand = (PlayerUseItemCommand) commandManager.CommandMap[CommandEnum.PlayerUseItemCommand];
+                playerUseItemCommand.SetItemIndex(1);
+                commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
             else if (OneShotPressed(Keys.D2))
             {
                 // Player item 2 equip
-                ICommand playerUseItem = new PlayerUseItem(this, 2);
-                newState = playerUseItem.Execute();
+                PlayerUseItemCommand playerUseItemCommand = (PlayerUseItemCommand) commandManager.CommandMap[CommandEnum.PlayerUseItemCommand];
+                playerUseItemCommand.SetItemIndex(2);
+                commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
             else if (OneShotPressed(Keys.D3))
             {
                 // Player item 3 equip
-                ICommand playerUseItem = new PlayerUseItem(this, 3);
-                newState = playerUseItem.Execute();
+                PlayerUseItemCommand playerUseItemCommand = (PlayerUseItemCommand) commandManager.CommandMap[CommandEnum.PlayerUseItemCommand];
+                playerUseItemCommand.SetItemIndex(3);
+                commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
             else if (OneShotPressed(Keys.D4))
             {
                 // Player item 4 equip
-                ICommand playerUseItem = new PlayerUseItem(this, 4);
-                newState = playerUseItem.Execute();
+                PlayerUseItemCommand playerUseItemCommand = (PlayerUseItemCommand) commandManager.CommandMap[CommandEnum.PlayerUseItemCommand];
+                playerUseItemCommand.SetItemIndex(4);
+                commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
 
             // Check for Player movement input
             if (currentKeyboardState.IsKeyDown(Keys.W) || currentKeyboardState.IsKeyDown(Keys.Up))
             {
                 // Player move forward command
-                ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(1, 0));
-                newState = playerMoveCommand.Execute();
+                PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand) commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
+                playerMoveCommand.SetScalarVector(new Vector2(1, 0));
+                commandManager.Execute(CommandEnum.PlayerMoveCommand);
             }
             else if (currentKeyboardState.IsKeyDown(Keys.S) || currentKeyboardState.IsKeyDown(Keys.Down))
             {
                 // Player move backward command
-                ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(-1, 0));
-                newState = playerMoveCommand.Execute();
+                PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand) commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
+                playerMoveCommand.SetScalarVector(new Vector2(-1, 0));
+                commandManager.Execute(CommandEnum.PlayerMoveCommand);
             }
             else if (currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.Right))
             {
                 // Player move right command
-                ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(0, 1));
-                newState = playerMoveCommand.Execute();
+                PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand) commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
+                playerMoveCommand.SetScalarVector(new Vector2(0, 1));
+                commandManager.Execute(CommandEnum.PlayerMoveCommand);
             }
             else if (currentKeyboardState.IsKeyDown(Keys.A) || currentKeyboardState.IsKeyDown(Keys.Left))
             {
                 // Player move left command
-                ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(0, -1));
-                newState = playerMoveCommand.Execute();
+                PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand) commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
+                playerMoveCommand.SetScalarVector(new Vector2(0, -1));
+                commandManager.Execute(CommandEnum.PlayerMoveCommand);
             }
 
             // Check for Player attack input
             if (OneShotPressed(Keys.Z))
             {
                 // Player primary attack
-                ICommand playerAttackCommand = new PlayerAttackCommand(this, 1);
-                newState = playerAttackCommand.Execute();
+                PlayerAttackCommand playerAttackCommand = (PlayerAttackCommand) commandManager.CommandMap[CommandEnum.PlayerAttackCommand];
+                playerAttackCommand.SetAttackIndex(1);
+                commandManager.Execute(CommandEnum.PlayerAttackCommand);
             }
             else if (OneShotPressed(Keys.N))
             {
                 // Player primary attack
-                ICommand playerAttackCommand = new PlayerAttackCommand(this, 2);
-                newState = playerAttackCommand.Execute();
+                PlayerAttackCommand playerAttackCommand = (PlayerAttackCommand) commandManager.CommandMap[CommandEnum.PlayerAttackCommand];
+                playerAttackCommand.SetAttackIndex(2);
+                commandManager.Execute(CommandEnum.PlayerAttackCommand);
             }
 
             // Check for Player damage applied
             if (OneShotPressed(Keys.E))
             {
-                ICommand playerTakeDamageCommand = new PlayerTakeDamageCommand(this, 10);
-                newState = playerTakeDamageCommand.Execute();
+                PlayerTakeDamageCommand playerTakeDamageCommand = (PlayerTakeDamageCommand) commandManager.CommandMap[CommandEnum.PlayerTakeDamageCommand];
+                playerTakeDamageCommand.SetDamage(10);
+                commandManager.Execute(CommandEnum.PlayerTakeDamageCommand);
             }
 
             // Check for Block / Obstacle cycle input
             if (OneShotPressed(Keys.Y))
             {
-                ICommand blockCycleCommand = new BlockCycleCommand(this, 1);
-                newState = blockCycleCommand.Execute();
+                BlockCycleCommand blockCycleCommand = (BlockCycleCommand) commandManager.CommandMap[CommandEnum.BlockCycleCommand];
+                blockCycleCommand.SetCycleAddition(1);
+                commandManager.Execute(CommandEnum.BlockCycleCommand);
             }
             else if (OneShotPressed(Keys.T))
             {
-                ICommand blockCycleCommand = new BlockCycleCommand(this, -1);
-                newState = blockCycleCommand.Execute();
+                BlockCycleCommand blockCycleCommand = (BlockCycleCommand) commandManager.CommandMap[CommandEnum.BlockCycleCommand];
+                blockCycleCommand.SetCycleAddition(-1);
+                commandManager.Execute(CommandEnum.BlockCycleCommand);
             }
 
             // Check for Item cycle input
             if (OneShotPressed(Keys.I))
             {
-                // store value of previous item
-                previousItem = GameItems.CurrentItem;
-
-                // If statement to check whether the previous item was BluePotion, in which case
-                // item needs to start from Compass again.
-                if (previousItem == ItemList.BluePotion)
-                {
-                    ICommand itemCycleCommand = new ItemCycleCommand(this, -14, GameItems);
-                    newState = itemCycleCommand.Execute();
-                }
-                else
-                {
-                    ICommand itemCycleCommand = new ItemCycleCommand(this, 1, GameItems);
-                    newState = itemCycleCommand.Execute();
-                }
-                System.Diagnostics.Debug.WriteLine("Current Item is: " + (int)GameItems.CurrentItem);
+                ItemCycleCommand itemCycleCommand = (ItemCycleCommand) commandManager.CommandMap[CommandEnum.ItemCycleCommand];
+                itemCycleCommand.SetCycleAddition(1);
+                commandManager.Execute(CommandEnum.ItemCycleCommand);
             }
             else if (OneShotPressed(Keys.U))
             {
-                // store value of previous item
-                previousItem = GameItems.CurrentItem;
-
-                // If statement to check whether the previous item was Compass, in which case
-                // item needs to start from BluePotion again.
-                if (previousItem == ItemList.Compass)
-                {
-                    ICommand itemCycleCommand = new ItemCycleCommand(this, 14, GameItems);
-                    newState = itemCycleCommand.Execute();
-                }
-                else
-                {
-                    ICommand itemCycleCommand = new ItemCycleCommand(this, -1, GameItems);
-                    newState = itemCycleCommand.Execute();
-                }
-                System.Diagnostics.Debug.WriteLine("Current Item is: " + (int)GameItems.CurrentItem);
+                ItemCycleCommand itemCycleCommand = (ItemCycleCommand) commandManager.CommandMap[CommandEnum.ItemCycleCommand];
+                itemCycleCommand.SetCycleAddition(-1);
+                commandManager.Execute(CommandEnum.ItemCycleCommand);
             }
 
             // Check for Enemy / NPC cycle input
             if (OneShotPressed(Keys.P))
             {
-                ICommand enemyCycleCommand = new EnemyCycleCommand(this, 1);
-                newState = enemyCycleCommand.Execute();
+                EnemyCycleCommand enemyCycleCommand = (EnemyCycleCommand) commandManager.CommandMap[CommandEnum.EnemyCycleCommand];
+                enemyCycleCommand.SetCycleAddition(1);
+                commandManager.Execute(CommandEnum.EnemyCycleCommand);
             }
             else if (OneShotPressed(Keys.O))
             {
-                ICommand enemyCycleCommand = new EnemyCycleCommand(this, -1);
-                newState = enemyCycleCommand.Execute();
+                EnemyCycleCommand enemyCycleCommand = (EnemyCycleCommand) commandManager.CommandMap[CommandEnum.EnemyCycleCommand];
+                enemyCycleCommand.SetCycleAddition(-1);
+                commandManager.Execute(CommandEnum.EnemyCycleCommand);
             }
         }
 

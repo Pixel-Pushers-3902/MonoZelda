@@ -6,9 +6,8 @@ namespace PixelPushers.MonoZelda.Commands;
 public class ResetCommand : ICommand
 {
     IController controller;
-    public ResetCommand(IController controller)
+    public ResetCommand()
     {
-        this.controller = controller;
     }
 
     public GameState Execute()
@@ -19,5 +18,10 @@ public class ResetCommand : ICommand
     public GameState UnExecute()
     {
         throw new NotImplementedException();
+    }
+
+    public void SetController(IController controller)
+    {
+        this.controller = controller;
     }
 }

@@ -8,10 +8,8 @@ public class PlayerAttackCommand : ICommand
 {
     IController controller;
     int attackIdx;
-    public PlayerAttackCommand(IController controller, int attackIdx)
+    public PlayerAttackCommand()
     {
-        this.controller = controller;
-        this.attackIdx = attackIdx;
     }
 
     public GameState Execute()
@@ -26,5 +24,15 @@ public class PlayerAttackCommand : ICommand
     public GameState UnExecute()
     {
         throw new NotImplementedException();
+    }
+
+    public void SetAttackIndex(int attackIdx)
+    {
+        this.attackIdx = attackIdx;
+    }
+
+    public void SetController(IController controller)
+    {
+        this.controller = controller;
     }
 }

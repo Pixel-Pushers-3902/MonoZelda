@@ -4,7 +4,9 @@ using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
-using PixelPushers.MonoZelda.Items;
+using MonoGame.Framework.Utilities.Deflate;
+using System.Runtime.InteropServices;
+using PixelPushers.MonoZelda.Commands;
 
 namespace PixelPushers.MonoZelda;
 
@@ -54,9 +56,13 @@ public class MonoZeldaGame : Game
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
         currentState = GameState.Start;
-        GameItems = new Item();
-        keyboardController = new KeyboardController(GameItems);
-        mouseController = new MouseController();
+
+        // Init Commands
+        CommandManager commandManager = new CommandManager();
+        keyboardController = new KeyboardController(commandManager);
+        mouseController = new MouseController(commandManager);
+
+        
     }
 
     protected override void Initialize()
@@ -69,7 +75,7 @@ public class MonoZeldaGame : Game
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
         //create 3 sprite dicts that are drawn on top of each other to showcase the priority system
-        string playerCSVFileName = "Content/Sprite Source Rects - Player.csv";
+        string playerCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Player.csv";
         playerSpriteDict1 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 1, new Point(100, 100));
         playerSpriteDict2 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 2, new Point(84, 116));
         playerSpriteDict2.SetSprite("boomerang_blue");
