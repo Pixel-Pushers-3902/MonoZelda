@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoZelda.Enemies;
+﻿using Microsoft.Xna.Framework;
+using MonoZelda.Enemies.GoriyaFolder;
+using MonoZelda.Enemies.KeeseFolder;
+using MonoZelda.Enemies.StalfosFolder;
 using PixelPushers.MonoZelda;
 using PixelPushers.MonoZelda.Commands;
-using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
 
-namespace MonoZelda.Controllers
+namespace MonoZelda.Enemies
 {
-    public class EnemyController
+    public class EnemyCycler
     {
         public IEnemy Enemy;
         private IEnemy[] enemyArr;
@@ -22,6 +16,7 @@ namespace MonoZelda.Controllers
         private int length;
         private readonly CommandManager commandManager;
         private SpriteDict spriteDict;
+        private GraphicsDeviceManager graphics;
 
         private GameState gameState;
 
@@ -37,9 +32,10 @@ namespace MonoZelda.Controllers
             }
         }
 
-        public EnemyController(CommandManager commandManager)
+        public EnemyCycler(CommandManager commandManager, GraphicsDeviceManager graphics)
         {
             this.commandManager = commandManager;
+            this.graphics = graphics;
         }
 
         public void SetSpriteDicts(SpriteDict spriteDict)
@@ -48,8 +44,9 @@ namespace MonoZelda.Controllers
 
             enemyArr = new IEnemy[]
             {
-                new Keese(spriteDict),
-                new Goriya(spriteDict)
+                new Keese(spriteDict, graphics),
+                new Goriya(spriteDict, graphics),
+                new Stalfos(spriteDict, graphics)
             };
 
             index = 0;
@@ -70,9 +67,9 @@ namespace MonoZelda.Controllers
             enemyArr[index].SetOgPos();
         }
 
-        public bool Update()
+        public bool Update(GameTime gameTime)
         {
-            enemyArr[index].Update();
+            enemyArr[index].Update(gameTime);
             return true;
         }
     }

@@ -7,7 +7,6 @@ using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
 using MonoGame.Framework.Utilities.Deflate;
 using System.Runtime.InteropServices;
-using MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Commands;
 
 namespace PixelPushers.MonoZelda;
@@ -25,7 +24,7 @@ public class MonoZeldaGame : Game
     private SpriteBatch spriteBatch;
     private KeyboardController keyboardController;
     private MouseController mouseController;
-    private EnemyController enemyController;
+    private EnemyCycler enemyCycler;
     private GameState currentState;
     private IEnemy enemy;
 
@@ -43,16 +42,15 @@ public class MonoZeldaGame : Game
         keyboardController = new KeyboardController(commandManager);
         mouseController = new MouseController(commandManager);
 
-        enemyController = new EnemyController(commandManager);
+        enemyCycler = new EnemyCycler(commandManager, graphics);
         EnemyCycleCommand enemyCycleCommand = (EnemyCycleCommand) commandManager.CommandMap[CommandEnum.EnemyCycleCommand];
-        enemyCycleCommand.SetCycler(enemyController);
-
+        enemyCycleCommand.SetCycler(enemyCycler);
 
     }
 
     protected override void Initialize()
     {
-        enemy = enemyController.Enemy;
+        enemy = enemyCycler.Enemy;
         base.Initialize();
     }
 
@@ -62,7 +60,7 @@ public class MonoZeldaGame : Game
 
         string enemyCsvFileName = "Content/Source Rect CSVs/Sprite Source Rects - Enemies.csv";
         enemySpriteDict = new(Content.Load<Texture2D>("Sprites/enemies"), enemyCsvFileName, 1, new Point(100, 100));
-        enemyController.SetSpriteDicts(enemySpriteDict);
+        enemyCycler.SetSpriteDicts(enemySpriteDict);
     }
 
 
@@ -114,7 +112,7 @@ public class MonoZeldaGame : Game
             }
         }
 
-        enemyController.Update();
+        enemyCycler.Update(gameTime);
         base.Update(gameTime);
     }
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using MonoZelda.Controllers;
+using MonoZelda.Enemies;
 using PixelPushers.MonoZelda.Controllers;
 
 namespace PixelPushers.MonoZelda.Commands;
@@ -8,7 +8,7 @@ namespace PixelPushers.MonoZelda.Commands;
 public class EnemyCycleCommand : ICommand
 {
     IController controller;
-    EnemyController enemyCycler;
+    EnemyCycler enemyCycler;
     int cycleAddition;
     public EnemyCycleCommand()
     {
@@ -18,7 +18,6 @@ public class EnemyCycleCommand : ICommand
     {
         // Apply cycle addition to enemy list
         enemyCycler.SetCycle(cycleAddition);
-        enemyCycler.Update();
 
         // Keep GameState the same inside the controller
         return controller.GameState;
@@ -34,9 +33,9 @@ public class EnemyCycleCommand : ICommand
         this.cycleAddition = cycleAddition;
     }
 
-    public void SetCycler(EnemyController enemyController)
+    public void SetCycler(EnemyCycler enemyCycler)
     {
-        enemyCycler = enemyController;
+        this.enemyCycler = enemyCycler;
     }
 
     public void SetController(IController controller)

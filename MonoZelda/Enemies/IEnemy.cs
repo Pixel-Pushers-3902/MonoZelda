@@ -13,13 +13,9 @@ namespace MonoZelda.Enemies
     {
         public void SetOgPos();
 
-        public void ChangeVertDirection();
+        public void ChangeDirection();
 
-        public void ChangeHorDirection();
-
-        public void Attack();
-
-        public void Update();
+        public void Update(GameTime gameTime);
         
     }
 }
