@@ -5,22 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoZelda.Enemies.StalfosFolder
+namespace MonoZelda.Enemies.ZolFolder
 {
-    public class StalfosStateMachine
+    public class ZolStateMachine
     {
-        public enum Direction { Left, Right, Up, Down }
+        public enum Direction { Left, Right, Up, Down, None }
 
-        private Direction stalfosDirection;
+        private Direction zolDirection;
 
         public void ChangeDirection(Direction newDirection)
         {
-            stalfosDirection = newDirection;
+            zolDirection = newDirection;
         }
 
         public Point Update(Point position, GraphicsDeviceManager graphics)
         {
-            switch (stalfosDirection)
+            switch (zolDirection)
             {
                 case Direction.Left:
                     if (position.X >= 0 + 32)

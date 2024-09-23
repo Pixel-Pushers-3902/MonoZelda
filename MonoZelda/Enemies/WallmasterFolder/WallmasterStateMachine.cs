@@ -5,22 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoZelda.Enemies.StalfosFolder
+namespace MonoZelda.Enemies.WallmasterFolder
 {
-    public class StalfosStateMachine
+    public class WallmasterStateMachine
     {
         public enum Direction { Left, Right, Up, Down }
 
-        private Direction stalfosDirection;
+        private Direction wallmasterDirection;
 
         public void ChangeDirection(Direction newDirection)
         {
-            stalfosDirection = newDirection;
+            wallmasterDirection = newDirection;
         }
 
         public Point Update(Point position, GraphicsDeviceManager graphics)
         {
-            switch (stalfosDirection)
+            switch (wallmasterDirection)
             {
                 case Direction.Left:
                     if (position.X >= 0 + 32)

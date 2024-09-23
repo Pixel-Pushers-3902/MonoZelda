@@ -3,6 +3,8 @@ using MonoZelda.Enemies.GelFolder;
 using MonoZelda.Enemies.GoriyaFolder;
 using MonoZelda.Enemies.KeeseFolder;
 using MonoZelda.Enemies.StalfosFolder;
+using MonoZelda.Enemies.WallmasterFolder;
+using MonoZelda.Enemies.ZolFolder;
 using PixelPushers.MonoZelda;
 using PixelPushers.MonoZelda.Commands;
 using PixelPushers.MonoZelda.Sprites;
@@ -49,6 +51,8 @@ namespace MonoZelda.Enemies
                 new Goriya(spriteDict, graphics),
                 new Stalfos(spriteDict, graphics),
                 new Gel(spriteDict, graphics),
+                new Zol(spriteDict, graphics),
+                new Wallmaster(spriteDict, graphics)
             };
 
             index = 0;

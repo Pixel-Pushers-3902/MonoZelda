@@ -32,7 +32,7 @@ namespace MonoZelda.Enemies.GoriyaFolder
                         }
                         break;
                     case Direction.Right:
-                        if (position.X <= graphics.PreferredBackBufferHeight - 32)
+                        if (position.X <= graphics.PreferredBackBufferWidth - 32)
                         {
                             position.X += 1;
                         }

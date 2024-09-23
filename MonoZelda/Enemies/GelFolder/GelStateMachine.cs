@@ -23,25 +23,25 @@ namespace MonoZelda.Enemies.GelFolder
             switch (gelDirection)
             {
                 case Direction.Left:
-                    if (position.X >= 0 + 32)
+                    if (position.X >= 0 + 16)
                     {
                         position.X -= 1;
                     }
                     break;
                 case Direction.Right:
-                    if (position.X <= graphics.PreferredBackBufferHeight - 32)
+                    if (position.X <= graphics.PreferredBackBufferWidth - 16)
                     {
                         position.X += 1;
                     }
                     break;
                 case Direction.Up:
-                    if (position.Y >= 0 + 32)
+                    if (position.Y >= 0 + 18)
                     {
                         position.Y -= 1;
                     }
                     break;
                 case Direction.Down:
-                    if (position.Y <= graphics.PreferredBackBufferHeight - 32)
+                    if (position.Y <= graphics.PreferredBackBufferHeight - 18)
                     {
                         position.Y += 1;
                     }
