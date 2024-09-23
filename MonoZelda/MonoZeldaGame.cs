@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using PixelPushers.MonoZelda.Commands;
 using PixelPushers.MonoZelda.Tiles;
 using PixelPushers.MonoZelda.PlayersNameSpace;
+using PixelPushers.MonoZelda.Commands;
 
 
 namespace PixelPushers.MonoZelda;
@@ -41,8 +42,10 @@ public class MonoZeldaGame : Game
         IsMouseVisible = true;
         currentState = GameState.Start;
         player = new Player();
-        keyboardController = new KeyboardController(player);
-        mouseController = new MouseController();
+        CommandManager commandManager = new CommandManager();
+
+        keyboardController = new KeyboardController(commandManager, player);
+        mouseController = new MouseController(commandManager);
 
     }
 

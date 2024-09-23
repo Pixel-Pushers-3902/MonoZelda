@@ -13,10 +13,11 @@ public class KeyboardController : IController
     private KeyboardState currentKeyboardState;
     private GameState gameState;
     private Player player;
-    private int attackFrames; 
+    private int attackFrames;
+    private CommandManager commandManager;
 
 
-    public KeyboardController(Player player)
+    public KeyboardController(CommandManager commandManager, Player player)
     {
         gameState = GameState.Start;
         this.player = player;
