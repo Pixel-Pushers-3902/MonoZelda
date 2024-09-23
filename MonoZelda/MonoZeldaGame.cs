@@ -7,6 +7,7 @@ using PixelPushers.MonoZelda.Sprites;
 using PixelPushers.MonoZelda.Commands;
 using PixelPushers.MonoZelda.Tiles;
 using MonoZelda.Player;
+using PixelPushers.MonoZelda.Items;
 
 
 namespace PixelPushers.MonoZelda;
@@ -59,8 +60,14 @@ public class MonoZeldaGame : Game
         var tileDict = new SpriteDict(Content.Load<Texture2D>("Sprites/tiles_dungeon1"), blocksCSVFileName, 0, new Point(300, 300));
         var demoTile = new TileCycleDemo(tileDict, new Point(300, 300));
 
+        //Setup ItemDemo
+        string itemsCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Items.csv";
+        var itemDict = new SpriteDict(Content.Load<Texture2D>("Sprites/items"), itemsCSVFileName, 0, new Point(450, 100));
+        var demoItem = new ItemCycleDemo(itemDict, new Point(450, 100));
+
         // create the cycle commands
         commandManager.ReplaceCommand(CommandEnum.BlockCycleCommand, new BlockCycleCommand(demoTile));
+        commandManager.ReplaceCommand(CommandEnum.ItemCycleCommand, new ItemCycleCommand(demoItem));
 
         //create spritedict to pass into player controller
         string playerCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Player.csv";

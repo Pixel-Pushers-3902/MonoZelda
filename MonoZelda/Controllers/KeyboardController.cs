@@ -16,14 +16,12 @@ public class KeyboardController : IController
     private int attackFrames;
     private CommandManager commandManager;
 
-
     public KeyboardController(CommandManager commandManager, Player player)
     {
         gameState = GameState.Start;
         this.player = player;
         attackFrames = 0;
         this.commandManager = commandManager;
-
     }
 
     // Properties
@@ -189,15 +187,15 @@ public class KeyboardController : IController
             // Check for Item cycle input
             if (OneShotPressed(Keys.I))
             {
-                ItemCycleCommand itemCycleCommand = (ItemCycleCommand) commandManager.CommandMap[CommandEnum.ItemCycleCommand];
-                itemCycleCommand.SetCycleAddition(1);
-                commandManager.Execute(CommandEnum.ItemCycleCommand);
+                var cycleCommand = (ItemCycleCommand)commandManager.CommandMap[CommandEnum.ItemCycleCommand];
+                cycleCommand.SetCycleAddition(1);
+                cycleCommand.Execute();
             }
             else if (OneShotPressed(Keys.U))
             {
-                ItemCycleCommand itemCycleCommand = (ItemCycleCommand) commandManager.CommandMap[CommandEnum.ItemCycleCommand];
-                itemCycleCommand.SetCycleAddition(-1);
-                commandManager.Execute(CommandEnum.ItemCycleCommand);
+                var cycleCommand = (ItemCycleCommand)commandManager.CommandMap[CommandEnum.ItemCycleCommand];
+                cycleCommand.SetCycleAddition(-1);
+                cycleCommand.Execute();
             }
 
             // Check for Enemy / NPC cycle input
