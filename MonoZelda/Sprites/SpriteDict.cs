@@ -17,6 +17,7 @@ public class SpriteDict
     {
         this.texture = texture;
         Position = position;
+        this.Enabled = true;
         SpriteSheetParser.Parse(this, csvName);
         SpriteDrawer.RegisterSpriteDict(this, priority);
     }
@@ -39,6 +40,12 @@ public class SpriteDict
 
     public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
     {
+        //do nothing if disabled
+        if (!Enabled) {
+            return;
+        }
+
+        //draw current sprite
         dict[currentSprite].Draw(spriteBatch, gameTime, texture, Position);
     }
 }
