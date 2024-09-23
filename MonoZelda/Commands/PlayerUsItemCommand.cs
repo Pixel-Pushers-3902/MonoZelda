@@ -4,14 +4,12 @@ using PixelPushers.MonoZelda.Controllers;
 
 namespace PixelPushers.MonoZelda.Commands;
 
-public class PlayerUseItem : ICommand
+public class PlayerUseItemCommand : ICommand
 {
     IController controller;
     int itemIdx;
-    public PlayerUseItem(IController controller, int itemIdx)
+    public PlayerUseItemCommand()
     {
-        this.controller = controller;
-        this.itemIdx = itemIdx;
     }
 
     public GameState Execute()
@@ -26,5 +24,15 @@ public class PlayerUseItem : ICommand
     public GameState UnExecute()
     {
         throw new NotImplementedException();
+    }
+
+    public void SetItemIndex(int itemIdx)
+    {
+        this.itemIdx = itemIdx;
+    }
+
+    public void SetController(IController controller)
+    {
+        this.controller = controller;
     }
 }

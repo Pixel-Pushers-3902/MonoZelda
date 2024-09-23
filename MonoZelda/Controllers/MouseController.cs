@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Input;
+using PixelPushers.MonoZelda.Commands;
 
 namespace PixelPushers.MonoZelda.Controllers;
 
@@ -7,10 +8,12 @@ public class MouseController : IController
 
     private MouseState mouseState;
     private GameState gameState;
+    private CommandManager commandManager;
 
-    public MouseController()
+    public MouseController(CommandManager commandManager)
     {
         gameState = GameState.Start;
+        this.commandManager = commandManager;
     }
 
     // Properties

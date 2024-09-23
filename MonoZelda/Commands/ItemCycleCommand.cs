@@ -32,4 +32,14 @@ public class ItemCycleCommand : ICommand
     {
         throw new NotImplementedException();
     }
+
+    public void SetCycleAddition(int cycleAddition)
+    {
+        this.cycleAddition = cycleAddition;
+    }
+
+    public void SetController(IController controller)
+    {
+        this.controller = controller;
+    }
 }
