@@ -18,7 +18,7 @@ internal class TileCycleDemo : TileBase, ICycleable
         _currentTileIndex = 0;
         _position = position;
 
-        DemoTile = TileFactory.CreateTile<DoorTile>(spriteDict, BlockType.tile_block1, _position);
+        DemoTile = TileFactory.CreateTile<Block1>(spriteDict, BlockType.tile_block1, _position);
     }
 
     public void Next()
