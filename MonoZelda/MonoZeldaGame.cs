@@ -4,9 +4,8 @@ using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
-using MonoGame.Framework.Utilities.Deflate;
-using System.Runtime.InteropServices;
 using PixelPushers.MonoZelda.Commands;
+using PixelPushers.MonoZelda.Tiles;
 
 namespace PixelPushers.MonoZelda;
 
@@ -23,6 +22,7 @@ public class MonoZeldaGame : Game
     private SpriteBatch spriteBatch;
     private KeyboardController keyboardController;
     private MouseController mouseController;
+    private CommandManager commandManager;
     private GameState currentState;
 
     SpriteDict playerSpriteDict1;
@@ -37,7 +37,7 @@ public class MonoZeldaGame : Game
         currentState = GameState.Start;
 
         // Init Commands
-        CommandManager commandManager = new CommandManager();
+        commandManager = new CommandManager();
         keyboardController = new KeyboardController(commandManager);
         mouseController = new MouseController(commandManager);
 
@@ -60,6 +60,14 @@ public class MonoZeldaGame : Game
         playerSpriteDict2.SetSprite("boomerang_blue");
         playerSpriteDict3 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 0, new Point(116, 116));
         playerSpriteDict3.SetSprite("boomerang");
+
+        // Setup TileDemo
+        string blocksCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Tiles Dungeon1.csv";
+        var tileDict = new SpriteDict(Content.Load<Texture2D>("Sprites/tiles_dungeon1"), blocksCSVFileName, 0, new Point(300, 300));
+        var demoTile = new TileCycleDemo(tileDict, new Point(300, 300));
+
+        // create the cycle commands
+        commandManager.ReplaceCommand(CommandEnum.BlockCycleCommand, new BlockCycleCommand(demoTile));
     }
 
     protected override void Update(GameTime gameTime)

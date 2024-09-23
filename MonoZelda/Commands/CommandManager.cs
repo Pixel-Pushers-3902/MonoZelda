@@ -1,18 +1,17 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using PixelPushers.MonoZelda.Controllers;
 
 namespace PixelPushers.MonoZelda.Commands;
 
-public enum CommandEnum 
+public enum CommandEnum
 {
     // Temporary Commands for Sprint2
     BlockCycleCommand,
-    EnemyCycleCommand, 
+    EnemyCycleCommand,
     ItemCycleCommand,
     // Commands for entire project
-    ExitCommand, 
+    ExitCommand,
     PlayerAttackCommand,
     PlayerMoveCommand,
     PlayerTakeDamageCommand,
@@ -52,6 +51,20 @@ public class CommandManager
         commandMap[commandName].Execute();
     }
 
+    public bool ReplaceCommand(CommandEnum commandName, ICommand command)
+    {
+        if (commandMap.ContainsKey(commandName))
+        {
+            commandMap[commandName] = command;
+            return true;
+        }
+        else
+        {
+            Debug.WriteLine("Command with same enum name not present in the dictionary.");
+            return false;
+        }
+    }
+
     public bool AddCommand(CommandEnum commandName, ICommand command)
     {
         if (commandMap.ContainsKey(commandName))
@@ -59,7 +72,7 @@ public class CommandManager
             Debug.WriteLine("Command with same enum name already present in the dictionary.");
             return false;
         }
-        else 
+        else
         {
             commandMap[commandName] = command;
             return true;
@@ -68,7 +81,7 @@ public class CommandManager
 
     public void SetController(IController controller)
     {
-        foreach(ICommand command in commandMap.Values)
+        foreach (ICommand command in commandMap.Values)
         {
             command.SetController(controller);
         }
