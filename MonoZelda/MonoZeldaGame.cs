@@ -18,6 +18,26 @@ public enum GameState
     Quit,
 }
 
+public enum ItemList
+{
+    None = -1,
+    Compass,
+    Map,
+    Key,
+    HeartContainer,
+    TriforcePiece,
+    Boomerang,
+    Bow,
+    Heart,
+    Rupee,
+    Arrow,
+    Bomb,
+    Fairy,
+    Clock,
+    BlueCandle,
+    BluePotion,
+}
+
 public class MonoZeldaGame : Game
 {
     private GraphicsDeviceManager graphics;
