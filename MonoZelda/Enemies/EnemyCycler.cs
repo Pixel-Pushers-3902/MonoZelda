@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MonoZelda.Enemies.GelFolder;
 using MonoZelda.Enemies.GoriyaFolder;
 using MonoZelda.Enemies.KeeseFolder;
 using MonoZelda.Enemies.StalfosFolder;
@@ -46,7 +47,8 @@ namespace MonoZelda.Enemies
             {
                 new Keese(spriteDict, graphics),
                 new Goriya(spriteDict, graphics),
-                new Stalfos(spriteDict, graphics)
+                new Stalfos(spriteDict, graphics),
+                new Gel(spriteDict, graphics),
             };
 
             index = 0;

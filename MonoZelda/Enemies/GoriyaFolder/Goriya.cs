@@ -7,7 +7,7 @@ using PixelPushers.MonoZelda.Sprites;
 
 namespace MonoZelda.Enemies.GoriyaFolder
 {
-    internal class Goriya : IEnemy
+    public class Goriya : IEnemy
     {
         private readonly GoriyaStateMachine stateMachine;
         private Point pos = new(250, 250); // will change later
