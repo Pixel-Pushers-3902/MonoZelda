@@ -74,6 +74,7 @@ polsvoice_light_green,320,112,16,16,2,center
 polsvoice_light_white,352,112,16,16,2,center
 polsvoice_light_red,384,112,16,16,2,center
 death,240,192,16,16,4,center
+cloud,240,208,16,16,3,center
 aquamentus_left_mouthopen,0,144,32,32,2,center
 aquamentus_left,64,144,32,32,2,center
 aquamentus_right_mouthopen,128,144,32,32,2,center
