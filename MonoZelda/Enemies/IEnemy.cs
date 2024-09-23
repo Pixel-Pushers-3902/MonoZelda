@@ -17,6 +17,5 @@ namespace MonoZelda.Enemies
 
         public void Update(GameTime gameTime);
         
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime);
     }
 }
