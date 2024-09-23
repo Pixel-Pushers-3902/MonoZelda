@@ -7,6 +7,7 @@ using PixelPushers.MonoZelda.Sprites;
 using MonoGame.Framework.Utilities.Deflate;
 using System.Runtime.InteropServices;
 using PixelPushers.MonoZelda.Commands;
+using PixelPushers.MonoZelda.Items;
 
 namespace PixelPushers.MonoZelda;
 

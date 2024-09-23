@@ -35,10 +35,10 @@ public class Item : IItem
 		ItemDict.SetSprite(itemName);
 	}
 
-	void PlaceItem()
+	/*void PlaceItem()
 	{
-		// To-do: add working code. Used to place items like bombs
-	}
+		To-do: add working code. Used to place items like bombs
+    }	*/
 
 }
 

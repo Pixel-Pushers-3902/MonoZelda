@@ -10,6 +10,6 @@ public interface IItem
 
     void SetSpriteItemDict(SpriteDict ItemsDict, SpriteBatch spriteBatch, GameTime gameTime);
 
-    void PlaceItem();
+    //void PlaceItem();
 }
 
