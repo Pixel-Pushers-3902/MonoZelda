@@ -4,13 +4,9 @@ using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
-using MonoZelda.Player;
-using MonoGame.Framework.Utilities.Deflate;
-using System.Runtime.InteropServices;
 using PixelPushers.MonoZelda.Commands;
 using PixelPushers.MonoZelda.Tiles;
-using PixelPushers.MonoZelda.PlayersNameSpace;
-using PixelPushers.MonoZelda.Commands;
+using MonoZelda.Player;
 
 
 namespace PixelPushers.MonoZelda;
@@ -42,7 +38,7 @@ public class MonoZeldaGame : Game
         IsMouseVisible = true;
         currentState = GameState.Start;
         player = new Player();
-        CommandManager commandManager = new CommandManager();
+        commandManager = new CommandManager();
 
         keyboardController = new KeyboardController(commandManager, player);
         mouseController = new MouseController(commandManager);
@@ -57,15 +53,6 @@ public class MonoZeldaGame : Game
     protected override void LoadContent()
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
-       
-
-        //create 3 sprite dicts that are drawn on top of each other to showcase the priority system
-        string playerCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Player.csv";
-        playerSpriteDict1 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 1, new Point(100, 100));
-        playerSpriteDict2 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 2, new Point(84, 116));
-        playerSpriteDict2.SetSprite("boomerang_blue");
-        playerSpriteDict3 = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 0, new Point(116, 116));
-        playerSpriteDict3.SetSprite("boomerang");
 
         // Setup TileDemo
         string blocksCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Tiles Dungeon1.csv";
@@ -78,7 +65,6 @@ public class MonoZeldaGame : Game
         //create spritedict to pass into player controller
         string playerCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Player.csv";
         playerSpriteDict = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 1, new Point(100, 100));
-        playerController = new PlayerController(keyboardController, playerSpriteDict);
         player.SetPlayerSpriteDict(playerSpriteDict);
     }
 
@@ -139,27 +125,11 @@ public class MonoZeldaGame : Game
         // Sprite drawing based on state
         spriteBatch.Begin();
 
-        //hardcoded keyboard controls because i don't know how the command system is supposed to be used lol
-        //if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.W))
-        //{
-        //    playerSpriteDict.SetSprite("whitesword_magicshield_down");
-        //}
-        //if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.A))
-        //{
-        //    playerSpriteDict1.SetSprite("whitesword_left");
-        //}
-        //if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.S))
-        //{
-        //    playerSpriteDict1.SetSprite("whitesword_down");
-        //}
-        //if (keyboardController.CurrentKeyboardState.IsKeyDown(Keys.D))
-        //{
-        //    playerSpriteDict1.SetSprite("whitesword_right");
-        //}
+        // Draw player
         playerSpriteDict.Draw(spriteBatch, gameTime);
 
-
-        //call to Player Controller Drawer
+        //call to SpriteDrawer to draw all SpriteDicts
+        SpriteDrawer.Draw(spriteBatch, gameTime);
 
         spriteBatch.End();
         

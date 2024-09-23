@@ -21,7 +21,8 @@ public class KeyboardController : IController
     {
         gameState = GameState.Start;
         this.player = player;
-        attackFrames = 0; 
+        attackFrames = 0;
+        this.commandManager = commandManager;
 
     }
 
@@ -65,6 +66,7 @@ public class KeyboardController : IController
 
     public bool Update()
     {
+        commandManager.SetController(this);
         GameState newState = gameState;
         if (currentKeyboardState.IsKeyDown(Keys.Q))
         {
