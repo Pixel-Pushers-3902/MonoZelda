@@ -11,13 +11,16 @@ public class KeyboardController : IController
     private KeyboardState currentKeyboardState;
     private GameState gameState;
     private CommandManager commandManager;
+    private Item GameItems;
+    private ItemList previousItem;
 
     public KeyboardController(CommandManager commandManager)
     {
         gameState = GameState.Start;
         this.commandManager = commandManager;
-
-}
+        this.GameItems = new Item();
+        previousItem = ItemList.None;
+    }
 
     // Properties
     public KeyboardState CurrentKeyboardState
@@ -175,13 +178,37 @@ public class KeyboardController : IController
             if (OneShotPressed(Keys.I))
             {
                 ItemCycleCommand itemCycleCommand = (ItemCycleCommand) commandManager.CommandMap[CommandEnum.ItemCycleCommand];
-                itemCycleCommand.SetCycleAddition(1);
+                itemCycleCommand.SetController(this);
+                itemCycleCommand.SetItemObject(GameItems);
+                previousItem = GameItems.CurrentItem;
+                if (previousItem == ItemList.BluePotion)
+                {
+                    itemCycleCommand.SetCycleAddition(-14);
+                }
+                else
+                {
+                    itemCycleCommand.SetCycleAddition(1);
+
+                }
+                System.Diagnostics.Debug.WriteLine("Current Item is: " + GameItems.CurrentItem);
                 commandManager.Execute(CommandEnum.ItemCycleCommand);
             }
             else if (OneShotPressed(Keys.U))
             {
                 ItemCycleCommand itemCycleCommand = (ItemCycleCommand) commandManager.CommandMap[CommandEnum.ItemCycleCommand];
-                itemCycleCommand.SetCycleAddition(-1);
+                itemCycleCommand.SetController(this);
+                itemCycleCommand.SetItemObject(GameItems);
+                previousItem = GameItems.CurrentItem;
+                if (previousItem == ItemList.Compass)
+                {
+                    itemCycleCommand.SetCycleAddition(14);
+                }
+                else
+                {
+                    itemCycleCommand.SetCycleAddition(-1);
+
+                }
+                System.Diagnostics.Debug.WriteLine("Current Item is: " + GameItems.CurrentItem);
                 commandManager.Execute(CommandEnum.ItemCycleCommand);
             }
 

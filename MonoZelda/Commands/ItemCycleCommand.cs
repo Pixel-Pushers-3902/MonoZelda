@@ -11,11 +11,8 @@ public class ItemCycleCommand : ICommand
     int cycleAddition;
     Item GameItems;
 
-    public ItemCycleCommand(IController controller, int cycleAddition, Item GameItems)
+    public ItemCycleCommand()
     {
-        this.controller = controller;
-        this.cycleAddition = cycleAddition;
-        this.GameItems = GameItems;
     }
     
     public GameState Execute()
@@ -41,5 +38,10 @@ public class ItemCycleCommand : ICommand
     public void SetController(IController controller)
     {
         this.controller = controller;
+    }
+
+    public void SetItemObject(Item GameItems)
+    {
+        this.GameItems = GameItems;
     }
 }

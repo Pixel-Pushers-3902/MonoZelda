@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using PixelPushers.MonoZelda.Controllers;
+using PixelPushers.MonoZelda.Items;
 
 namespace PixelPushers.MonoZelda.Commands;
 
