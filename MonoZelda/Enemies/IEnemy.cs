@@ -5,19 +5,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PixelPushers.MonoZelda.Sprites;
 
 namespace MonoZelda.Enemies
 {
     public interface IEnemy
     {
-        public void ChangeVertDirection();
+        public void SetOgPos();
 
-        public void ChangeHorDirection();
+        public void ChangeDirection();
 
-        public void Attack();
-
-        public void Update();
-
+        public void Update(GameTime gameTime);
+        
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime);
     }
 }
