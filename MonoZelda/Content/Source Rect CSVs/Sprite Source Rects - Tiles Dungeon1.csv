@@ -1,5 +1,5 @@
 Sprite,X,Y,W,H,Frames,Anchor
-room_exteropr,528,16,256,176,1,top left
+room_exterior,528,16,256,176,1,top left
 wall_north,816,16,32,32,1,top left
 wall_west,816,48,32,32,1,top left
 wall_east,816,80,32,32,1,top left
