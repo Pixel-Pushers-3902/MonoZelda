@@ -2,24 +2,39 @@
 using System.Diagnostics;
 using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Items;
+using PixelPushers.MonoZelda.Tiles;
 
 namespace PixelPushers.MonoZelda.Commands;
 
 public class ItemCycleCommand : ICommand
 {
     IController controller;
+    ICycleable cycleable;
     int cycleAddition;
-    Item GameItems;
 
     public ItemCycleCommand()
     {
+    }
+
+    public ItemCycleCommand(ICycleable item)
+    {
+        cycleable = item;
     }
     
     public GameState Execute()
     {
         // Update the currentItem based on the value of cycleAddition
-        GameItems.CurrentItem = (ItemList)((int)GameItems.CurrentItem + cycleAddition);
-
+        if (cycleable != null)
+        {
+            if (cycleAddition > 0)
+            {
+                cycleable.Next();
+            }
+            else
+            {
+                cycleable.Previous();
+            }
+        }
 
         // Keep GameState the same inside the controller
         return controller.GameState;
@@ -40,8 +55,4 @@ public class ItemCycleCommand : ICommand
         this.controller = controller;
     }
 
-    public void SetItemObject(Item GameItems)
-    {
-        this.GameItems = GameItems;
-    }
 }

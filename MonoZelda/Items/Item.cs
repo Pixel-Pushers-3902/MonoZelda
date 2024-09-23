@@ -6,39 +6,27 @@ namespace PixelPushers.MonoZelda.Items;
 
 public class Item : IItem
 {
-	private ItemList currentItem;
+    public Point Position { get; set; }
 
-	public ItemList CurrentItem
-	{
-		get
-		{
-			return currentItem;
-		}
-		set
-		{
-			currentItem = value;
-		}
-	}
+    private SpriteDict spriteDict;
 
-    // Constructor to initialize default item: Compass
     public Item()
-	{
-		currentItem = ItemList.Compass;
-	}
+    {
 
-	public void SetSpriteItemDict(SpriteDict ItemDict,SpriteBatch spriteBatch,GameTime gameTime)
-	{
-		// storing current item as a string
-		string itemName = ItemDictionary.ItemPairs[currentItem];
+    }
 
-		// set sprite to be drawn
-		ItemDict.SetSprite(itemName);
-	}
+    public Item(SpriteDict itemDict)
+    {
+        spriteDict = itemDict;
+    }
 
-	/*void PlaceItem()
-	{
-		To-do: add working code. Used to place items like bombs
-    }	*/
+    public void SetSprite(string name)
+    {
+        if (spriteDict != null)
+        {
+            spriteDict.SetSprite(name);
+        }
 
+    }
 }
 

@@ -6,10 +6,7 @@ namespace PixelPushers.MonoZelda.Items;
 
 public interface IItem
 {
-    public ItemList CurrentItem { get; set; }
-
-    void SetSpriteItemDict(SpriteDict ItemsDict, SpriteBatch spriteBatch, GameTime gameTime);
-
-    //void PlaceItem();
+    Point Position { get; set; }
+    void SetSprite(string name);
 }
 
