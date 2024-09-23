@@ -11,11 +11,13 @@ namespace MonoZelda.Enemies.ZolFolder
     public class Zol : IEnemy
     {
         private readonly ZolStateMachine stateMachine;
-        private Point pos = new(250, 250); // will change later
+        private Point pos; // will change later
         private readonly Random rnd = new();
         private readonly SpriteDict zolSpriteDict;
         private ZolStateMachine.Direction direction = ZolStateMachine.Direction.Left;
         private readonly GraphicsDeviceManager graphics;
+        private readonly int spawnX;
+        private readonly int spawnY;
 
         private double startTime = 0;
         private bool readyToJump = true;
@@ -25,13 +27,16 @@ namespace MonoZelda.Enemies.ZolFolder
             this.graphics = graphics;
             this.zolSpriteDict = spriteDict;
             stateMachine = new ZolStateMachine();
+            spawnX = 3 * graphics.PreferredBackBufferWidth / 5;
+            spawnY = 3 * graphics.PreferredBackBufferHeight / 5;
+            pos = new(spawnX, spawnY);
         }
 
 
         public void SetOgPos() //sets to spawn position (eventually could be used for re-entering rooms)
         {
-            pos.X = 250;
-            pos.Y = 250;
+            pos.X = spawnX;
+            pos.Y = spawnY;
             zolSpriteDict.SetSprite("zol_green");
         }
 

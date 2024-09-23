@@ -12,11 +12,13 @@ namespace MonoZelda.Enemies.WallmasterFolder
     public class Wallmaster : IEnemy
     {
         private readonly WallmasterStateMachine stateMachine;
-        private Point pos = new(250, 250); // will change later
+        private Point pos; // will change later
         private readonly Random rnd = new();
         private SpriteDict wallmasterSpriteDict;
         private WallmasterStateMachine.Direction direction = WallmasterStateMachine.Direction.Left;
         private readonly GraphicsDeviceManager graphics;
+        private readonly int spawnX;
+        private readonly int spawnY;
 
         private double startTime = 0;
 
@@ -25,12 +27,15 @@ namespace MonoZelda.Enemies.WallmasterFolder
             wallmasterSpriteDict = spriteDict;
             stateMachine = new WallmasterStateMachine();
             this.graphics = graphics;
+            spawnX = 3 * graphics.PreferredBackBufferWidth / 5;
+            spawnY = 3 * graphics.PreferredBackBufferHeight / 5;
+            pos = new(spawnX, spawnY);
         }
 
         public void SetOgPos()
         {
-            pos.X = 250;
-            pos.Y = 250;
+            pos.X = spawnX;
+            pos.Y = spawnY;
             wallmasterSpriteDict.SetSprite("wallmaster");
         }
 

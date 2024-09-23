@@ -13,12 +13,13 @@ namespace MonoZelda.Enemies.StalfosFolder
     public class Stalfos : IEnemy
     {
         private readonly StalfosStateMachine stateMachine;
-        private Point pos = new(250, 250); // will change later
+        private Point pos;
         private readonly Random rnd = new();
         private SpriteDict stalfosSpriteDict;
         private StalfosStateMachine.Direction direction = StalfosStateMachine.Direction.Left;
-        private MonoZeldaGame myGame;
         private readonly GraphicsDeviceManager graphics;
+        private readonly int spawnX;
+        private readonly int spawnY;
 
         private double startTime = 0;
 
@@ -27,12 +28,15 @@ namespace MonoZelda.Enemies.StalfosFolder
             stalfosSpriteDict = spriteDict;
             stateMachine = new StalfosStateMachine();
             this.graphics = graphics;
+            spawnX = 3 * graphics.PreferredBackBufferWidth / 5;
+            spawnY = 3 * graphics.PreferredBackBufferHeight / 5;
+            pos = new(spawnX, spawnY);
         }
 
         public void SetOgPos()
         {
-            pos.X = 250;
-            pos.Y = 250;
+            pos.X = spawnX;
+            pos.Y = spawnY;
             stalfosSpriteDict.SetSprite("stalfos");
         }
 

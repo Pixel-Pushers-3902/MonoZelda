@@ -1,7 +1,7 @@
 Sprite,X,Y,W,H,Frames,Anchor
 gel_turquoise,0,14,8,9,2,center
 gel_turquoise_1,9,14,6,9,1,center
-gel_blue_0,16,14,8,9,2,center
+gel_blue_0,16,15,8,8,1,center
 gel_blue_1,25,14,6,9,1,center
 gel_darkgreen_0,32,15,8,8,1,center
 gel_darkgreen_1,41,14,6,9,1,center

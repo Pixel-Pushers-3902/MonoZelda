@@ -3,6 +3,7 @@ using MonoZelda.Enemies.GelFolder;
 using MonoZelda.Enemies.GoriyaFolder;
 using MonoZelda.Enemies.KeeseFolder;
 using MonoZelda.Enemies.StalfosFolder;
+using MonoZelda.Enemies.TrapFolder;
 using MonoZelda.Enemies.WallmasterFolder;
 using MonoZelda.Enemies.ZolFolder;
 using PixelPushers.MonoZelda;
@@ -52,7 +53,11 @@ namespace MonoZelda.Enemies
                 new Stalfos(spriteDict, graphics),
                 new Gel(spriteDict, graphics),
                 new Zol(spriteDict, graphics),
-                new Wallmaster(spriteDict, graphics)
+                new Wallmaster(spriteDict, graphics),
+                new Trap(spriteDict, graphics, TrapStateMachine.Direction.Left),
+                new Trap(spriteDict, graphics, TrapStateMachine.Direction.Right),
+                new Trap(spriteDict, graphics, TrapStateMachine.Direction.Up),
+                new Trap(spriteDict, graphics, TrapStateMachine.Direction.Down)
             };
 
             index = 0;

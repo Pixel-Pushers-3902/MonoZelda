@@ -9,12 +9,14 @@ namespace MonoZelda.Enemies.KeeseFolder
     {
         private readonly KeeseStateMachine stateMachine;
         private readonly Random rnd = new();
-        private Point pos = new(250, 250); //will change
+        private Point pos; //will change
         private SpriteDict keeseSpriteDict;
         private KeeseStateMachine.VertDirection vertDirection = KeeseStateMachine.VertDirection.None;
         private KeeseStateMachine.HorDirection horDirection = KeeseStateMachine.HorDirection.None;
         private double startTime = 0;
         private readonly GraphicsDeviceManager graphics;
+        private readonly int spawnX;
+        private readonly int spawnY;
 
         public Keese(SpriteDict spriteDict, GraphicsDeviceManager graphics)
         {
@@ -22,14 +24,17 @@ namespace MonoZelda.Enemies.KeeseFolder
             stateMachine = new KeeseStateMachine();
             keeseSpriteDict = spriteDict;
             keeseSpriteDict.SetSprite("keese_blue");
+            spawnX = 3 * graphics.PreferredBackBufferWidth / 5;
+            spawnY = 3 * graphics.PreferredBackBufferHeight / 5;
+            pos = new(spawnX, spawnY);
         }
 
 
         public void SetOgPos() //sets to spawn position (eventually could be used for re-entering rooms)
         {
             keeseSpriteDict.SetSprite("keese_blue");
-            pos.X = 250;
-            pos.Y = 250;
+            pos.X = spawnX;
+            pos.Y = spawnY;
         }
 
         public void ChangeDirection()
