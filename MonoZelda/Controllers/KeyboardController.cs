@@ -150,8 +150,9 @@ public class KeyboardController : IController
                 else
                 {
                     // Player move left
-                    ICommand playerStandCommand = new PlayerStandingCommand(this, player);
-                    newState = playerStandCommand.Execute();
+                    PlayerStandingCommand playerStandingCommand = (PlayerStandingCommand)commandManager.CommandMap[CommandEnum.PlayerStandingCommand];
+                    commandManager.Execute(CommandEnum.PlayerStandingCommand);
+                    
                 }
             }
            

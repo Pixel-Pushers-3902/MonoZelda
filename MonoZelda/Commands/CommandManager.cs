@@ -18,6 +18,7 @@ public enum CommandEnum
     PlayerTakeDamageCommand,
     PlayerUseItemCommand,
     ResetCommand,
+    PlayerStandingCommand,
 }
 
 public class CommandManager
@@ -34,6 +35,7 @@ public class CommandManager
         AddCommand(CommandEnum.PlayerMoveCommand, new PlayerMoveCommand());
         AddCommand(CommandEnum.PlayerTakeDamageCommand, new PlayerTakeDamageCommand());
         AddCommand(CommandEnum.PlayerUseItemCommand, new PlayerUseItemCommand());
+        AddCommand(CommandEnum.PlayerStandingCommand, new PlayerStandingCommand());
         AddCommand(CommandEnum.ResetCommand, new ResetCommand());
 
     }
