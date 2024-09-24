@@ -68,7 +68,8 @@ public class MonoZeldaGame : Game
         // create the cycle commands
         commandManager.ReplaceCommand(CommandEnum.BlockCycleCommand, new BlockCycleCommand(demoTile));
         commandManager.ReplaceCommand(CommandEnum.ItemCycleCommand, new ItemCycleCommand(demoItem));
-
+        commandManager.ReplaceCommand(CommandEnum.PlayerMoveCommand, new PlayerMoveCommand(player));
+        commandManager.ReplaceCommand(CommandEnum.PlayerAttackCommand, new PlayerAttackCommand(player));
         //create spritedict to pass into player controller
         string playerCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Player.csv";
         playerSpriteDict = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 1, new Point(100, 100));

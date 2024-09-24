@@ -11,15 +11,17 @@ public class PlayerAttackCommand : ICommand
     int attackIdx;
     private Player player; // Player reference
 
-    public PlayerAttackCommand(IController controller, int attackIdx, Player player)
+    public PlayerAttackCommand()
     {
-        this.controller = controller;
-        this.attackIdx = attackIdx;
+
+    }
+
+    public PlayerAttackCommand(Player player)
+    {
         this.player = player; // Player reference
+    }
 
-}
-
-public GameState Execute()
+    public GameState Execute()
     {
         // Perform state change for player to attack
         Debug.WriteLine("Player using attack " + attackIdx);
