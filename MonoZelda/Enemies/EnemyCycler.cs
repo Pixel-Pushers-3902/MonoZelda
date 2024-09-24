@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using MonoZelda.Enemies.AquamentusFolder;
 using MonoZelda.Enemies.GelFolder;
 using MonoZelda.Enemies.GoriyaFolder;
 using MonoZelda.Enemies.KeeseFolder;
@@ -57,7 +58,8 @@ namespace MonoZelda.Enemies
                 new Trap(spriteDict, graphics, TrapStateMachine.Direction.Left),
                 new Trap(spriteDict, graphics, TrapStateMachine.Direction.Right),
                 new Trap(spriteDict, graphics, TrapStateMachine.Direction.Up),
-                new Trap(spriteDict, graphics, TrapStateMachine.Direction.Down)
+                new Trap(spriteDict, graphics, TrapStateMachine.Direction.Down),
+                new Aquamentus(spriteDict, graphics)
             };
 
             index = 0;
