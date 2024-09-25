@@ -31,6 +31,8 @@ public class MonoZeldaGame : Game
     private GameState currentState;
     private Player player;
     private MainMenu mainMenu;
+    private EnemyCycler enemyCycler;
+
 
     private SpriteDict enemySpriteDict;
     SpriteDict playerSpriteDict;
@@ -59,7 +61,7 @@ public class MonoZeldaGame : Game
 
     protected override void Initialize()
     {
-        enemy = enemyCycler.Enemy;
+
         base.Initialize();
     }
 
