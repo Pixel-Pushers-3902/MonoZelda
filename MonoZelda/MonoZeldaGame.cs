@@ -41,6 +41,9 @@ public class MonoZeldaGame : Game
         player = new Player();
         commandManager = new CommandManager();
 
+        // Exit Command needs the game reference
+        commandManager.ReplaceCommand(CommandEnum.ExitCommand, new ExitCommand(this));
+
         keyboardController = new KeyboardController(commandManager, player);
         mouseController = new MouseController(commandManager);
 

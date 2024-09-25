@@ -19,6 +19,7 @@ public enum CommandEnum
     PlayerUseItemCommand,
     ResetCommand,
     PlayerStandingCommand,
+    None
 }
 
 public class CommandManager
