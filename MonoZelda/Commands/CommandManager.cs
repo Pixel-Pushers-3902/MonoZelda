@@ -18,6 +18,7 @@ public enum CommandEnum
     PlayerTakeDamageCommand,
     PlayerUseItemCommand,
     ResetCommand,
+    PlayerStandingCommand,
 }
 
 public class CommandManager
@@ -30,12 +31,12 @@ public class CommandManager
         AddCommand(CommandEnum.EnemyCycleCommand, new EnemyCycleCommand());
         AddCommand(CommandEnum.ItemCycleCommand, new ItemCycleCommand());
         AddCommand(CommandEnum.ExitCommand, new ExitCommand());
-        //AddCommand(CommandEnum.PlayerAttackCommand, new PlayerAttackCommand());
-        //AddCommand(CommandEnum.PlayerMoveCommand, new PlayerMoveCommand());
+        AddCommand(CommandEnum.PlayerAttackCommand, new PlayerAttackCommand());
+        AddCommand(CommandEnum.PlayerMoveCommand, new PlayerMoveCommand());
         AddCommand(CommandEnum.PlayerTakeDamageCommand, new PlayerTakeDamageCommand());
         AddCommand(CommandEnum.PlayerUseItemCommand, new PlayerUseItemCommand());
+        AddCommand(CommandEnum.PlayerStandingCommand, new PlayerStandingCommand());
         AddCommand(CommandEnum.ResetCommand, new ResetCommand());
-
 
     }
 

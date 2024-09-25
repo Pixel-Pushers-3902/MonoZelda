@@ -19,10 +19,14 @@ public class PlayerMoveCommand : ICommand
     private Direction playerDirection;
     private Player player; // Player reference
 
-    public PlayerMoveCommand(IController controller, Vector2 scalarVector, Player player)
+    public PlayerMoveCommand()
     {
-        this.controller = controller;
-        this.scalarVector = scalarVector;
+
+    }
+
+    public PlayerMoveCommand(Player player)
+    {
+    
         this.player = player; // Initialize player reference
         SetPlayerDirection();
         
@@ -58,6 +62,7 @@ public class PlayerMoveCommand : ICommand
     public void SetScalarVector(Vector2 scalarVector)
     {
         this.scalarVector = scalarVector;
+        SetPlayerDirection();
     }
 
     public void SetController(IController controller)

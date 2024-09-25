@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using MonoZelda.Player;
 using PixelPushers.MonoZelda.Controllers;
@@ -11,16 +12,19 @@ namespace PixelPushers.MonoZelda.Commands
         private Player player;
         private Direction lastDirection;
 
-        public PlayerStandingCommand(IController controller, Player player)
+        public PlayerStandingCommand()
         {
-            this.controller = controller;
-            this.player = player;
-            this.lastDirection = player.PlayerDirection; // Assuming Player has a CurrentDirection property
+            
+        }
+
+        public PlayerStandingCommand(Player player)
+        {
+            this.player = player;   
         }
 
         public GameState Execute()
         {
-
+            this.lastDirection = player.PlayerDirection; // Assuming Player has a CurrentDirection property
             player.StandingPlayer(this);
             return controller.GameState;
         }

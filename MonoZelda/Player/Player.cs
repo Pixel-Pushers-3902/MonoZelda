@@ -13,7 +13,7 @@ public class Player : IPlayer
     private SpriteDict playerSpriteDict;
     private Vector2 playerPostition;
     private float playerSpeed = 4.0f;
-    private const int AttackDurationInFrames = 10; // Set attack duration to 10 frames
+    private const int AttackDurationInFrames = 10; 
 
     public Player()
     {
@@ -32,7 +32,7 @@ public class Player : IPlayer
     {
         // Get and print the player's direction
         playerDirection = moveCommand.PlayerDirection;
-
+        
         Debug.WriteLine($"Player is moving in the {playerDirection} direction.");
         //update player position
         playerPostition += playerSpeed * moveCommand.PlayerVector;

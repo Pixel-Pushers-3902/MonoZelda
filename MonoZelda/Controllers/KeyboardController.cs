@@ -82,8 +82,9 @@ public class KeyboardController : IController
             // Player attack input
             if (attackFrames > 0)
             {
-                ICommand playerAttackCommand = new PlayerAttackCommand(this, 1, player);
-                newState = playerAttackCommand.Execute();
+                PlayerAttackCommand playerAttackCommand = (PlayerAttackCommand)commandManager.CommandMap[CommandEnum.PlayerAttackCommand];
+                playerAttackCommand.SetAttackIndex(0);
+                commandManager.Execute(CommandEnum.PlayerAttackCommand);
                 attackFrames--; // Decrement the hold counter
             }
             // Check for Player item swap input
@@ -121,32 +122,37 @@ public class KeyboardController : IController
                 if (currentKeyboardState.IsKeyDown(Keys.W) || currentKeyboardState.IsKeyDown(Keys.Up))
                 {
                     // Player move forward command
-                    ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(0, -1), player);
-                    newState = playerMoveCommand.Execute();
+                    PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand)commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
+                    playerMoveCommand.SetScalarVector(new Vector2(0, -1));
+                    commandManager.Execute(CommandEnum.PlayerMoveCommand);
                 }
                 else if (currentKeyboardState.IsKeyDown(Keys.S) || currentKeyboardState.IsKeyDown(Keys.Down))
                 {
                     // Player move backward command
-                    ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(0, 1), player);
-                    newState = playerMoveCommand.Execute();
+                    PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand)commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
+                    playerMoveCommand.SetScalarVector(new Vector2(0, 1));
+                    commandManager.Execute(CommandEnum.PlayerMoveCommand);
                 }
                 else if (currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.Right))
                 {
                     // Player move right command
-                    ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(1, 0), player);
-                    newState = playerMoveCommand.Execute();
+                    PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand)commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
+                    playerMoveCommand.SetScalarVector(new Vector2(1, 0));
+                    commandManager.Execute(CommandEnum.PlayerMoveCommand);
                 }
                 else if (currentKeyboardState.IsKeyDown(Keys.A) || currentKeyboardState.IsKeyDown(Keys.Left))
                 {
                     // Player move left command
-                    ICommand playerMoveCommand = new PlayerMoveCommand(this, new Vector2(-1, 0), player);
-                    newState = playerMoveCommand.Execute();
+                    PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand)commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
+                    playerMoveCommand.SetScalarVector(new Vector2(-1, 0));
+                    commandManager.Execute(CommandEnum.PlayerMoveCommand);
                 }
                 else
                 {
                     // Player move left
-                    ICommand playerStandCommand = new PlayerStandingCommand(this, player);
-                    newState = playerStandCommand.Execute();
+                    PlayerStandingCommand playerStandingCommand = (PlayerStandingCommand)commandManager.CommandMap[CommandEnum.PlayerStandingCommand];
+                    commandManager.Execute(CommandEnum.PlayerStandingCommand);
+                    
                 }
             }
            
