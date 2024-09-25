@@ -17,7 +17,7 @@ public class PlayerMoveCommand : ICommand
     private IController controller;
     private Vector2 scalarVector;
     private Direction playerDirection;
-    private Player player; // Player reference
+    private Player player; 
 
     public PlayerMoveCommand()
     {
@@ -27,7 +27,7 @@ public class PlayerMoveCommand : ICommand
     public PlayerMoveCommand(Player player)
     {
     
-        this.player = player; // Initialize player reference
+        this.player = player; 
         SetPlayerDirection();
         
     }
@@ -47,7 +47,7 @@ public class PlayerMoveCommand : ICommand
 
     public GameState Execute()
     {
-        // Update the player's direction
+       
         player.MovePlayer(this);
 
         // Keep GameState the same inside the controller

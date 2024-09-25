@@ -12,14 +12,14 @@ public class KeyboardController : IController
     private KeyboardState previousKeyboardState;
     private KeyboardState currentKeyboardState;
     private GameState gameState;
-    private Player player;
-    private int attackFrames;
     private CommandManager commandManager;
 
-    public KeyboardController(CommandManager commandManager, Player player)
+    //temp
+    private int attackFrames;
+
+    public KeyboardController(CommandManager commandManager)
     {
         gameState = GameState.Title;
-        this.player = player;
         attackFrames = 0;
         this.commandManager = commandManager;
     }
