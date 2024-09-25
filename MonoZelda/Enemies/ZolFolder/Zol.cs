@@ -37,6 +37,7 @@ namespace MonoZelda.Enemies.ZolFolder
         {
             pos.X = spawnX;
             pos.Y = spawnY;
+            zolSpriteDict.Position = pos;
             zolSpriteDict.SetSprite("zol_green");
         }
 

@@ -39,7 +39,7 @@ namespace MonoZelda.Enemies.GoriyaFolder
             pos.X = spawnX;
             pos.Y = spawnY;
             goriyaSpriteDict.Position = pos;
-            goriyaSpriteDict.SetSprite("cloud");
+            goriyaSpriteDict.SetSprite("goriya_red_left");
             spawning = true;
         }
 

@@ -78,9 +78,9 @@ namespace MonoZelda.Enemies
                 startTime = gameTime.TotalGameTime.TotalSeconds;
                 changingSprite = false;
             }
-            if(gameTime.TotalGameTime.TotalSeconds >= startTime + 0.5)
+            if(gameTime.TotalGameTime.TotalSeconds >= startTime + 0.3)
             {
-                if (gameTime.TotalGameTime.TotalSeconds >= startTime + 0.6)
+                if (gameTime.TotalGameTime.TotalSeconds >= startTime + 0.31)
                 {
                     enemyArr[index].Update(gameTime);
                 }

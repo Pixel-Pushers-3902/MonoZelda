@@ -40,6 +40,7 @@ namespace MonoZelda.Enemies.GelFolder
         {
             pos.X = spawnX;
             pos.Y = spawnY;
+            gelSpriteDict.Position = pos;
             gelSpriteDict.SetSprite("gel_turquoise");
         }
 

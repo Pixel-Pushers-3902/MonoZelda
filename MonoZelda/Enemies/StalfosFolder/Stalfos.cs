@@ -37,6 +37,7 @@ namespace MonoZelda.Enemies.StalfosFolder
         {
             pos.X = spawnX;
             pos.Y = spawnY;
+            stalfosSpriteDict.Position = pos;
             stalfosSpriteDict.SetSprite("stalfos");
         }
 

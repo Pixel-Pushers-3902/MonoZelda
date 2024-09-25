@@ -36,6 +36,7 @@ namespace MonoZelda.Enemies.AquamentusFolder
         {
             pos.X = spawnX;
             pos.Y = spawnY;
+            aquamentusSpriteDict.Position = pos;
             aquamentusSpriteDict.SetSprite("aquamentus_left");
         }
         public void ChangeDirection()

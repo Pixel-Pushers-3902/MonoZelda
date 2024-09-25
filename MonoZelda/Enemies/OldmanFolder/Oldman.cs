@@ -28,6 +28,7 @@ namespace MonoZelda.Enemies.OldmanFolder
         {
             pos.X = spawnX;
             pos.Y = spawnY;
+            oldmanSpriteDict.Position = pos;
             oldmanSpriteDict.SetSprite("oldman");
         }
 

@@ -32,9 +32,10 @@ namespace MonoZelda.Enemies.KeeseFolder
 
         public void SetOgPos() //sets to spawn position (eventually could be used for re-entering rooms)
         {
-            keeseSpriteDict.SetSprite("keese_blue");
             pos.X = spawnX;
             pos.Y = spawnY;
+            keeseSpriteDict.Position = pos;
+            keeseSpriteDict.SetSprite("keese_blue");
         }
 
         public void ChangeDirection()

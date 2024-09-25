@@ -36,6 +36,7 @@ namespace MonoZelda.Enemies.WallmasterFolder
         {
             pos.X = spawnX;
             pos.Y = spawnY;
+            wallmasterSpriteDict.Position = pos;
             wallmasterSpriteDict.SetSprite("wallmaster");
         }
 
