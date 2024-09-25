@@ -3,6 +3,7 @@ using MonoZelda.Enemies.AquamentusFolder;
 using MonoZelda.Enemies.GelFolder;
 using MonoZelda.Enemies.GoriyaFolder;
 using MonoZelda.Enemies.KeeseFolder;
+using MonoZelda.Enemies.OldmanFolder;
 using MonoZelda.Enemies.StalfosFolder;
 using MonoZelda.Enemies.TrapFolder;
 using MonoZelda.Enemies.WallmasterFolder;
@@ -22,20 +23,8 @@ namespace MonoZelda.Enemies
         private readonly CommandManager commandManager;
         private SpriteDict spriteDict;
         private GraphicsDeviceManager graphics;
-
-        private GameState gameState;
-
-        public GameState GameState
-        {
-            get
-            {
-                return gameState;
-            }
-            set
-            {
-                gameState = value;
-            }
-        }
+        private double startTime;
+        private bool changingSprite = false;
 
         public EnemyCycler(CommandManager commandManager, GraphicsDeviceManager graphics)
         {
@@ -59,7 +48,8 @@ namespace MonoZelda.Enemies
                 new Trap(spriteDict, graphics, TrapStateMachine.Direction.Right),
                 new Trap(spriteDict, graphics, TrapStateMachine.Direction.Up),
                 new Trap(spriteDict, graphics, TrapStateMachine.Direction.Down),
-                new Aquamentus(spriteDict, graphics)
+                new Aquamentus(spriteDict, graphics),
+                new Oldman(spriteDict, graphics)
             };
 
             index = 0;
@@ -77,12 +67,28 @@ namespace MonoZelda.Enemies
             {
                 index = length - 1;
             }
-            enemyArr[index].SetOgPos();
+            changingSprite = true;
+            spriteDict.SetSprite("death");
         }
 
         public bool Update(GameTime gameTime)
         {
-            enemyArr[index].Update(gameTime);
+            if (changingSprite)
+            {
+                startTime = gameTime.TotalGameTime.TotalSeconds;
+                changingSprite = false;
+            }
+            if(gameTime.TotalGameTime.TotalSeconds >= startTime + 0.5)
+            {
+                if (gameTime.TotalGameTime.TotalSeconds >= startTime + 0.6)
+                {
+                    enemyArr[index].Update(gameTime);
+                }
+                else
+                {
+                    enemyArr[index].SetOgPos();
+                }
+            }
             return true;
         }
     }

@@ -10,13 +10,14 @@ namespace MonoZelda.Enemies.GoriyaFolder
     public class Goriya : IEnemy
     {
         private readonly GoriyaStateMachine stateMachine;
-        private Point pos; // will change later
+        private Point pos;
         private readonly Random rnd = new();
         private SpriteDict goriyaSpriteDict;
         private GoriyaStateMachine.Direction direction = GoriyaStateMachine.Direction.Left;
         private readonly GraphicsDeviceManager graphics;
         private readonly int spawnX;
         private readonly int spawnY;
+        private bool spawning = true;
 
         private double startTime = 0;
         private double attackDelay = 0;
@@ -37,7 +38,9 @@ namespace MonoZelda.Enemies.GoriyaFolder
         {
             pos.X = spawnX;
             pos.Y = spawnY;
-            goriyaSpriteDict.SetSprite("goriya_red_left");
+            goriyaSpriteDict.Position = pos;
+            goriyaSpriteDict.SetSprite("cloud");
+            spawning = true;
         }
 
         public void ChangeDirection()
