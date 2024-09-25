@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
+using MonoZelda.Enemies;
 using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
 using PixelPushers.MonoZelda.Commands;
@@ -30,7 +31,10 @@ public class MonoZeldaGame : Game
     private GameState currentState;
     private Player player;
     private MainMenu mainMenu;
+    private EnemyCycler enemyCycler;
 
+
+    private SpriteDict enemySpriteDict;
     SpriteDict playerSpriteDict;
 
 
@@ -49,10 +53,15 @@ public class MonoZeldaGame : Game
         keyboardController = new KeyboardController(commandManager, player);
         mouseController = new MouseController(commandManager);
 
+        enemyCycler = new EnemyCycler(commandManager, graphics);
+        EnemyCycleCommand enemyCycleCommand = (EnemyCycleCommand) commandManager.CommandMap[CommandEnum.EnemyCycleCommand];
+        enemyCycleCommand.SetCycler(enemyCycler);
+
     }
 
     protected override void Initialize()
     {
+
         base.Initialize();
     }
 
@@ -84,7 +93,11 @@ public class MonoZeldaGame : Game
         string playerCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Player.csv";
         playerSpriteDict = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 1, new Point(100, 100));
         player.SetPlayerSpriteDict(playerSpriteDict);
+        string enemyCsvFileName = "Content/Source Rect CSVs/Sprite Source Rects - Enemies.csv";
+        enemySpriteDict = new(Content.Load<Texture2D>("Sprites/enemies"), enemyCsvFileName, 1, new Point(100, 100));
+        enemyCycler.SetSpriteDicts(enemySpriteDict);
     }
+
 
     protected override void Update(GameTime gameTime)
     {
@@ -110,7 +123,7 @@ public class MonoZeldaGame : Game
                 mouseController.GameState = currentState;
             }
         }
-
+        
         // Mouse controller update loop
         mouseController.MouseState = Mouse.GetState();
         if (mouseController.Update())
@@ -133,6 +146,8 @@ public class MonoZeldaGame : Game
                 keyboardController.GameState = currentState;
             }
         }
+
+        enemyCycler.Update(gameTime);
         base.Update(gameTime);
     }
 
@@ -149,9 +164,6 @@ public class MonoZeldaGame : Game
 
         // Sprite drawing based on state
         spriteBatch.Begin();
-
-        // Draw player
-        playerSpriteDict.Draw(spriteBatch, gameTime);
 
         //call to SpriteDrawer to draw all SpriteDicts
         SpriteDrawer.Draw(spriteBatch, gameTime);
