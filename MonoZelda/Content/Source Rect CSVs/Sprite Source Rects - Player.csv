@@ -3,6 +3,10 @@ walk_down,0,16,16,16,2,center
 walk_right,32,16,16,16,2,center
 walk_up,64,16,16,16,2,center
 walk_left,96,16,16,16,2,center
+standing_down,0,16,16,16,1,center
+standing_right,32,16,16,16,1,center
+standing_up,64,16,16,16,1,center
+standing_left,96,16,16,16,1,center
 useitem_down,144,16,16,16,1,center
 useitem_right,160,16,16,16,1,center
 useitem_up,176,16,16,16,1,center

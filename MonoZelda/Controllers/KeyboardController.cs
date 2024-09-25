@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using MonoZelda.Player;
 using PixelPushers.MonoZelda.Commands;
+using System.Diagnostics;
+
 
 namespace PixelPushers.MonoZelda.Controllers;
 
@@ -9,14 +12,17 @@ public class KeyboardController : IController
     private KeyboardState previousKeyboardState;
     private KeyboardState currentKeyboardState;
     private GameState gameState;
+    private Player player;
+    private int attackFrames;
     private CommandManager commandManager;
 
-    public KeyboardController(CommandManager commandManager)
+    public KeyboardController(CommandManager commandManager, Player player)
     {
-        gameState = GameState.Start;
+        gameState = GameState.Title;
+        this.player = player;
+        attackFrames = 0;
         this.commandManager = commandManager;
-
-}
+    }
 
     // Properties
     public KeyboardState CurrentKeyboardState
@@ -72,6 +78,15 @@ public class KeyboardController : IController
         }
         else
         {
+
+            // Player attack input
+            if (attackFrames > 0)
+            {
+                PlayerAttackCommand playerAttackCommand = (PlayerAttackCommand)commandManager.CommandMap[CommandEnum.PlayerAttackCommand];
+                playerAttackCommand.SetAttackIndex(0);
+                commandManager.Execute(CommandEnum.PlayerAttackCommand);
+                attackFrames--; // Decrement the hold counter
+            }
             // Check for Player item swap input
             if (OneShotPressed(Keys.D1))
             {
@@ -101,51 +116,61 @@ public class KeyboardController : IController
                 playerUseItemCommand.SetItemIndex(4);
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
-
-            // Check for Player movement input
-            if (currentKeyboardState.IsKeyDown(Keys.W) || currentKeyboardState.IsKeyDown(Keys.Up))
+            else if (OneShotPressed(Keys.Enter))
             {
-                // Player move forward command
-                PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand) commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
-                playerMoveCommand.SetScalarVector(new Vector2(1, 0));
-                commandManager.Execute(CommandEnum.PlayerMoveCommand);
+                newState = commandManager.Execute(CommandEnum.StartGame);
             }
-            else if (currentKeyboardState.IsKeyDown(Keys.S) || currentKeyboardState.IsKeyDown(Keys.Down))
+            else
+            if (attackFrames == 0)
             {
-                // Player move backward command
-                PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand) commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
-                playerMoveCommand.SetScalarVector(new Vector2(-1, 0));
-                commandManager.Execute(CommandEnum.PlayerMoveCommand);
+                // Check for Player movement input
+                if (currentKeyboardState.IsKeyDown(Keys.W) || currentKeyboardState.IsKeyDown(Keys.Up))
+                {
+                    // Player move forward command
+                    PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand)commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
+                    playerMoveCommand.SetScalarVector(new Vector2(0, -1));
+                    commandManager.Execute(CommandEnum.PlayerMoveCommand);
+                }
+                else if (currentKeyboardState.IsKeyDown(Keys.S) || currentKeyboardState.IsKeyDown(Keys.Down))
+                {
+                    // Player move backward command
+                    PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand)commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
+                    playerMoveCommand.SetScalarVector(new Vector2(0, 1));
+                    commandManager.Execute(CommandEnum.PlayerMoveCommand);
+                }
+                else if (currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.Right))
+                {
+                    // Player move right command
+                    PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand)commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
+                    playerMoveCommand.SetScalarVector(new Vector2(1, 0));
+                    commandManager.Execute(CommandEnum.PlayerMoveCommand);
+                }
+                else if (currentKeyboardState.IsKeyDown(Keys.A) || currentKeyboardState.IsKeyDown(Keys.Left))
+                {
+                    // Player move left command
+                    PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand)commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
+                    playerMoveCommand.SetScalarVector(new Vector2(-1, 0));
+                    commandManager.Execute(CommandEnum.PlayerMoveCommand);
+                }
+                else
+                {
+                    // Player move left
+                    PlayerStandingCommand playerStandingCommand = (PlayerStandingCommand)commandManager.CommandMap[CommandEnum.PlayerStandingCommand];
+                    commandManager.Execute(CommandEnum.PlayerStandingCommand);
+                    
+                }
             }
-            else if (currentKeyboardState.IsKeyDown(Keys.D) || currentKeyboardState.IsKeyDown(Keys.Right))
-            {
-                // Player move right command
-                PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand) commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
-                playerMoveCommand.SetScalarVector(new Vector2(0, 1));
-                commandManager.Execute(CommandEnum.PlayerMoveCommand);
-            }
-            else if (currentKeyboardState.IsKeyDown(Keys.A) || currentKeyboardState.IsKeyDown(Keys.Left))
-            {
-                // Player move left command
-                PlayerMoveCommand playerMoveCommand = (PlayerMoveCommand) commandManager.CommandMap[CommandEnum.PlayerMoveCommand];
-                playerMoveCommand.SetScalarVector(new Vector2(0, -1));
-                commandManager.Execute(CommandEnum.PlayerMoveCommand);
-            }
+           
 
             // Check for Player attack input
             if (OneShotPressed(Keys.Z))
             {
-                // Player primary attack
-                PlayerAttackCommand playerAttackCommand = (PlayerAttackCommand) commandManager.CommandMap[CommandEnum.PlayerAttackCommand];
-                playerAttackCommand.SetAttackIndex(1);
-                commandManager.Execute(CommandEnum.PlayerAttackCommand);
+                
+                attackFrames = 20; 
             }
             else if (OneShotPressed(Keys.N))
             {
-                // Player primary attack
-                PlayerAttackCommand playerAttackCommand = (PlayerAttackCommand) commandManager.CommandMap[CommandEnum.PlayerAttackCommand];
-                playerAttackCommand.SetAttackIndex(2);
-                commandManager.Execute(CommandEnum.PlayerAttackCommand);
+                attackFrames = 20;
             }
 
             // Check for Player damage applied
@@ -159,29 +184,29 @@ public class KeyboardController : IController
             // Check for Block / Obstacle cycle input
             if (OneShotPressed(Keys.Y))
             {
-                BlockCycleCommand blockCycleCommand = (BlockCycleCommand) commandManager.CommandMap[CommandEnum.BlockCycleCommand];
-                blockCycleCommand.SetCycleAddition(1);
-                commandManager.Execute(CommandEnum.BlockCycleCommand);
+                var cycleCommand = (BlockCycleCommand)commandManager.CommandMap[CommandEnum.BlockCycleCommand];
+                cycleCommand.SetCycleAddition(1);
+                cycleCommand.Execute();
             }
             else if (OneShotPressed(Keys.T))
             {
-                BlockCycleCommand blockCycleCommand = (BlockCycleCommand) commandManager.CommandMap[CommandEnum.BlockCycleCommand];
-                blockCycleCommand.SetCycleAddition(-1);
-                commandManager.Execute(CommandEnum.BlockCycleCommand);
+                var cycleCommand = (BlockCycleCommand)commandManager.CommandMap[CommandEnum.BlockCycleCommand];
+                cycleCommand.SetCycleAddition(-1);
+                cycleCommand.Execute();
             }
 
             // Check for Item cycle input
             if (OneShotPressed(Keys.I))
             {
-                ItemCycleCommand itemCycleCommand = (ItemCycleCommand) commandManager.CommandMap[CommandEnum.ItemCycleCommand];
-                itemCycleCommand.SetCycleAddition(1);
-                commandManager.Execute(CommandEnum.ItemCycleCommand);
+                var cycleCommand = (ItemCycleCommand)commandManager.CommandMap[CommandEnum.ItemCycleCommand];
+                cycleCommand.SetCycleAddition(1);
+                cycleCommand.Execute();
             }
             else if (OneShotPressed(Keys.U))
             {
-                ItemCycleCommand itemCycleCommand = (ItemCycleCommand) commandManager.CommandMap[CommandEnum.ItemCycleCommand];
-                itemCycleCommand.SetCycleAddition(-1);
-                commandManager.Execute(CommandEnum.ItemCycleCommand);
+                var cycleCommand = (ItemCycleCommand)commandManager.CommandMap[CommandEnum.ItemCycleCommand];
+                cycleCommand.SetCycleAddition(-1);
+                cycleCommand.Execute();
             }
 
             // Check for Enemy / NPC cycle input

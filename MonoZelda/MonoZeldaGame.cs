@@ -5,14 +5,17 @@ using System.Diagnostics;
 using MonoZelda.Enemies;
 using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
-using MonoGame.Framework.Utilities.Deflate;
-using System.Runtime.InteropServices;
 using PixelPushers.MonoZelda.Commands;
+using PixelPushers.MonoZelda.Tiles;
+using MonoZelda.Player;
+using PixelPushers.MonoZelda.Items;
+
 
 namespace PixelPushers.MonoZelda;
 
 public enum GameState
 {
+    Title,
     Start,
     Reset,
     Quit,
@@ -24,22 +27,28 @@ public class MonoZeldaGame : Game
     private SpriteBatch spriteBatch;
     private KeyboardController keyboardController;
     private MouseController mouseController;
-    private EnemyCycler enemyCycler;
+    private CommandManager commandManager;
     private GameState currentState;
-    private IEnemy enemy;
+    private Player player;
+    private MainMenu mainMenu;
 
     private SpriteDict enemySpriteDict;
+    SpriteDict playerSpriteDict;
+
 
     public MonoZeldaGame()
     {
         graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        currentState = GameState.Start;
+        currentState = GameState.Title;
+        player = new Player();
+        commandManager = new CommandManager();
 
-        // Init Commands
-        CommandManager commandManager = new CommandManager();
-        keyboardController = new KeyboardController(commandManager);
+        // Exit Command needs the game reference
+        commandManager.ReplaceCommand(CommandEnum.ExitCommand, new ExitCommand(this));
+
+        keyboardController = new KeyboardController(commandManager, player);
         mouseController = new MouseController(commandManager);
 
         enemyCycler = new EnemyCycler(commandManager, graphics);
@@ -58,6 +67,30 @@ public class MonoZeldaGame : Game
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
+        // Setup the menu
+        var menuTexture = Content.Load<Texture2D>("Sprites/title");
+        mainMenu = new MainMenu(menuTexture, GraphicsDevice);
+
+        // Setup TileDemo
+        string blocksCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Tiles Dungeon1.csv";
+        var tileDict = new SpriteDict(Content.Load<Texture2D>("Sprites/tiles_dungeon1"), blocksCSVFileName, 0, new Point(300, 300));
+        var demoTile = new TileCycleDemo(tileDict, new Point(300, 300));
+
+        //Setup ItemDemo
+        string itemsCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Items.csv";
+        var itemDict = new SpriteDict(Content.Load<Texture2D>("Sprites/items"), itemsCSVFileName, 0, new Point(450, 100));
+        var demoItem = new ItemCycleDemo(itemDict, new Point(450, 100));
+
+        // create the cycle commands
+        commandManager.ReplaceCommand(CommandEnum.BlockCycleCommand, new BlockCycleCommand(demoTile));
+        commandManager.ReplaceCommand(CommandEnum.ItemCycleCommand, new ItemCycleCommand(demoItem));
+        commandManager.ReplaceCommand(CommandEnum.PlayerMoveCommand, new PlayerMoveCommand(player));
+        commandManager.ReplaceCommand(CommandEnum.PlayerAttackCommand, new PlayerAttackCommand(player));
+        commandManager.ReplaceCommand(CommandEnum.PlayerStandingCommand, new PlayerStandingCommand(player));
+        //create spritedict to pass into player controller
+        string playerCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Player.csv";
+        playerSpriteDict = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 1, new Point(100, 100));
+        player.SetPlayerSpriteDict(playerSpriteDict);
         string enemyCsvFileName = "Content/Source Rect CSVs/Sprite Source Rects - Enemies.csv";
         enemySpriteDict = new(Content.Load<Texture2D>("Sprites/enemies"), enemyCsvFileName, 1, new Point(100, 100));
         enemyCycler.SetSpriteDicts(enemySpriteDict);
@@ -118,15 +151,24 @@ public class MonoZeldaGame : Game
 
     protected override void Draw(GameTime gameTime)
     {
+        if (currentState == GameState.Title)
+        {
+            GraphicsDevice.Clear(Color.Black);
+            mainMenu.Draw(spriteBatch, gameTime);
+            return;
+        }
+
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         // Sprite drawing based on state
         spriteBatch.Begin();
 
-        enemySpriteDict.Draw(spriteBatch, gameTime);
+        //call to SpriteDrawer to draw all SpriteDicts
+        SpriteDrawer.Draw(spriteBatch, gameTime);
 
         spriteBatch.End();
-        
+
         base.Draw(gameTime);
+
     }
 }
