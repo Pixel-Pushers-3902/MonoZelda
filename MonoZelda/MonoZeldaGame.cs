@@ -14,6 +14,7 @@ namespace PixelPushers.MonoZelda;
 
 public enum GameState
 {
+    Title,
     Start,
     Reset,
     Quit,
@@ -28,18 +29,22 @@ public class MonoZeldaGame : Game
     private CommandManager commandManager;
     private GameState currentState;
     private Player player;
+    private MainMenu mainMenu;
 
     SpriteDict playerSpriteDict;
-  
+
 
     public MonoZeldaGame()
     {
         graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        currentState = GameState.Start;
+        currentState = GameState.Title;
         player = new Player();
         commandManager = new CommandManager();
+
+        // Exit Command needs the game reference
+        commandManager.ReplaceCommand(CommandEnum.ExitCommand, new ExitCommand(this));
 
         keyboardController = new KeyboardController(commandManager, player);
         mouseController = new MouseController(commandManager);
@@ -54,6 +59,10 @@ public class MonoZeldaGame : Game
     protected override void LoadContent()
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
+
+        // Setup the menu
+        var menuTexture = Content.Load<Texture2D>("Sprites/title");
+        mainMenu = new MainMenu(menuTexture, GraphicsDevice);
 
         // Setup TileDemo
         string blocksCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Tiles Dungeon1.csv";
@@ -129,6 +138,13 @@ public class MonoZeldaGame : Game
 
     protected override void Draw(GameTime gameTime)
     {
+        if (currentState == GameState.Title)
+        {
+            GraphicsDevice.Clear(Color.Black);
+            mainMenu.Draw(spriteBatch, gameTime);
+            return;
+        }
+
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         // Sprite drawing based on state
@@ -141,7 +157,8 @@ public class MonoZeldaGame : Game
         SpriteDrawer.Draw(spriteBatch, gameTime);
 
         spriteBatch.End();
-        
+
         base.Draw(gameTime);
+
     }
 }
