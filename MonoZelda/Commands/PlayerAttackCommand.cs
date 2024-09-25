@@ -9,7 +9,7 @@ public class PlayerAttackCommand : ICommand
 {
     IController controller;
     int attackIdx;
-    private Player player; // Player reference
+    private Player player; 
 
     public PlayerAttackCommand()
     {
@@ -18,12 +18,11 @@ public class PlayerAttackCommand : ICommand
 
     public PlayerAttackCommand(Player player)
     {
-        this.player = player; // Player reference
+        this.player = player; 
     }
 
     public GameState Execute()
     {
-        // Perform state change for player to attack
         Debug.WriteLine("Player using attack " + attackIdx);
         player.AttackingPlayer(this);
         // Keep GameState the same inside the controller

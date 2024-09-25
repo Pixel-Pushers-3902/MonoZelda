@@ -30,14 +30,10 @@ public class Player : IPlayer
 
     public void MovePlayer(PlayerMoveCommand moveCommand)
     {
-        // Get and print the player's direction
-        playerDirection = moveCommand.PlayerDirection;
         
+        playerDirection = moveCommand.PlayerDirection;
         Debug.WriteLine($"Player is moving in the {playerDirection} direction.");
-        //update player position
         playerPostition += playerSpeed * moveCommand.PlayerVector;
-
-        // Set the player's sprite based on the direction
         SetMovingPlayerSprite(moveCommand);
 
     }
