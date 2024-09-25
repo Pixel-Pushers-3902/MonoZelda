@@ -11,66 +11,30 @@ using System.Threading.Tasks;
 
 namespace PixelPushers.MonoZelda;
 
-public class MainMenu : Game
+public class MainMenu
 {
-    private GraphicsDeviceManager _graphics;
-    private SpriteBatch _spriteBatch;
-    private CommandManager commandManager;
-    private MainMenuController _menuController;
-    private SpriteFont _font;
-    private Texture2D _titleTexture;
-
-    public MainMenu()
+    Texture2D _titleTexture;
+    GraphicsDevice _device;
+    
+    public MainMenu(Texture2D menuTexture, GraphicsDevice graphicsDevice)
     {
-        commandManager = new CommandManager();
-        _menuController = new MainMenuController(commandManager);
-
-        // Exit Command needs the game reference
-        commandManager.ReplaceCommand(CommandEnum.ExitCommand, new ExitCommand(this));
-
-        _graphics = new GraphicsDeviceManager(this);
-        Content.RootDirectory = "Content";
-        IsMouseVisible = true;
+        _titleTexture = menuTexture;
+        _device = graphicsDevice;
     }
 
-    protected override void LoadContent()
+    public void Draw(SpriteBatch batch, GameTime gameTime)
     {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-        // Load title content
-        _titleTexture = Content.Load<Texture2D>("Sprites/title");
-    }
-
-    protected override void Initialize()
-    {
-        base.Initialize();
-    }
-
-    protected override void Update(GameTime gameTime)
-    {
-        base.Update(gameTime);
-
-        _menuController.Update();
-    }
-
-    protected override void Draw(GameTime gameTime)
-    {
-        GraphicsDevice.Clear(Color.Black);
+        _device.Clear(Color.Black);
 
         // Sprite drawing based on state
-        _spriteBatch.Begin();
+        batch.Begin();
 
         // Draw title screen as big as the screen
-        var titleRect = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-        var yMagin = GraphicsDevice.Viewport.Width / 2;
-        var xMargin = GraphicsDevice.Viewport.Height / 2;
-        _spriteBatch.Draw(_titleTexture, new Rectangle(yMagin - 256, xMargin - 224, 256 * 2, 224*2), new Rectangle(1,11,256,224), Color.White);
+        var titleRect = new Rectangle(0, 0, _device.Viewport.Width, _device.Viewport.Height);
+        var yMagin = _device.Viewport.Width / 2;
+        var xMargin = _device.Viewport.Height / 2;
+        batch.Draw(_titleTexture, new Rectangle(yMagin - 256, xMargin - 224, 256 * 2, 224*2), new Rectangle(1,11,256,224), Color.White);
 
-        //call to SpriteDrawer to draw all SpriteDicts
-        SpriteDrawer.Draw(_spriteBatch, gameTime);
-
-        _spriteBatch.End();
-
-        base.Draw(gameTime);
+        batch.End();
     }
 }

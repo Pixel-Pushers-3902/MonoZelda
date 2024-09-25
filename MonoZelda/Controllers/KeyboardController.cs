@@ -18,7 +18,7 @@ public class KeyboardController : IController
 
     public KeyboardController(CommandManager commandManager, Player player)
     {
-        gameState = GameState.Start;
+        gameState = GameState.Title;
         this.player = player;
         attackFrames = 0;
         this.commandManager = commandManager;
@@ -116,7 +116,12 @@ public class KeyboardController : IController
                 playerUseItemCommand.SetItemIndex(4);
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
-            if(attackFrames == 0)
+            else if (OneShotPressed(Keys.Enter))
+            {
+                newState = commandManager.Execute(CommandEnum.StartGame);
+            }
+            else
+            if (attackFrames == 0)
             {
                 // Check for Player movement input
                 if (currentKeyboardState.IsKeyDown(Keys.W) || currentKeyboardState.IsKeyDown(Keys.Up))

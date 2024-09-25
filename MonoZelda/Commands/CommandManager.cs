@@ -19,6 +19,7 @@ public enum CommandEnum
     PlayerUseItemCommand,
     ResetCommand,
     PlayerStandingCommand,
+    StartGame,
     None
 }
 
@@ -38,7 +39,7 @@ public class CommandManager
         AddCommand(CommandEnum.PlayerUseItemCommand, new PlayerUseItemCommand());
         AddCommand(CommandEnum.PlayerStandingCommand, new PlayerStandingCommand());
         AddCommand(CommandEnum.ResetCommand, new ResetCommand());
-
+        AddCommand(CommandEnum.StartGame, new GameStartCommand());
     }
 
     public Dictionary<CommandEnum, ICommand> CommandMap
@@ -49,9 +50,9 @@ public class CommandManager
         }
     }
 
-    public void Execute(CommandEnum commandName)
+    public GameState Execute(CommandEnum commandName)
     {
-        commandMap[commandName].Execute();
+        return commandMap[commandName].Execute();
     }
 
     public bool ReplaceCommand(CommandEnum commandName, ICommand command)
