@@ -18,7 +18,7 @@ public class PlayerAttackCommand : ICommand
 
     public PlayerAttackCommand(Player player)
     {
-        this.player = player; 
+        this.player = player;
     }
 
     public GameState Execute()
