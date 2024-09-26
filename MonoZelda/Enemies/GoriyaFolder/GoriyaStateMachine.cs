@@ -6,7 +6,6 @@ namespace MonoZelda.Enemies.GoriyaFolder
     public class GoriyaStateMachine
     {
         public enum Direction { Left, Right, Up, Down }
-        private bool IsAttacking = false;
 
         private Direction goriyaDirection;
 
@@ -15,43 +14,35 @@ namespace MonoZelda.Enemies.GoriyaFolder
             goriyaDirection = newDirection;
         }
 
-        public void Attack()
-        {
-        }
-
         public Point Update(Point position, SpriteDict goriyaSpriteDict, GraphicsDeviceManager graphics)
         {
-            if (!IsAttacking)
+            switch (goriyaDirection)
             {
-                switch (goriyaDirection)
-                {
-                    case Direction.Left:
-                        if (position.X >= 0 + 32)
-                        {
-                            position.X -= 1;
-                        }
-                        break;
-                    case Direction.Right:
-                        if (position.X <= graphics.PreferredBackBufferWidth - 32)
-                        {
-                            position.X += 1;
-                        }
-                        break;
-                    case Direction.Up:
-                        if (position.Y >= 0 + 32)
-                        {
-                            position.Y -= 1;
-                        }
-                        break;
-                    case Direction.Down:
-                        if (position.Y <= graphics.PreferredBackBufferHeight - 32)
-                        {
-                            position.Y += 1;
-                        }
-                        break;
-                }
+                case Direction.Left:
+                    if (position.X >= 0 + 32)
+                    {
+                        position.X -= 1;
+                    }
+                    break;
+                case Direction.Right:
+                    if (position.X <= graphics.PreferredBackBufferWidth - 32)
+                    {
+                        position.X += 1;
+                    }
+                    break;
+                case Direction.Up:
+                    if (position.Y >= 0 + 32)
+                    {
+                        position.Y -= 1;
+                    }
+                    break;
+                case Direction.Down:
+                    if (position.Y <= graphics.PreferredBackBufferHeight - 32)
+                    {
+                        position.Y += 1;
+                    }
+                    break;
             }
-
             return position;
         }
 

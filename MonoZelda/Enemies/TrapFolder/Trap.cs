@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using PixelPushers.MonoZelda;
+﻿using Microsoft.Xna.Framework;
 using PixelPushers.MonoZelda.Sprites;
 
 namespace MonoZelda.Enemies.TrapFolder
@@ -12,13 +6,15 @@ namespace MonoZelda.Enemies.TrapFolder
     public class Trap : IEnemy
     {
         private readonly TrapStateMachine stateMachine;
-        private Point pos; // will change later
+        private Point pos;
         private readonly SpriteDict trapSpriteDict;
         private TrapStateMachine.Direction direction;
         private readonly GraphicsDeviceManager graphics;
         private readonly int spawnX;
         private readonly int spawnY;
+        private bool spawning;
 
+        private double startTime;
         private readonly TrapStateMachine.Direction attackDirection;
 
         public Trap(SpriteDict spriteDict, GraphicsDeviceManager graphics, TrapStateMachine.Direction attackDirection)
@@ -33,15 +29,37 @@ namespace MonoZelda.Enemies.TrapFolder
             pos = new(spawnX,spawnY);
         }
 
-        public void SetOgPos()
+        public void SetOgPos(GameTime gameTime)
         {
             pos.X = spawnX;
             pos.Y = spawnY;
-            trapSpriteDict.SetSprite("bladetrap");
+            trapSpriteDict.SetSprite("cloud");
+            trapSpriteDict.Position = pos;
+            spawning = true;
+            startTime = gameTime.TotalGameTime.TotalSeconds;
+        }
+
+        public void DisableProjectile()
+        {
         }
 
         public void ChangeDirection()
         {
+            switch (attackDirection)
+            {
+                case TrapStateMachine.Direction.Left:
+                    LeftRight();
+                    break;
+                case TrapStateMachine.Direction.Right:
+                    RightLeft();
+                    break;
+                case TrapStateMachine.Direction.Up:
+                    UpDown();
+                    break;
+                case TrapStateMachine.Direction.Down:
+                    DownUp();
+                    break;
+            }
             stateMachine.ChangeDirection(direction);
         }
 
@@ -104,25 +122,21 @@ namespace MonoZelda.Enemies.TrapFolder
 
         public void Update(GameTime gameTime)
         {
-            switch (attackDirection)
+            if (spawning)
             {
-                case TrapStateMachine.Direction.Left:
-                    LeftRight();
-                    break;
-                case TrapStateMachine.Direction.Right:
-                    RightLeft();
-                    break;
-                case TrapStateMachine.Direction.Up:
-                    UpDown();
-                    break;
-                case TrapStateMachine.Direction.Down:
-                    DownUp();
-                    break;
+                if (gameTime.TotalGameTime.TotalSeconds >= startTime + 0.3)
+                {
+                    startTime = gameTime.TotalGameTime.TotalSeconds;
+                    spawning = false;
+                    trapSpriteDict.SetSprite("bladetrap");
+                }
             }
-
-            ChangeDirection();
-            pos = stateMachine.Update(pos, graphics);
-            trapSpriteDict.Position = pos;
+            else
+            {
+                ChangeDirection();
+                pos = stateMachine.Update(pos, graphics);
+                trapSpriteDict.Position = pos;
+            }
         }
     }
 }
