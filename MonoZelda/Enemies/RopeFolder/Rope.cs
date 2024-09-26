@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using PixelPushers.MonoZelda.Sprites;
 
@@ -13,11 +9,14 @@ namespace MonoZelda.Enemies.RopeFolder
         private readonly RopeStateMachine stateMachine;
         private Point pos;
         private readonly Random rnd = new();
-        private SpriteDict ropeSpriteDict;
+        private readonly SpriteDict ropeSpriteDict;
         private RopeStateMachine.Direction direction = RopeStateMachine.Direction.Left;
         private readonly GraphicsDeviceManager graphics;
         private readonly int spawnX;
         private readonly int spawnY;
+        private bool spawning;
+
+        private double startTime;
 
         public Rope(SpriteDict spriteDict, GraphicsDeviceManager graphics)
         {
@@ -29,20 +28,17 @@ namespace MonoZelda.Enemies.RopeFolder
             pos = new(spawnX, spawnY);
         }
 
-        public void SetOgPos()
+        public void SetOgPos(GameTime gameTime)
         {
             pos.X = spawnX;
             pos.Y = spawnY;
             ropeSpriteDict.Position = pos;
-            ropeSpriteDict.SetSprite("rope_left");
+            ropeSpriteDict.SetSprite("cloud");
+            spawning = true;
+            startTime = gameTime.TotalGameTime.TotalSeconds;
         }
 
         public void ChangeDirection()
-        {
-            stateMachine.ChangeDirection(direction);
-        }
-
-        public void Update(GameTime gameTime)
         {
             if (pos.X >= graphics.PreferredBackBufferWidth - 32 || pos.X <= 0 + 32)
             {
@@ -55,10 +51,8 @@ namespace MonoZelda.Enemies.RopeFolder
                         direction = RopeStateMachine.Direction.Down;
                         break;
                 }
-                ChangeDirection();
             }
-
-            if (pos.Y >= graphics.PreferredBackBufferHeight - 32 || pos.Y <= 0 + 32)
+            else if (pos.Y >= graphics.PreferredBackBufferHeight - 32 || pos.Y <= 0 + 32)
             {
                 switch (rnd.Next(1, 3))
                 {
@@ -71,10 +65,33 @@ namespace MonoZelda.Enemies.RopeFolder
                         ropeSpriteDict.SetSprite("rope_right");
                         break;
                 }
-                ChangeDirection();
             }
-            pos = stateMachine.Update(pos, graphics);
-            ropeSpriteDict.Position = pos;
+            stateMachine.ChangeDirection(direction);
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            if (spawning)
+            {
+                if (gameTime.TotalGameTime.TotalSeconds >= startTime + 0.3)
+                {
+                    startTime = gameTime.TotalGameTime.TotalSeconds;
+                    spawning = false;
+                    direction = RopeStateMachine.Direction.Left;
+                    ropeSpriteDict.SetSprite("rope_left");
+                    ChangeDirection();
+                }
+            }
+            else
+            {
+                ChangeDirection();
+                pos = stateMachine.Update(pos, graphics);
+                ropeSpriteDict.Position = pos;
+            }
+        }
+
+        public void DisableProjectile()
+        {
         }
     }
 }

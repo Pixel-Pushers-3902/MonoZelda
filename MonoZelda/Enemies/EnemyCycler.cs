@@ -49,7 +49,7 @@ namespace MonoZelda.Enemies
                 new Zol(spriteDict, graphics),
                 new Wallmaster(spriteDict, graphics),
                 new Rope(spriteDict, graphics),
-                new Aquamentus(spriteDict, graphics),
+                new Aquamentus(spriteDict, graphics, myGame),
                 new Dodongo(spriteDict, graphics),
                 new Trap(spriteDict, graphics, TrapStateMachine.Direction.Left),
                 new Trap(spriteDict, graphics, TrapStateMachine.Direction.Right),
@@ -64,6 +64,7 @@ namespace MonoZelda.Enemies
 
         public void SetCycle(int cycle)
         {
+            enemyArr[index].DisableProjectile();
             index += cycle;
             if (index >= length)
             {
@@ -77,7 +78,7 @@ namespace MonoZelda.Enemies
             spriteDict.SetSprite("death");
         }
 
-        public bool Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
             if (changingSprite)
             {
@@ -92,10 +93,9 @@ namespace MonoZelda.Enemies
                 }
                 else
                 {
-                    enemyArr[index].SetOgPos();
+                    enemyArr[index].SetOgPos(gameTime);
                 }
             }
-            return true;
         }
     }
 }

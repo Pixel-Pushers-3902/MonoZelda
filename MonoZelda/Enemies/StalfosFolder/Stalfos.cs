@@ -20,6 +20,7 @@ namespace MonoZelda.Enemies.StalfosFolder
         private readonly GraphicsDeviceManager graphics;
         private readonly int spawnX;
         private readonly int spawnY;
+        private bool spawning;
 
         private double startTime = 0;
 
@@ -33,44 +34,61 @@ namespace MonoZelda.Enemies.StalfosFolder
             pos = new(spawnX, spawnY);
         }
 
-        public void SetOgPos()
+        public void SetOgPos(GameTime gameTime)
         {
             pos.X = spawnX;
             pos.Y = spawnY;
             stalfosSpriteDict.Position = pos;
-            stalfosSpriteDict.SetSprite("stalfos");
+            stalfosSpriteDict.SetSprite("cloud");
+            spawning = true;
+            startTime = gameTime.TotalGameTime.TotalSeconds;
+        }
+
+        public void DisableProjectile()
+        {
         }
 
         public void ChangeDirection()
         {
+            switch (rnd.Next(1, 5))
+            {
+                case 1:
+                    direction = StalfosStateMachine.Direction.Left;
+                    break;
+                case 2:
+                    direction = StalfosStateMachine.Direction.Right;
+                    break;
+                case 3:
+                    direction = StalfosStateMachine.Direction.Up;
+                    break;
+                case 4:
+                    direction = StalfosStateMachine.Direction.Down;
+                    break;
+            }
             stateMachine.ChangeDirection(direction);
         }
 
         public void Update(GameTime gameTime)
         {
-            if (gameTime.TotalGameTime.TotalSeconds >= startTime + 1)
+            if (spawning)
             {
-                switch (rnd.Next(1, 5))
+                if (gameTime.TotalGameTime.TotalSeconds >= startTime + 0.3)
                 {
-                    case 1:
-                        direction = StalfosStateMachine.Direction.Left;
-                        break;
-                    case 2:
-                        direction = StalfosStateMachine.Direction.Right;
-                        break;
-                    case 3:
-                        direction = StalfosStateMachine.Direction.Up;
-                        break;
-                    case 4:
-                        direction = StalfosStateMachine.Direction.Down;
-                        break;
+                    startTime = gameTime.TotalGameTime.TotalSeconds;
+                    spawning = false;
+                    stalfosSpriteDict.SetSprite("stalfos");
                 }
-
+            }
+            else if (gameTime.TotalGameTime.TotalSeconds >= startTime + 1)
+            {
                 startTime = gameTime.TotalGameTime.TotalSeconds;
                 ChangeDirection();
             }
-            pos = stateMachine.Update(pos, graphics);
-            stalfosSpriteDict.Position = pos;
+            else
+            {
+                pos = stateMachine.Update(pos, graphics);
+                stalfosSpriteDict.Position = pos;
+            }
         }
     }
 }
