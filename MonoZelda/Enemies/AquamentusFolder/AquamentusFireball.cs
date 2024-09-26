@@ -1,4 +1,5 @@
-﻿using PixelPushers.MonoZelda.Sprites;
+﻿using System;
+using PixelPushers.MonoZelda.Sprites;
 using PixelPushers.MonoZelda;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,15 +13,30 @@ namespace MonoZelda.Enemies.AquamentusFolder
         public SpriteDict FireballSpriteDict { get; private set; }
 
         private int speed = 4;
-        private int angle;
+        private double angle;
 
-        public AquamentusFireball(Point pos, MonoZeldaGame game, int angle)
+        public AquamentusFireball(Point pos, MonoZeldaGame game, int newAngle)
         {
             this.pos = pos;
             string enemyCsvFileName = "Content/Source Rect CSVs/Sprite Source Rects - Enemies.csv";
             FireballSpriteDict = new(game.Content.Load<Texture2D>("Sprites/enemies"), enemyCsvFileName, 0, new Point(100, 100));
             FireballSpriteDict.SetSprite("fireball");
-            this.angle = angle;
+            angle = newAngle;
+            if (angle <= 180)
+            {
+                if (angle <= 90)
+                {
+                    angle = angle / 180 - 2;
+                }
+                else
+                {
+                    angle = angle / 180 - 1;
+                }
+            }
+            else
+            {
+                angle /= 180;
+            }
         }
 
         public void Follow(Point newPos)
@@ -32,14 +48,16 @@ namespace MonoZelda.Enemies.AquamentusFolder
         public void Update()
         {
             pos.X -= speed;
-            if (angle <= 180)
+            if (angle >= 1.5)
             {
-                pos.Y -= angle / 180 - 1;
+                angle = Math.Ceiling(angle);
             }
             else
             {
-                pos.Y -= angle / 180;
+                angle = Math.Floor(angle);
             }
+
+            pos.Y -= (int)angle;
 
             FireballSpriteDict.Position = pos;
         }

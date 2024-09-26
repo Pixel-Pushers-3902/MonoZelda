@@ -18,6 +18,7 @@ namespace MonoZelda.Enemies.AquamentusFolder
         private bool spawning;
 
         private List<AquamentusFireball> fireballs = new();
+        private int midAngle = 180;
 
         private double startTime;
         private double attackDelay;
@@ -32,9 +33,9 @@ namespace MonoZelda.Enemies.AquamentusFolder
             spawnY = 3 * graphics.PreferredBackBufferHeight / 5;
             pos = new(spawnX, spawnY);
             moveDelay = rnd.Next(1, 4);
-            fireballs.Add(new AquamentusFireball(pos, game, 225));
-            fireballs.Add(new AquamentusFireball(pos, game, 180));
-            fireballs.Add(new AquamentusFireball(pos, game, 135));
+            fireballs.Add(new AquamentusFireball(pos, game, midAngle + 45));
+            fireballs.Add(new AquamentusFireball(pos, game, midAngle));
+            fireballs.Add(new AquamentusFireball(pos, game, midAngle - 45));
             fireballs.ForEach(fireball => fireball.FireballSpriteDict.Enabled = false);
 
         }

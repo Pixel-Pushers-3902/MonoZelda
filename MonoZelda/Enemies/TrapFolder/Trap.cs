@@ -34,6 +34,7 @@ namespace MonoZelda.Enemies.TrapFolder
             pos.X = spawnX;
             pos.Y = spawnY;
             trapSpriteDict.SetSprite("cloud");
+            trapSpriteDict.Position = pos;
             spawning = true;
             startTime = gameTime.TotalGameTime.TotalSeconds;
         }
