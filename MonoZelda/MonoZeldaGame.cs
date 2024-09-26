@@ -26,7 +26,6 @@ public class MonoZeldaGame : Game
     private KeyboardController keyboardController;
     private MouseController mouseController;
     private CommandManager commandManager;
-    private GameState currentState;
 
     private IScene scene;
 
@@ -35,14 +34,11 @@ public class MonoZeldaGame : Game
         graphicsDeviceManager = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        currentState = GameState.Title;
 
         commandManager = new CommandManager();
 
-        // Exit Command needs the game reference
+        // Commands that use MonoZeldaGame reference
         commandManager.ReplaceCommand(CommandEnum.ExitCommand, new ExitCommand(this));
-
-        // Start game command
         commandManager.ReplaceCommand(CommandEnum.StartCommand, new StartGameCommand(this));
         commandManager.ReplaceCommand(CommandEnum.ResetCommand, new ResetCommand(this));
 
@@ -52,6 +48,7 @@ public class MonoZeldaGame : Game
 
     protected override void Initialize()
     {
+        // 4x the native game resolution
         graphicsDeviceManager.PreferredBackBufferWidth = 1024;
         graphicsDeviceManager.PreferredBackBufferHeight = 896;
         graphicsDeviceManager.ApplyChanges();
@@ -63,7 +60,7 @@ public class MonoZeldaGame : Game
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        // Load the first scene
+        // Start menu goes first
         StartMenu();
     }
 
@@ -71,7 +68,6 @@ public class MonoZeldaGame : Game
     {
         keyboardController.Update();
         mouseController.Update();
-
         scene.Update(gameTime);
 
         base.Update(gameTime);
@@ -81,10 +77,9 @@ public class MonoZeldaGame : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        // Sprite drawing based on state
         spriteBatch.Begin();
 
-        //call to SpriteDrawer to draw all SpriteDicts
+        // SpriteDrawer draws all SpriteDicts
         SpriteDrawer.Draw(spriteBatch, gameTime);
 
         spriteBatch.End();
