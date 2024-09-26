@@ -64,6 +64,8 @@ public class KeyboardController : IController
 
     public bool Update()
     {
+        currentKeyboardState = Keyboard.GetState();
+
         commandManager.SetController(this);
         GameState newState = gameState;
         if (currentKeyboardState.IsKeyDown(Keys.Q))
@@ -118,7 +120,7 @@ public class KeyboardController : IController
             }
             else if (OneShotPressed(Keys.Enter))
             {
-                newState = commandManager.Execute(CommandEnum.StartGame);
+                newState = commandManager.Execute(CommandEnum.StartCommand);
             }
             else
             if (attackFrames == 0)

@@ -14,6 +14,11 @@ public class EnemyCycleCommand : ICommand
     {
     }
 
+    public EnemyCycleCommand(EnemyCycler enemyCycler)
+    {
+        this.enemyCycler = enemyCycler;
+    }
+
     public GameState Execute()
     {
         // Apply cycle addition to enemy list

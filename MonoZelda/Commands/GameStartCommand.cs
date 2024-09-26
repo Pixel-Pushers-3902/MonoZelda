@@ -1,22 +1,26 @@
-﻿using System;
-using System.Diagnostics;
-using MonoZelda.Player;
-using PixelPushers.MonoZelda.Controllers;
+﻿using PixelPushers.MonoZelda.Controllers;
 
 namespace PixelPushers.MonoZelda.Commands;
 
-public class GameStartCommand : ICommand
+public class StartGameCommand : ICommand
 {
     private IController _controller;
+    private MonoZeldaGame _game;
 
-    public GameStartCommand()
+    public StartGameCommand()
     {
 
     }
 
+    public StartGameCommand(MonoZeldaGame game)
+    {
+        _game = game;
+    }
+
     public GameState Execute()
     {
-        // TODO: Anti-pattern. Should be like _game.Start();
+        _game?.StartDungeon();
+
         return GameState.Start;
     }
 

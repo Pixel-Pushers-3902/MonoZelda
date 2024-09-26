@@ -19,7 +19,7 @@ public enum CommandEnum
     PlayerUseItemCommand,
     ResetCommand,
     PlayerStandingCommand,
-    StartGame,
+    StartCommand,
     None
 }
 
@@ -39,7 +39,7 @@ public class CommandManager
         AddCommand(CommandEnum.PlayerUseItemCommand, new PlayerUseItemCommand());
         AddCommand(CommandEnum.PlayerStandingCommand, new PlayerStandingCommand());
         AddCommand(CommandEnum.ResetCommand, new ResetCommand());
-        AddCommand(CommandEnum.StartGame, new GameStartCommand());
+        AddCommand(CommandEnum.StartCommand, new StartGameCommand());
     }
 
     public Dictionary<CommandEnum, ICommand> CommandMap
