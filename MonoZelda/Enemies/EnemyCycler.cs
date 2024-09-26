@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoZelda.Enemies.AquamentusFolder;
+using MonoZelda.Enemies.DodongoFolder;
 using MonoZelda.Enemies.GelFolder;
 using MonoZelda.Enemies.GoriyaFolder;
 using MonoZelda.Enemies.KeeseFolder;
@@ -26,11 +27,13 @@ namespace MonoZelda.Enemies
         private GraphicsDeviceManager graphics;
         private double startTime;
         private bool changingSprite = false;
+        private readonly MonoZeldaGame myGame;
 
-        public EnemyCycler(CommandManager commandManager, GraphicsDeviceManager graphics)
+        public EnemyCycler(CommandManager commandManager, GraphicsDeviceManager graphics, MonoZeldaGame myGame)
         {
             this.commandManager = commandManager;
             this.graphics = graphics;
+            this.myGame = myGame;
         }
 
         public void SetSpriteDicts(SpriteDict spriteDict)
@@ -40,13 +43,14 @@ namespace MonoZelda.Enemies
             enemyArr = new IEnemy[]
             {
                 new Keese(spriteDict, graphics),
-                new Goriya(spriteDict, graphics),
+                new Goriya(spriteDict, graphics, myGame),
                 new Stalfos(spriteDict, graphics),
                 new Gel(spriteDict, graphics),
                 new Zol(spriteDict, graphics),
                 new Wallmaster(spriteDict, graphics),
                 new Rope(spriteDict, graphics),
                 new Aquamentus(spriteDict, graphics),
+                new Dodongo(spriteDict, graphics),
                 new Trap(spriteDict, graphics, TrapStateMachine.Direction.Left),
                 new Trap(spriteDict, graphics, TrapStateMachine.Direction.Right),
                 new Trap(spriteDict, graphics, TrapStateMachine.Direction.Up),

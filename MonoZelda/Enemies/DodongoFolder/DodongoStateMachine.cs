@@ -5,31 +5,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoZelda.Enemies.StalfosFolder
+namespace MonoZelda.Enemies.DodongoFolder
 {
-    public class StalfosStateMachine
+    public class DodongoStateMachine
     {
         public enum Direction { Left, Right, Up, Down }
 
-        private Direction stalfosDirection;
+        private Direction dodongoDirection;
 
         public void ChangeDirection(Direction newDirection)
         {
-            stalfosDirection = newDirection;
+            dodongoDirection = newDirection;
         }
 
         public Point Update(Point position, GraphicsDeviceManager graphics)
         {
-            switch (stalfosDirection)
+            switch (dodongoDirection)
             {
                 case Direction.Left:
-                    if (position.X >= 0 + 64)
+                    if (position.X >= 0 + 32)
                     {
                         position.X -= 1;
                     }
                     break;
                 case Direction.Right:
-                    if (position.X <= graphics.PreferredBackBufferWidth - 64)
+                    if (position.X <= graphics.PreferredBackBufferWidth - 32)
                     {
                         position.X += 1;
                     }

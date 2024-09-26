@@ -19,11 +19,13 @@ namespace MonoZelda.Enemies.GoriyaFolder
         private readonly int spawnY;
         private bool spawning = true;
 
+        private GoriyaBoomerang boomerang;
+
         private double startTime = 0;
         private double attackDelay = 0;
         private double attackTime = 0;
 
-        public Goriya(SpriteDict spriteDict, GraphicsDeviceManager graphics)
+        public Goriya(SpriteDict spriteDict, GraphicsDeviceManager graphics, MonoZeldaGame game)
         {
             this.graphics = graphics;
             this.goriyaSpriteDict = spriteDict;
@@ -31,6 +33,7 @@ namespace MonoZelda.Enemies.GoriyaFolder
             spawnX = 3 * graphics.PreferredBackBufferWidth / 5;
             spawnY = 3 * graphics.PreferredBackBufferHeight / 5;
             pos = new(spawnX, spawnY);
+            boomerang = new GoriyaBoomerang(pos,game);
         }
 
 
@@ -50,10 +53,12 @@ namespace MonoZelda.Enemies.GoriyaFolder
 
         public void Attack(GameTime gameTime)
         {
-            stateMachine.Attack();
-            if (gameTime.TotalGameTime.TotalSeconds >= attackDelay + 6)
+            boomerang.BoomerangSpriteDict.Enabled = true;
+            boomerang.Update(gameTime,direction,attackDelay);
+            if (gameTime.TotalGameTime.TotalSeconds >= attackDelay + 5)
             {
                 attackDelay = gameTime.TotalGameTime.TotalSeconds;
+                boomerang.BoomerangSpriteDict.Enabled = false;
             }
         }
 
@@ -83,7 +88,7 @@ namespace MonoZelda.Enemies.GoriyaFolder
                     ChangeDirection();
                     stateMachine.UpdateSprite(goriyaSpriteDict);
                 }
-
+                boomerang.Follow(pos);
                 pos = stateMachine.Update(pos, goriyaSpriteDict, graphics);
                 goriyaSpriteDict.Position = pos;
             }
