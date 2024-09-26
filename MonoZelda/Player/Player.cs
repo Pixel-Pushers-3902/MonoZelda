@@ -159,16 +159,16 @@ public class Player : IPlayer
             switch (playerDirection)
             {
                 case Direction.Up:
-                    playerSpriteDict.SetSprite("magicshield_up");
+                    playerSpriteDict.SetSprite("hurt_up");
                     break;
                 case Direction.Down:
-                    playerSpriteDict.SetSprite("magicshield_down");
+                    playerSpriteDict.SetSprite("hurt_down");
                     break;
                 case Direction.Left:
-                    playerSpriteDict.SetSprite("magicshield_left");
+                    playerSpriteDict.SetSprite("hurt_left");
                     break;
                 case Direction.Right:
-                    playerSpriteDict.SetSprite("magicshield_right");
+                    playerSpriteDict.SetSprite("hurt_right");
                     break;
             }
         }
