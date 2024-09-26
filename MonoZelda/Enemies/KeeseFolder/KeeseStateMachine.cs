@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using PixelPushers.MonoZelda;
 
 namespace MonoZelda.Enemies.KeeseFolder;
 

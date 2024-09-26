@@ -1,50 +1,44 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace MonoZelda.Enemies.TrapFolder
+namespace MonoZelda.Enemies.DodongoFolder
 {
-    public class TrapStateMachine
+    public class DodongoStateMachine
     {
-        public enum Direction { Left, Right, Up, Down, None}
+        public enum Direction { Left, Right, Up, Down }
 
-        private Direction trapDirection;
-        private int speed;
+        private Direction dodongoDirection;
 
         public void ChangeDirection(Direction newDirection)
         {
-            trapDirection = newDirection;
-        }
-
-        public void ChangeSpeed(int newSpeed)
-        {
-            speed = newSpeed;
+            dodongoDirection = newDirection;
         }
 
         public Point Update(Point position, GraphicsDeviceManager graphics)
         {
-            switch (trapDirection)
+            switch (dodongoDirection)
             {
                 case Direction.Left:
                     if (position.X >= 0 + 32)
                     {
-                        position.X -= speed;
+                        position.X -= 1;
                     }
                     break;
                 case Direction.Right:
                     if (position.X <= graphics.PreferredBackBufferWidth - 32)
                     {
-                        position.X += speed;
+                        position.X += 1;
                     }
                     break;
                 case Direction.Up:
                     if (position.Y >= 0 + 32)
                     {
-                        position.Y -= speed;
+                        position.Y -= 1;
                     }
                     break;
                 case Direction.Down:
                     if (position.Y <= graphics.PreferredBackBufferHeight - 32)
                     {
-                        position.Y += speed;
+                        position.Y += 1;
                     }
                     break;
             }

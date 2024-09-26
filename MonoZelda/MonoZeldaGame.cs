@@ -53,7 +53,7 @@ public class MonoZeldaGame : Game
         keyboardController = new KeyboardController(commandManager);
         mouseController = new MouseController(commandManager);
 
-        enemyCycler = new EnemyCycler(commandManager, graphics);
+        enemyCycler = new EnemyCycler(commandManager, graphics, this);
         EnemyCycleCommand enemyCycleCommand = (EnemyCycleCommand) commandManager.CommandMap[CommandEnum.EnemyCycleCommand];
         enemyCycleCommand.SetCycler(enemyCycler);
 

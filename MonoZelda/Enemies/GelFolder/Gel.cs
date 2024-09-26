@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using PixelPushers.MonoZelda.Sprites;
-using PixelPushers.MonoZelda;
 
 namespace MonoZelda.Enemies.GelFolder
 {
@@ -19,6 +14,7 @@ namespace MonoZelda.Enemies.GelFolder
         private readonly GraphicsDeviceManager graphics;
         private readonly int spawnX;
         private readonly int spawnY;
+        private bool spawning;
 
         private double startTime = 0;
         private int jumpCount;
@@ -36,12 +32,14 @@ namespace MonoZelda.Enemies.GelFolder
         }
 
 
-        public void SetOgPos() //sets to spawn position (eventually could be used for re-entering rooms)
+        public void SetOgPos(GameTime gameTime) //sets to spawn position (eventually could be used for re-entering rooms)
         {
             pos.X = spawnX;
             pos.Y = spawnY;
             gelSpriteDict.Position = pos;
-            gelSpriteDict.SetSprite("gel_turquoise");
+            gelSpriteDict.SetSprite("cloud");
+            spawning = true;
+            startTime = gameTime.TotalGameTime.TotalSeconds;
         }
 
         public void ChangeDirection()
@@ -50,9 +48,19 @@ namespace MonoZelda.Enemies.GelFolder
         }
 
 
-        public void Update(GameTime gameTime) //might eventually split this into multiple methods, controlling random movement is more extensive than I thought.
+        public void Update(GameTime gameTime) //too long
         {
-            if (readyToJump)
+            if (spawning)
+            {
+                if (gameTime.TotalGameTime.TotalSeconds >= startTime + 0.3)
+                {
+                    startTime = gameTime.TotalGameTime.TotalSeconds;
+                    readyToJump = true;
+                    spawning = false;
+                    gelSpriteDict.SetSprite("gel_turquoise");
+                }
+            }
+            else if (readyToJump)
             {
                 switch (rnd.Next(1, 5))
                 {
@@ -69,28 +77,29 @@ namespace MonoZelda.Enemies.GelFolder
                         direction = GelStateMachine.Direction.Down;
                         break;
                 }
-
+                ChangeDirection();
                 startTime = gameTime.TotalGameTime.TotalSeconds;
                 readyToJump = false;
+            }
+            else if (gameTime.TotalGameTime.TotalSeconds >= startTime + jumpCount)
+            {
+                direction = GelStateMachine.Direction.None;
                 ChangeDirection();
+                if (gameTime.TotalGameTime.TotalSeconds >= startTime + jumpCount + 0.75)
+                {
+                    readyToJump = true;
+                    jumpCount = rnd.Next(1, 4);
+                }
             }
             else
             {
-                if (gameTime.TotalGameTime.TotalSeconds >= startTime + jumpCount)
-                {
-                    direction = GelStateMachine.Direction.None;
-                    ChangeDirection();
-                    if (gameTime.TotalGameTime.TotalSeconds >= startTime + jumpCount + 0.75)
-                    {
-                        readyToJump = true;
-                        jumpCount = rnd.Next(1, 4);
-                    }
-                }
+                pos = stateMachine.Update(pos, graphics);
+                gelSpriteDict.Position = pos;
             }
-
-            pos = stateMachine.Update(pos,graphics);
-            gelSpriteDict.Position = pos;
         }
-        
+
+        public void DisableProjectile()
+        {
+        }
     }
 }
