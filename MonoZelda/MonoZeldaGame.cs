@@ -52,6 +52,10 @@ public class MonoZeldaGame : Game
 
     protected override void Initialize()
     {
+        graphicsDeviceManager.PreferredBackBufferWidth = 1024;
+        graphicsDeviceManager.PreferredBackBufferHeight = 896;
+        graphicsDeviceManager.ApplyChanges();
+
         base.Initialize();
     }
 
