@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoZelda.Player;
 using PixelPushers.MonoZelda.Commands;
 using System.Diagnostics;
+using System.Diagnostics.Tracing;
 
 
 namespace PixelPushers.MonoZelda.Controllers;
@@ -14,17 +15,9 @@ public class KeyboardController : IController
     private GameState gameState;
     private CommandManager commandManager;
 
-    //temp
-    private int attackFrames;
-    private int useItemFrames;
-    private int takeDamageFrames;
-
     public KeyboardController(CommandManager commandManager)
     {
         gameState = GameState.Title;
-        attackFrames = 0;
-        useItemFrames = 0;
-        takeDamageFrames = 0;
         this.commandManager = commandManager;
     }
 
@@ -82,34 +75,13 @@ public class KeyboardController : IController
         }
         else
         {
-
-            // Player attack input
-            if (attackFrames > 0)
-            {
-                PlayerAttackCommand playerAttackCommand = (PlayerAttackCommand)commandManager.CommandMap[CommandEnum.PlayerAttackCommand];
-                playerAttackCommand.SetAttackIndex(0);
-                commandManager.Execute(CommandEnum.PlayerAttackCommand);
-                attackFrames--; // Decrement the hold counter
-            }
-            if (useItemFrames > 0)
+            // Check for Player item swap input
+            if (OneShotPressed(Keys.D1))
             {
                 // Player item 1 equipd
                 PlayerUseItemCommand playerUseItemCommand = (PlayerUseItemCommand)commandManager.CommandMap[CommandEnum.PlayerUseItemCommand];
                 playerUseItemCommand.SetItemIndex(1);
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
-                useItemFrames--;
-            }
-            if (takeDamageFrames > 0)
-            {
-                PlayerTakeDamageCommand playerTakeDamageCommand = (PlayerTakeDamageCommand)commandManager.CommandMap[CommandEnum.PlayerTakeDamageCommand];
-                playerTakeDamageCommand.SetDamage(10);
-                commandManager.Execute(CommandEnum.PlayerTakeDamageCommand);
-                takeDamageFrames--;
-            }
-            // Check for Player item swap input
-            if (OneShotPressed(Keys.D1))
-            {
-                useItemFrames = 20;
             }
             else if (OneShotPressed(Keys.D2))
             {
@@ -137,8 +109,7 @@ public class KeyboardController : IController
                 newState = commandManager.Execute(CommandEnum.StartGame);
             }
             else
-            if (attackFrames == 0 && useItemFrames==0 && takeDamageFrames ==0)
-            {
+      
                 // Check for Player movement input
                 if (currentKeyboardState.IsKeyDown(Keys.W) || currentKeyboardState.IsKeyDown(Keys.Up))
                 {
@@ -175,24 +146,30 @@ public class KeyboardController : IController
                     commandManager.Execute(CommandEnum.PlayerStandingCommand);
                     
                 }
-            }
+            
            
 
             // Check for Player attack input
             if (OneShotPressed(Keys.Z))
             {
-                
-                attackFrames = 20; 
+
+                PlayerAttackCommand playerAttackCommand = (PlayerAttackCommand)commandManager.CommandMap[CommandEnum.PlayerAttackCommand];
+                playerAttackCommand.SetAttackIndex(0);
+                commandManager.Execute(CommandEnum.PlayerAttackCommand);
             }
             else if (OneShotPressed(Keys.N))
             {
-                attackFrames = 20;
+                PlayerAttackCommand playerAttackCommand = (PlayerAttackCommand)commandManager.CommandMap[CommandEnum.PlayerAttackCommand];
+                playerAttackCommand.SetAttackIndex(1);
+                commandManager.Execute(CommandEnum.PlayerAttackCommand);
             }
 
             // Check for Player damage applied
             if (OneShotPressed(Keys.E))
             {
-               takeDamageFrames = 20;
+                PlayerTakeDamageCommand playerTakeDamageCommand = (PlayerTakeDamageCommand)commandManager.CommandMap[CommandEnum.PlayerTakeDamageCommand];
+                playerTakeDamageCommand.SetDamage(10);
+                commandManager.Execute(CommandEnum.PlayerTakeDamageCommand);
             }
 
             // Check for Block / Obstacle cycle input
