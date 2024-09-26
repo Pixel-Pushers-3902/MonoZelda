@@ -184,9 +184,4 @@ public class Player : IPlayer
         get { return playerDirection; }
     }
 
-    public int Frames
-    {
-        get { return frames; }
-    }
-
 }
