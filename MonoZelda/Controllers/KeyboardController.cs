@@ -16,11 +16,15 @@ public class KeyboardController : IController
 
     //temp
     private int attackFrames;
+    private int useItemFrames;
+    private int takeDamageFrames;
 
     public KeyboardController(CommandManager commandManager)
     {
         gameState = GameState.Title;
         attackFrames = 0;
+        useItemFrames = 0;
+        takeDamageFrames = 0;
         this.commandManager = commandManager;
     }
 
@@ -87,13 +91,25 @@ public class KeyboardController : IController
                 commandManager.Execute(CommandEnum.PlayerAttackCommand);
                 attackFrames--; // Decrement the hold counter
             }
+            if (useItemFrames > 0)
+            {
+                // Player item 1 equipd
+                PlayerUseItemCommand playerUseItemCommand = (PlayerUseItemCommand)commandManager.CommandMap[CommandEnum.PlayerUseItemCommand];
+                playerUseItemCommand.SetItemIndex(1);
+                commandManager.Execute(CommandEnum.PlayerUseItemCommand);
+                useItemFrames--;
+            }
+            if (takeDamageFrames > 0)
+            {
+                PlayerTakeDamageCommand playerTakeDamageCommand = (PlayerTakeDamageCommand)commandManager.CommandMap[CommandEnum.PlayerTakeDamageCommand];
+                playerTakeDamageCommand.SetDamage(10);
+                commandManager.Execute(CommandEnum.PlayerTakeDamageCommand);
+                takeDamageFrames--;
+            }
             // Check for Player item swap input
             if (OneShotPressed(Keys.D1))
             {
-                // Player item 1 equip
-                PlayerUseItemCommand playerUseItemCommand = (PlayerUseItemCommand) commandManager.CommandMap[CommandEnum.PlayerUseItemCommand];
-                playerUseItemCommand.SetItemIndex(1);
-                commandManager.Execute(CommandEnum.PlayerUseItemCommand);
+                useItemFrames = 20;
             }
             else if (OneShotPressed(Keys.D2))
             {
@@ -121,7 +137,7 @@ public class KeyboardController : IController
                 newState = commandManager.Execute(CommandEnum.StartGame);
             }
             else
-            if (attackFrames == 0)
+            if (attackFrames == 0 && useItemFrames==0 && takeDamageFrames ==0)
             {
                 // Check for Player movement input
                 if (currentKeyboardState.IsKeyDown(Keys.W) || currentKeyboardState.IsKeyDown(Keys.Up))
@@ -176,9 +192,7 @@ public class KeyboardController : IController
             // Check for Player damage applied
             if (OneShotPressed(Keys.E))
             {
-                PlayerTakeDamageCommand playerTakeDamageCommand = (PlayerTakeDamageCommand) commandManager.CommandMap[CommandEnum.PlayerTakeDamageCommand];
-                playerTakeDamageCommand.SetDamage(10);
-                commandManager.Execute(CommandEnum.PlayerTakeDamageCommand);
+               takeDamageFrames = 20;
             }
 
             // Check for Block / Obstacle cycle input

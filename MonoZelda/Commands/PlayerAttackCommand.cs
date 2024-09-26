@@ -24,7 +24,7 @@ public class PlayerAttackCommand : ICommand
     public GameState Execute()
     {
         Debug.WriteLine("Player using attack " + attackIdx);
-        player.AttackingPlayer(this);
+        player.AttackingPlayer();
         // Keep GameState the same inside the controller
         return controller.GameState;
     }
