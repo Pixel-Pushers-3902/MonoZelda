@@ -46,7 +46,7 @@ namespace MonoZelda.Enemies.RopeFolder
         {
             if (pos.X >= graphics.PreferredBackBufferWidth - 32 || pos.X <= 0 + 32)
             {
-                switch (rnd.Next(1,3))
+                switch (rnd.Next(1, 3))
                 {
                     case 1:
                         direction = RopeStateMachine.Direction.Up;
@@ -55,9 +55,10 @@ namespace MonoZelda.Enemies.RopeFolder
                         direction = RopeStateMachine.Direction.Down;
                         break;
                 }
+                ChangeDirection();
             }
 
-            if (pos.Y >= graphics.PreferredBackBufferHeight - -32 || pos.Y <= 0 + 32)
+            if (pos.Y >= graphics.PreferredBackBufferHeight - 32 || pos.Y <= 0 + 32)
             {
                 switch (rnd.Next(1, 3))
                 {
@@ -70,9 +71,9 @@ namespace MonoZelda.Enemies.RopeFolder
                         ropeSpriteDict.SetSprite("rope_right");
                         break;
                 }
+                ChangeDirection();
             }
-
-            pos = stateMachine.Update(pos);
+            pos = stateMachine.Update(pos, graphics);
             ropeSpriteDict.Position = pos;
         }
     }
