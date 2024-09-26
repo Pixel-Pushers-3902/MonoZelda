@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
@@ -24,6 +24,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Update="Content\Source Rect CSVs\Sprite Source Rects - Enemies.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\Source Rect CSVs\Sprite Source Rects - Items.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Content\Source Rect CSVs\Sprite Source Rects - Player.csv">
