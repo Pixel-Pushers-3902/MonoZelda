@@ -31,6 +31,7 @@ croissant,160,0,8,16,1,top left
 ruler,168,0,8,16,1,top left
 logs,176,0,16,16,1,top left
 ladder,192,0,16,16,1,top left
+fire,176,16,16,16,2,top left
 magicrod,208,0,8,16,1,top left
 book,216,0,8,16,1,top left
 key_0,224,0,8,16,1,top left

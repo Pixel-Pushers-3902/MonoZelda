@@ -1,9 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoZelda.Enemies.StalfosFolder
 {
@@ -23,13 +18,13 @@ namespace MonoZelda.Enemies.StalfosFolder
             switch (stalfosDirection)
             {
                 case Direction.Left:
-                    if (position.X >= 0 + 32)
+                    if (position.X >= 0 + 64)
                     {
                         position.X -= 1;
                     }
                     break;
                 case Direction.Right:
-                    if (position.X <= graphics.PreferredBackBufferWidth - 32)
+                    if (position.X <= graphics.PreferredBackBufferWidth - 64)
                     {
                         position.X += 1;
                     }

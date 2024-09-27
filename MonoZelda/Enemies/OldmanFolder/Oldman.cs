@@ -1,11 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using MonoZelda.Enemies.StalfosFolder;
 using PixelPushers.MonoZelda.Sprites;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoZelda.Enemies.OldmanFolder
 {
@@ -15,6 +9,8 @@ namespace MonoZelda.Enemies.OldmanFolder
         private SpriteDict oldmanSpriteDict;
         private readonly int spawnX;
         private readonly int spawnY;
+        private bool spawning;
+        private double startTime;
 
         public Oldman(SpriteDict spriteDict, GraphicsDeviceManager graphics)
         {
@@ -24,12 +20,14 @@ namespace MonoZelda.Enemies.OldmanFolder
             pos = new(spawnX, spawnY);
 
         }
-        public void SetOgPos()
+        public void SetOgPos(GameTime gameTime)
         {
             pos.X = spawnX;
             pos.Y = spawnY;
             oldmanSpriteDict.Position = pos;
-            oldmanSpriteDict.SetSprite("oldman");
+            oldmanSpriteDict.SetSprite("cloud");
+            spawning = true;
+            startTime = gameTime.TotalGameTime.TotalSeconds;
         }
 
         public void ChangeDirection()
@@ -37,6 +35,18 @@ namespace MonoZelda.Enemies.OldmanFolder
         }
 
         public void Update(GameTime gameTime)
+        {
+            if (spawning)
+            {
+                if (gameTime.TotalGameTime.TotalSeconds >= startTime + 0.3)
+                {
+                    spawning = false;
+                    oldmanSpriteDict.SetSprite("oldman");
+                }
+            }
+        }
+
+        public void DisableProjectile()
         {
         }
     }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using PixelPushers.MonoZelda.Sprites;
 
@@ -11,13 +7,14 @@ namespace MonoZelda.Enemies.ZolFolder
     public class Zol : IEnemy
     {
         private readonly ZolStateMachine stateMachine;
-        private Point pos; // will change later
+        private Point pos;
         private readonly Random rnd = new();
         private readonly SpriteDict zolSpriteDict;
         private ZolStateMachine.Direction direction = ZolStateMachine.Direction.Left;
         private readonly GraphicsDeviceManager graphics;
         private readonly int spawnX;
         private readonly int spawnY;
+        private bool spawning;
 
         private double startTime = 0;
         private bool readyToJump = true;
@@ -33,12 +30,18 @@ namespace MonoZelda.Enemies.ZolFolder
         }
 
 
-        public void SetOgPos() //sets to spawn position (eventually could be used for re-entering rooms)
+        public void SetOgPos(GameTime gameTime) //sets to spawn position (eventually could be used for re-entering rooms)
         {
             pos.X = spawnX;
             pos.Y = spawnY;
             zolSpriteDict.Position = pos;
-            zolSpriteDict.SetSprite("zol_green");
+            zolSpriteDict.SetSprite("cloud");
+            spawning = true;
+            startTime = gameTime.TotalGameTime.TotalSeconds;
+        }
+
+        public void DisableProjectile()
+        {
         }
 
         public void ChangeDirection()
@@ -47,9 +50,19 @@ namespace MonoZelda.Enemies.ZolFolder
         }
 
 
-        public void Update(GameTime gameTime) //might eventually split this into multiple methods, controlling random movement is more extensive than I thought.
+        public void Update(GameTime gameTime) //too long
         {
-            if (readyToJump)
+            if (spawning)
+            {
+                if (gameTime.TotalGameTime.TotalSeconds >= startTime + 0.3)
+                {
+                    startTime = gameTime.TotalGameTime.TotalSeconds;
+                    spawning = false;
+                    readyToJump = true;
+                    zolSpriteDict.SetSprite("zol_green");
+                }
+            }
+            else if (readyToJump)
             {
                 switch (rnd.Next(1, 5))
                 {
@@ -71,21 +84,20 @@ namespace MonoZelda.Enemies.ZolFolder
                 readyToJump = false;
                 ChangeDirection();
             }
-            else
+            else if (gameTime.TotalGameTime.TotalSeconds >= startTime + 1)
             {
-                if (gameTime.TotalGameTime.TotalSeconds >= startTime + 1)
+                direction = ZolStateMachine.Direction.None;
+                ChangeDirection();
+                if (gameTime.TotalGameTime.TotalSeconds >= startTime + 2)
                 {
-                    direction = ZolStateMachine.Direction.None;
-                    ChangeDirection();
-                    if (gameTime.TotalGameTime.TotalSeconds >= startTime + 2)
-                    {
-                        readyToJump = true;
-                    }
+                    readyToJump = true;
                 }
             }
-
-            pos = stateMachine.Update(pos, graphics);
-            zolSpriteDict.Position = pos;
+            else
+            {
+                pos = stateMachine.Update(pos, graphics);
+                zolSpriteDict.Position = pos;
+            }
         }
     }
 }
