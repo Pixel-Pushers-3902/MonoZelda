@@ -84,7 +84,7 @@ public class KeyboardController : IController
             {
                 // Player item 1 equipd
                 PlayerUseItemCommand playerUseItemCommand = (PlayerUseItemCommand)commandManager.CommandMap[CommandEnum.PlayerUseItemCommand];
-                playerUseItemCommand.SetItemIndex(1);
+                playerUseItemCommand.SetProjectile(1);
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
             else if (OneShotPressed(Keys.D2) && !projectileFired)

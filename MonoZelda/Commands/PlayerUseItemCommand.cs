@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using MonoZelda.Player;
+using PixelPushers.MonoZelda.Link;
 using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Link.Projectiles;
 
@@ -9,8 +9,6 @@ namespace PixelPushers.MonoZelda.Commands;
 
 public class PlayerUseItemCommand : ICommand
 {
-    IController controller;
-    int itemIdx;
     Player player;  
     private IController controller;
     private int itemIdx;
@@ -22,13 +20,9 @@ public class PlayerUseItemCommand : ICommand
     {
     }
 
-    public PlayerUseItemCommand(Projectile projectiles)
+    public PlayerUseItemCommand(Projectile projectile, Player player)
     {
-        this.projectiles = projectiles;
-    }
-
-    public PlayerUseItemCommand(Player player)
-    {
+        this.projectiles = projectile;
         this.player = player;
     }
 
