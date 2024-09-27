@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using Microsoft.Xna.Framework;
 using PixelPushers.MonoZelda.Link;
 using PixelPushers.MonoZelda.Controllers;
 

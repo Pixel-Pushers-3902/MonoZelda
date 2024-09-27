@@ -26,27 +26,6 @@ public class ArrowBlue : Projectile, ILaunch
         InitialPosition = SetInitialPosition(Dimension);
     }
 
-    public void Launch()
-    {
-        if (tilesTraveled < 5)
-        {
-            updatePosition();
-            projectileDict.Position = projectilePosition.ToPoint();
-            updateTilesTraveled();
-        }
-        else if (tilesTraveled == 5)
-        {
-            SetProjectileSprite("poof");
-            tilesTraveled = 6;
-        }
-        else if (tilesTraveled == 6)
-        {
-            projectileDict.Enabled = false;
-            Finished = reachedDistance();
-        }
-
-    }
-
     private void updatePosition()
     {
         switch (playerDirection)
@@ -77,6 +56,27 @@ public class ArrowBlue : Projectile, ILaunch
             tilesTraveled++;
             InitialPosition = projectilePosition;
         }
+    }
+
+    public void Launch()
+    {
+        if (tilesTraveled < 5)
+        {
+            updatePosition();
+            projectileDict.Position = projectilePosition.ToPoint();
+            updateTilesTraveled();
+        }
+        else if (tilesTraveled == 5)
+        {
+            SetProjectileSprite("poof");
+            tilesTraveled = 6;
+        }
+        else if (tilesTraveled == 6)
+        {
+            projectileDict.Enabled = false;
+            Finished = reachedDistance();
+        }
+
     }
 
     public bool reachedDistance()

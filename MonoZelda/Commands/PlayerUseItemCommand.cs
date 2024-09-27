@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using PixelPushers.MonoZelda.Link;
 using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Link.Projectiles;
@@ -32,8 +31,6 @@ public class PlayerUseItemCommand : ICommand
         launchProjectile.Launch();
         System.Diagnostics.Debug.WriteLine("Player is launching Projectile: " + projectiles.CurrentProjectile);
 
-        Debug.WriteLine("Changing player item to " + itemIdx);
-        player.PlayerUseItem();
         // Keep GameState the same inside the controller
         return controller.GameState;
     }
@@ -41,6 +38,11 @@ public class PlayerUseItemCommand : ICommand
     public GameState UnExecute()
     {
         throw new NotImplementedException();
+    }
+
+    public void UseItem()
+    {
+        player.PlayerUseItem();
     }
 
     public void SetProjectile(int itemIdx)

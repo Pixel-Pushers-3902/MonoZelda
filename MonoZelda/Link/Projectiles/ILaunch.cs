@@ -2,7 +2,6 @@
 
 public interface ILaunch
 {
-	
 	void Launch();
 
 	bool hasFinished();

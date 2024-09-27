@@ -67,6 +67,7 @@ public class KeyboardController : IController
 
         commandManager.SetController(this);
         GameState newState = gameState;
+
         if (currentKeyboardState.IsKeyDown(Keys.Q))
         {
             // Exit Command
@@ -79,12 +80,21 @@ public class KeyboardController : IController
         }
         else
         {
+            if (projectileFired)
+            {
+                commandManager.Execute(CommandEnum.PlayerUseItemCommand);
+                projectileFired = !(projectileCommand.getProjectileState());
+            }
+
             // Check for Player item swap input
             if (OneShotPressed(Keys.D1) && !projectileFired)
             {
-                // Player item 1 equipd
+                // Player item 1 equip. Green Arrow
                 PlayerUseItemCommand playerUseItemCommand = (PlayerUseItemCommand)commandManager.CommandMap[CommandEnum.PlayerUseItemCommand];
                 playerUseItemCommand.SetProjectile(1);
+                projectileFired = true;
+                projectileCommand = playerUseItemCommand;
+                projectileCommand.UseItem();
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
             else if (OneShotPressed(Keys.D2) && !projectileFired)
@@ -94,6 +104,7 @@ public class KeyboardController : IController
                 playerUseItemCommand.SetProjectile(2);
                 projectileFired = true;
                 projectileCommand = playerUseItemCommand;
+                projectileCommand.UseItem();
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
             else if (OneShotPressed(Keys.D3) && !projectileFired)
@@ -103,6 +114,7 @@ public class KeyboardController : IController
                 playerUseItemCommand.SetProjectile(3);
                 projectileFired = true;
                 projectileCommand = playerUseItemCommand;
+                projectileCommand.UseItem();
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
             else if (OneShotPressed(Keys.D4) && !projectileFired)
@@ -112,6 +124,7 @@ public class KeyboardController : IController
                 playerUseItemCommand.SetProjectile(4);
                 projectileFired = true;
                 projectileCommand = playerUseItemCommand;
+                projectileCommand.UseItem();
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
             else if (OneShotPressed(Keys.D5) && !projectileFired)
@@ -121,6 +134,7 @@ public class KeyboardController : IController
                 playerUseItemCommand.SetProjectile(5);
                 projectileFired = true;
                 projectileCommand = playerUseItemCommand;
+                projectileCommand.UseItem();
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
             else if (OneShotPressed(Keys.D6) && !projectileFired)
@@ -130,6 +144,7 @@ public class KeyboardController : IController
                 playerUseItemCommand.SetProjectile(6);
                 projectileFired = true;
                 projectileCommand = playerUseItemCommand;
+                projectileCommand.UseItem();
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
             else if (OneShotPressed(Keys.Enter))

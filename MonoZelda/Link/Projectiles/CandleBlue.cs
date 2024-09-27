@@ -26,21 +26,6 @@ public class CandleBlue : Projectile, ILaunch
         InitialPosition = SetInitialPosition(Dimension);
     }
 
-    public void Launch()
-    {
-        if (tilesTraveled < 2)
-        {
-            updatePosition();
-            projectileDict.Position = projectilePosition.ToPoint();
-            updateTilesTraveled();
-        }
-        else if (tilesTraveled == 2)
-        {
-            projectileDict.Enabled = false;
-            Finished = reachedDistance();
-        }
-    }
-
     private void updatePosition()
     {
         switch (playerDirection)
@@ -66,6 +51,20 @@ public class CandleBlue : Projectile, ILaunch
         {
             tilesTraveled++;
             InitialPosition = projectilePosition;
+        }
+    }
+    public void Launch()
+    {
+        if (tilesTraveled < 2)
+        {
+            updatePosition();
+            projectileDict.Position = projectilePosition.ToPoint();
+            updateTilesTraveled();
+        }
+        else if (tilesTraveled == 2)
+        {
+            projectileDict.Enabled = false;
+            Finished = reachedDistance();
         }
     }
 
