@@ -22,5 +22,6 @@ namespace PixelPushers.MonoZelda.Sprites
         public static readonly string Items = "Content/Source Rect CSVs/Sprite Source Rects - Items.csv";
         public static readonly string Enemies = "Content/Source Rect CSVs/Sprite Source Rects - Enemies.csv";
         public static readonly string Title = "Content/Source Rect CSVs/Sprite Source Rects - Title.csv";
+        public static readonly string Projectiles = "Content/Source Rect CSVs/Sprite Source Rects - Projectiles.csv";
     }
 }
