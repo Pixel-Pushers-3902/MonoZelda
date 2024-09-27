@@ -32,6 +32,16 @@ internal static class SpriteDrawer
         //optimization: only sort list after all initial SpriteDicts are added
     }
 
+    public static void RemoveSpriteDict(SpriteDict spriteDict)
+    {
+        dicts.RemoveAll(x => x.spriteDict == spriteDict);
+    }
+
+    public static void Reset()
+    {
+        dicts.Clear();
+    }
+
     public static void Draw(SpriteBatch spriteBatch, GameTime gameTime)
     {
         foreach (var pair in dicts)

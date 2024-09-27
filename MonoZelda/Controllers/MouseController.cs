@@ -44,6 +44,7 @@ public class MouseController : IController
 
     public bool Update()
     {
+        MouseState = Mouse.GetState();
         GameState newState = gameState;
 
         // Mouse input logic goes here

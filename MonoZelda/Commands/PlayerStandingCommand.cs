@@ -24,8 +24,12 @@ namespace PixelPushers.MonoZelda.Commands
 
         public GameState Execute()
         {
-            this.lastDirection = player.PlayerDirection; 
-            player.StandingPlayer(this);
+            if (player != null)
+            {
+                lastDirection = player.PlayerDirection; 
+                player.StandingPlayer(this);
+            }
+
             return controller.GameState;
         }
 
