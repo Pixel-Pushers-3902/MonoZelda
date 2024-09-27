@@ -13,12 +13,10 @@ public class Player : IPlayer
     private SpriteDict playerSpriteDict;
     private Vector2 playerPostition;
     private float playerSpeed = 4.0f;
-    private const int AttackDurationInFrames = 10; 
-
+    private int frames;
     public Player()
     {
         playerPostition = new Vector2(100, 100);
-
     }
 
     
@@ -30,97 +28,157 @@ public class Player : IPlayer
 
     public void MovePlayer(PlayerMoveCommand moveCommand)
     {
+        if(frames == 0)
+        {
+            playerDirection = moveCommand.PlayerDirection;
+            Debug.WriteLine($"Player is moving in the {playerDirection} direction.");
+            playerPostition += playerSpeed * moveCommand.PlayerVector;
+            switch (playerDirection)
+            {
+                case Direction.Up:
+                    playerSpriteDict.SetSprite("walk_up");
+                    break;
+                case Direction.Down:
+                    playerSpriteDict.SetSprite("walk_down");
+                    break;
+                case Direction.Left:
+                    playerSpriteDict.SetSprite("walk_left");
+                    break;
+                case Direction.Right:
+                    playerSpriteDict.SetSprite("walk_right");
+                    break;
+            }
+            playerSpriteDict.Position = playerPostition.ToPoint();
+        }
+        else
+        {
+            frames--;
+        }
         
-        playerDirection = moveCommand.PlayerDirection;
-        Debug.WriteLine($"Player is moving in the {playerDirection} direction.");
-        playerPostition += playerSpeed * moveCommand.PlayerVector;
-        SetMovingPlayerSprite(moveCommand);
 
     }
     public void StandingPlayer(PlayerStandingCommand standCommand)
     {
-        playerDirection = standCommand.PlayerDirection;
-        SetStandingPlayerSprite(standCommand);
-    }
-
-    public void AttackingPlayer(PlayerAttackCommand attackCommand)
-    {
-        Debug.WriteLine("HES ATTACKING");
-        switch (playerDirection)
+        
+        if(frames == 0)
         {
-            case Direction.Up:
-                playerSpriteDict.SetSprite("woodensword_up");
-                break;
-            case Direction.Down:
-                playerSpriteDict.SetSprite("woodensword_down");
-                break;
-            case Direction.Left:
-                playerSpriteDict.SetSprite("woodensword_left");
-                break;
-            case Direction.Right:
-                playerSpriteDict.SetSprite("woodensword_right");
-                break;
+            playerDirection = standCommand.PlayerDirection;
+            switch (playerDirection)
+            {
+                case Direction.Up:
+                    playerSpriteDict.SetSprite("standing_up");
+                    break;
+                case Direction.Down:
+                    playerSpriteDict.SetSprite("standing_down");
+                    break;
+                case Direction.Left:
+                    playerSpriteDict.SetSprite("standing_left");
+                    break;
+                case Direction.Right:
+                    playerSpriteDict.SetSprite("standing_right");
+                    break;
+            }
         }
-    }
-
-
-    private void SetStandingPlayerSprite(PlayerStandingCommand standCommand)
-    {
-        if (playerSpriteDict == null)
+        else
         {
-            Debug.WriteLine("Warning: playerSpriteDict is not set.");
-            return;
+            frames--;
         }
-        switch (playerDirection)
-        {
-            case Direction.Up:
-                playerSpriteDict.SetSprite("standing_up");
-                break;
-            case Direction.Down:
-                playerSpriteDict.SetSprite("standing_down");
-                break;
-            case Direction.Left:
-                playerSpriteDict.SetSprite("standing_left");
-                break;
-            case Direction.Right:
-                playerSpriteDict.SetSprite("standing_right");
-                break;
-        }
+        
 
 
 
         playerSpriteDict.Position = playerPostition.ToPoint();
     }
 
-
-
-    private void SetMovingPlayerSprite(PlayerMoveCommand moveCommand)
+    public void AttackingPlayer()
     {
-        if (playerSpriteDict == null)
+        if (frames == 0)
         {
-            Debug.WriteLine("Warning: playerSpriteDict is not set.");
-            return;
+            Debug.WriteLine("HES ATTACKING");
+            frames = 20;
+            switch (playerDirection)
+            {
+                case Direction.Up:
+                    playerSpriteDict.SetSprite("woodensword_up");
+                    break;
+                case Direction.Down:
+                    playerSpriteDict.SetSprite("woodensword_down");
+                    break;
+                case Direction.Left:
+                    playerSpriteDict.SetSprite("woodensword_left");
+                    break;
+                case Direction.Right:
+                    playerSpriteDict.SetSprite("woodensword_right");
+                    break;
+            }
         }
-        switch (playerDirection)
+        else
         {
-            case Direction.Up:
-                playerSpriteDict.SetSprite("walk_up");
-                break;
-            case Direction.Down:
-                playerSpriteDict.SetSprite("walk_down");
-                break;
-            case Direction.Left:
-                playerSpriteDict.SetSprite("walk_left");
-                break;
-            case Direction.Right:
-                playerSpriteDict.SetSprite("walk_right");
-                break;
+            frames--;
         }
-
-
-
-        playerSpriteDict.Position = playerPostition.ToPoint();
+        
     }
+
+    public void PlayerUseItem()
+    {
+
+        if(frames == 0)
+        {
+            Debug.WriteLine("Use ITEM");
+            frames = 20;
+            switch (playerDirection)
+            {
+                case Direction.Up:
+                    playerSpriteDict.SetSprite("useitem_up");
+                    break;
+                case Direction.Down:
+                    playerSpriteDict.SetSprite("useitem_down");
+                    break;
+                case Direction.Left:
+                    playerSpriteDict.SetSprite("useitem_left");
+                    break;
+                case Direction.Right:
+                    playerSpriteDict.SetSprite("useitem_right");
+                    break;
+            }
+        }
+        else
+        {
+            frames--;
+        }
+        
+    }
+
+
+    public void PlayerTakeDamage()
+    {
+        if (frames == 0)
+        {
+            frames = 20;
+            Debug.WriteLine("Use take damage");
+            switch (playerDirection)
+            {
+                case Direction.Up:
+                    playerSpriteDict.SetSprite("hurt_up");
+                    break;
+                case Direction.Down:
+                    playerSpriteDict.SetSprite("hurt_down");
+                    break;
+                case Direction.Left:
+                    playerSpriteDict.SetSprite("hurt_left");
+                    break;
+                case Direction.Right:
+                    playerSpriteDict.SetSprite("hurt_right");
+                    break;
+            }
+        }
+        else
+        {
+            frames--;
+        }
+        
+    }
+
     public Direction PlayerDirection
     {
         get { return playerDirection; }
