@@ -44,11 +44,6 @@ public class MonoZeldaGame : Game
 
         keyboardController = new KeyboardController(commandManager);
         mouseController = new MouseController(commandManager);
-
-        enemyCycler = new EnemyCycler(commandManager, graphics, this);
-        EnemyCycleCommand enemyCycleCommand = (EnemyCycleCommand) commandManager.CommandMap[CommandEnum.EnemyCycleCommand];
-        enemyCycleCommand.SetCycler(enemyCycler);
-
     }
 
     protected override void Initialize()
@@ -110,7 +105,8 @@ public class MonoZeldaGame : Game
         // Preventing the StartCommand from activating when it shouldn't. -js
         if (scene is MainMenu)
         {
-            LoadScene(new DungeonScene(GraphicsDevice, graphicsDeviceManager, commandManager));
+            // TODO: Passing MonoZeldaGame smells. It's used by some things to LoadContent, SpriteDict multiple AddSprite()
+            LoadScene(new DungeonScene(GraphicsDevice, graphicsDeviceManager, commandManager, this));
         }
     }
 }
