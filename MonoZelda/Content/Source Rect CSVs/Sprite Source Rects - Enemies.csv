@@ -41,10 +41,7 @@ bluesword_right,112,68,16,8,1,center
 rope_right,128,64,16,16,2,center
 rope_left,160,64,16,16,2,center
 bladetrap,192,64,16,16,1,center
-projectile_green,224,64,8,10,1,center
-projectile_blue,232,64,8,10,1,center
-projectile_red,240,64,8,10,1,center
-projectile_turquoise,248,64,8,10,1,center
+fireball,224,64,8,10,4,center
 lanmola_red_0,272,64,8,16,1,center
 lanmola_red_1,280,64,8,16,1,center
 lanmola_blue_0,288,64,8,16,1,center

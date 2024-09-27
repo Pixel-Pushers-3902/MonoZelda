@@ -1,4 +1,6 @@
-﻿using PixelPushers.MonoZelda.Controllers;
+﻿using System;
+using PixelPushers.MonoZelda.Link;
+using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Link.Projectiles;
 
 
@@ -6,6 +8,7 @@ namespace PixelPushers.MonoZelda.Commands;
 
 public class PlayerUseItemCommand : ICommand
 {
+    Player player;  
     private IController controller;
     private int itemIdx;
     private Projectile projectiles;
@@ -16,9 +19,10 @@ public class PlayerUseItemCommand : ICommand
     {
     }
 
-    public PlayerUseItemCommand(Projectile projectiles)
+    public PlayerUseItemCommand(Projectile projectile, Player player)
     {
-        this.projectiles = projectiles;
+        this.projectiles = projectile;
+        this.player = player;
     }
 
     public GameState Execute()
@@ -34,6 +38,11 @@ public class PlayerUseItemCommand : ICommand
     public GameState UnExecute()
     {
         throw new NotImplementedException();
+    }
+
+    public void UseItem()
+    {
+        player.PlayerUseItem();
     }
 
     public void SetProjectile(int itemIdx)

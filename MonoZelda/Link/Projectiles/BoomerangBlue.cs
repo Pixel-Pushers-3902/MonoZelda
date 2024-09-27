@@ -2,6 +2,7 @@
 using PixelPushers.MonoZelda.Sprites;
 using PixelPushers.MonoZelda.Commands;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace PixelPushers.MonoZelda.Link.Projectiles;
 
@@ -22,24 +23,6 @@ public class BoomerangBlue : Projectile, ILaunch
         Finished = false;
         SetProjectileSprite("boomerang_blue");
         InitialPosition = SetInitialPosition(Dimension);
-    }
-
-    public void Launch()
-    {
-        if (tilesTraveled < 5)
-        {
-            Forward();
-        }
-        else if (tilesTraveled >= 5 && tilesTraveled < 10)
-        {
-            Reverse();
-        }
-        else
-        {
-            Finished = reachedDistance();
-            projectileDict.Enabled = false;
-        }
-        projectileDict.Position = projectilePosition.ToPoint();
     }
 
     private void Forward()
@@ -90,6 +73,23 @@ public class BoomerangBlue : Projectile, ILaunch
             tilesTraveled++;
             InitialPosition = projectilePosition;
         }
+    }
+    public void Launch()
+    {
+        if (tilesTraveled < 5)
+        {
+            Forward();
+        }
+        else if (tilesTraveled >= 5 && tilesTraveled < 10)
+        {
+            Reverse();
+        }
+        else
+        {
+            Finished = reachedDistance();
+            projectileDict.Enabled = false;
+        }
+        projectileDict.Position = projectilePosition.ToPoint();
     }
 
     public bool reachedDistance()

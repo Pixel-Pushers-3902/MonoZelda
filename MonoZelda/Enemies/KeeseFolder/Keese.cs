@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using PixelPushers.MonoZelda;
 using PixelPushers.MonoZelda.Sprites;
 
 namespace MonoZelda.Enemies.KeeseFolder
@@ -9,14 +8,16 @@ namespace MonoZelda.Enemies.KeeseFolder
     {
         private readonly KeeseStateMachine stateMachine;
         private readonly Random rnd = new();
-        private Point pos; //will change
+        private Point pos;
         private SpriteDict keeseSpriteDict;
         private KeeseStateMachine.VertDirection vertDirection = KeeseStateMachine.VertDirection.None;
         private KeeseStateMachine.HorDirection horDirection = KeeseStateMachine.HorDirection.None;
-        private double startTime = 0;
         private readonly GraphicsDeviceManager graphics;
         private readonly int spawnX;
         private readonly int spawnY;
+        private bool spawning = true;
+
+        private double startTime = 0;
 
         public Keese(SpriteDict spriteDict, GraphicsDeviceManager graphics)
         {
@@ -30,12 +31,14 @@ namespace MonoZelda.Enemies.KeeseFolder
         }
 
 
-        public void SetOgPos() //sets to spawn position (eventually could be used for re-entering rooms)
+        public void SetOgPos(GameTime gameTime) //sets to spawn position (eventually could be used for re-entering rooms)
         {
             pos.X = spawnX;
             pos.Y = spawnY;
             keeseSpriteDict.Position = pos;
-            keeseSpriteDict.SetSprite("keese_blue");
+            keeseSpriteDict.SetSprite("cloud");
+            spawning = true;
+            startTime = gameTime.TotalGameTime.TotalSeconds;
         }
 
         public void ChangeDirection()
@@ -80,7 +83,16 @@ namespace MonoZelda.Enemies.KeeseFolder
 
         public void Update(GameTime gameTime)
         {
-            if (gameTime.TotalGameTime.TotalSeconds >= startTime + 1)
+            if (spawning)
+            {
+                if (gameTime.TotalGameTime.TotalSeconds >= startTime + 0.3)
+                {
+                    startTime = gameTime.TotalGameTime.TotalSeconds;
+                    spawning = false;
+                    keeseSpriteDict.SetSprite("keese_blue");
+                }
+            }
+            else if (gameTime.TotalGameTime.TotalSeconds >= startTime + 1)
             {
                 UpdateHorDirection();
                 UpdateVertDirection();
@@ -88,9 +100,16 @@ namespace MonoZelda.Enemies.KeeseFolder
                 ChangeDirection();
                 startTime = gameTime.TotalGameTime.TotalSeconds;
             }
+            else
+            {
 
-            pos = stateMachine.Update(pos,graphics); //gets position updates from state machine
-            keeseSpriteDict.Position = pos; //updates sprite position
+                pos = stateMachine.Update(pos, graphics); //gets position updates from state machine
+                keeseSpriteDict.Position = pos; //updates sprite position
+            }
+        }
+
+        public void DisableProjectile()
+        {
         }
     }
 }

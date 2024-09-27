@@ -1,6 +1,7 @@
 ﻿using PixelPushers.MonoZelda.Sprites;
 using Microsoft.Xna.Framework;
 using PixelPushers.MonoZelda.Commands;
+using System;
 
 namespace PixelPushers.MonoZelda.Link.Projectiles;
 
@@ -32,21 +33,20 @@ public class Projectile
         projectilePosition = new Vector2();
     }
 
-    public void SetProjectileSprite(string projectileName)
+    protected void SetProjectileSprite(string projectileName)
     {
         projectileDict.SetSprite(projectileName);
     }
 
-    public void enableDict()
+    protected double CalculateDistance(Vector2 initialPosition)
     {
-        projectileDict.Enabled = true;
+        return Math.Sqrt(Math.Pow(projectilePosition.X - initialPosition.X, 2) + Math.Pow(projectilePosition.Y - initialPosition.Y, 2));
     }
 
-
-    public Vector2 SetInitialPosition(Vector2 Dimension)
+    protected Vector2 SetInitialPosition(Vector2 Dimension)
     {
         playerDirection = player.PlayerDirection;
-        Vector2 offset = new Vector2(0,0);
+        Vector2 offset = new Vector2(0, 0);
         switch (playerDirection)
         {
             case Direction.Up:
@@ -54,12 +54,12 @@ public class Projectile
                 projectilePosition = player.getPlayerPosition() + (new Vector2(0, -32)) + offset;
                 break;
             case Direction.Down:
-                offset = new Vector2(0,(Dimension.Y / 2) * 4);
+                offset = new Vector2(0, (Dimension.Y / 2) * 4);
                 projectilePosition = player.getPlayerPosition() + (new Vector2(0, 32)) + offset;
                 break;
             case Direction.Left:
-                offset = new Vector2(-(Dimension.X /2) * 4,0);
-                projectilePosition = player.getPlayerPosition() + (new Vector2(-32,0)) + offset;
+                offset = new Vector2(-(Dimension.X / 2) * 4, 0);
+                projectilePosition = player.getPlayerPosition() + (new Vector2(-32, 0)) + offset;
                 break;
             case Direction.Right:
                 offset = new Vector2((Dimension.X / 2) * 4, 0);
@@ -68,6 +68,12 @@ public class Projectile
         }
         return projectilePosition;
     }
+
+    public void enableDict()
+    {
+        projectileDict.Enabled = true;
+    }
+
 
     public ILaunch GetProjectileObject()
     {
@@ -94,10 +100,5 @@ public class Projectile
                 break;
         }
         return launchProjectile;
-    }
-
-    public double CalculateDistance(Vector2 initialPosition)
-    {
-        return Math.Sqrt(Math.Pow(projectilePosition.X - initialPosition.X, 2) + Math.Pow(projectilePosition.Y - initialPosition.Y, 2));
     }
 }

@@ -24,6 +24,12 @@ public class Bomb : Projectile, ILaunch
         InitialPosition = SetInitialPosition(Dimension);
     }
 
+    private void updatePosition()
+    {
+        projectileDict.Position = InitialPosition.ToPoint(); ;
+        Finished = reachedDistance();
+    }
+
     public void Launch()
     {
         if(timer < 14)
@@ -40,11 +46,6 @@ public class Bomb : Projectile, ILaunch
         }
         timer++;
         
-    }
-    public void updatePosition()
-    {
-        projectileDict.Position = InitialPosition.ToPoint(); ;
-        Finished = reachedDistance();
     }
 
     public bool reachedDistance()

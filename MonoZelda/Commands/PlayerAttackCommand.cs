@@ -18,13 +18,13 @@ public class PlayerAttackCommand : ICommand
 
     public PlayerAttackCommand(Player player)
     {
-        this.player = player; 
+        this.player = player;
     }
 
     public GameState Execute()
     {
         Debug.WriteLine("Player using attack " + attackIdx);
-        player.AttackingPlayer(this);
+        player.AttackingPlayer();
         // Keep GameState the same inside the controller
         return controller.GameState;
     }

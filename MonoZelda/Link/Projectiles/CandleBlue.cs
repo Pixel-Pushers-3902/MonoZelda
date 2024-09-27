@@ -2,6 +2,7 @@
 using PixelPushers.MonoZelda.Sprites;
 using PixelPushers.MonoZelda.Commands;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace PixelPushers.MonoZelda.Link.Projectiles;
 
@@ -23,21 +24,6 @@ public class CandleBlue : Projectile, ILaunch
         SetProjectileSprite("fire");
         tilesTraveled = 0;
         InitialPosition = SetInitialPosition(Dimension);
-    }
-
-    public void Launch()
-    {
-        if (tilesTraveled < 2)
-        {
-            updatePosition();
-            projectileDict.Position = projectilePosition.ToPoint();
-            updateTilesTraveled();
-        }
-        else if (tilesTraveled == 2)
-        {
-            projectileDict.Enabled = false;
-            Finished = reachedDistance();
-        }
     }
 
     private void updatePosition()
@@ -65,6 +51,20 @@ public class CandleBlue : Projectile, ILaunch
         {
             tilesTraveled++;
             InitialPosition = projectilePosition;
+        }
+    }
+    public void Launch()
+    {
+        if (tilesTraveled < 2)
+        {
+            updatePosition();
+            projectileDict.Position = projectilePosition.ToPoint();
+            updateTilesTraveled();
+        }
+        else if (tilesTraveled == 2)
+        {
+            projectileDict.Enabled = false;
+            Finished = reachedDistance();
         }
     }
 

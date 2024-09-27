@@ -5,23 +5,32 @@ namespace PixelPushers.MonoZelda.Commands;
 
 public class ResetCommand : ICommand
 {
-    IController controller;
+    private IController _controller;
+    private MonoZeldaGame _game;
+
     public ResetCommand()
     {
     }
 
+    public ResetCommand(MonoZeldaGame game)
+    {
+        _game = game;
+    }
+
     public GameState Execute()
     {
-        return GameState.Reset;
+        _game?.StartMenu();
+
+        return GameState.Start;
+    }
+
+    public void SetController(IController controller)
+    {
+        _controller = controller;
     }
 
     public GameState UnExecute()
     {
         throw new NotImplementedException();
-    }
-
-    public void SetController(IController controller)
-    {
-        this.controller = controller;
     }
 }

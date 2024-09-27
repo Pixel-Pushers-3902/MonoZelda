@@ -32,7 +32,6 @@ public class BlockCycleCommand : ICommand
             }
         }
 
-
         // Keep GameState the same inside the controller
         return controller.GameState;
     }

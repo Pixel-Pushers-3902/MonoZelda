@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using PixelPushers.MonoZelda.Controllers;
-using PixelPushers.MonoZelda.Items;
 using PixelPushers.MonoZelda.Tiles;
 
 namespace PixelPushers.MonoZelda.Commands;

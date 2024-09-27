@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using PixelPushers.MonoZelda.Link;
 using PixelPushers.MonoZelda.Commands;
 using System.Diagnostics;
+using System.Diagnostics.Tracing;
 
 
 namespace PixelPushers.MonoZelda.Controllers;
@@ -16,13 +17,9 @@ public class KeyboardController : IController
     private bool projectileFired;
     private PlayerUseItemCommand projectileCommand;
 
-    //temp
-    private int attackFrames;
-
     public KeyboardController(CommandManager commandManager)
     {
         gameState = GameState.Title;
-        attackFrames = 0;
         this.commandManager = commandManager;
         projectileFired = false;
     }
@@ -66,8 +63,11 @@ public class KeyboardController : IController
 
     public bool Update()
     {
+        currentKeyboardState = Keyboard.GetState();
+
         commandManager.SetController(this);
         GameState newState = gameState;
+
         if (currentKeyboardState.IsKeyDown(Keys.Q))
         {
             // Exit Command
@@ -86,23 +86,15 @@ public class KeyboardController : IController
                 projectileFired = !(projectileCommand.getProjectileState());
             }
 
-            // Player attack input
-            if (attackFrames > 0)
-            {
-                PlayerAttackCommand playerAttackCommand = (PlayerAttackCommand)commandManager.CommandMap[CommandEnum.PlayerAttackCommand];
-                playerAttackCommand.SetAttackIndex(0);
-                commandManager.Execute(CommandEnum.PlayerAttackCommand);
-                attackFrames--; // Decrement the hold counter
-            }
-            
             // Check for Player item swap input
             if (OneShotPressed(Keys.D1) && !projectileFired)
             {
-                // Player item 1 equip. Normal Arrow
-                PlayerUseItemCommand playerUseItemCommand = (PlayerUseItemCommand) commandManager.CommandMap[CommandEnum.PlayerUseItemCommand];
+                // Player item 1 equip. Green Arrow
+                PlayerUseItemCommand playerUseItemCommand = (PlayerUseItemCommand)commandManager.CommandMap[CommandEnum.PlayerUseItemCommand];
                 playerUseItemCommand.SetProjectile(1);
                 projectileFired = true;
                 projectileCommand = playerUseItemCommand;
+                projectileCommand.UseItem();
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
             else if (OneShotPressed(Keys.D2) && !projectileFired)
@@ -112,6 +104,7 @@ public class KeyboardController : IController
                 playerUseItemCommand.SetProjectile(2);
                 projectileFired = true;
                 projectileCommand = playerUseItemCommand;
+                projectileCommand.UseItem();
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
             else if (OneShotPressed(Keys.D3) && !projectileFired)
@@ -121,6 +114,7 @@ public class KeyboardController : IController
                 playerUseItemCommand.SetProjectile(3);
                 projectileFired = true;
                 projectileCommand = playerUseItemCommand;
+                projectileCommand.UseItem();
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
             else if (OneShotPressed(Keys.D4) && !projectileFired)
@@ -130,6 +124,7 @@ public class KeyboardController : IController
                 playerUseItemCommand.SetProjectile(4);
                 projectileFired = true;
                 projectileCommand = playerUseItemCommand;
+                projectileCommand.UseItem();
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
             else if (OneShotPressed(Keys.D5) && !projectileFired)
@@ -139,6 +134,7 @@ public class KeyboardController : IController
                 playerUseItemCommand.SetProjectile(5);
                 projectileFired = true;
                 projectileCommand = playerUseItemCommand;
+                projectileCommand.UseItem();
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
             else if (OneShotPressed(Keys.D6) && !projectileFired)
@@ -148,15 +144,15 @@ public class KeyboardController : IController
                 playerUseItemCommand.SetProjectile(6);
                 projectileFired = true;
                 projectileCommand = playerUseItemCommand;
+                projectileCommand.UseItem();
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
             else if (OneShotPressed(Keys.Enter))
             {
-                newState = commandManager.Execute(CommandEnum.StartGame);
+                newState = commandManager.Execute(CommandEnum.StartCommand);
             }
             else
-            if (attackFrames == 0)
-            {
+      
                 // Check for Player movement input
                 if (currentKeyboardState.IsKeyDown(Keys.W) || currentKeyboardState.IsKeyDown(Keys.Up))
                 {
@@ -193,24 +189,28 @@ public class KeyboardController : IController
                     commandManager.Execute(CommandEnum.PlayerStandingCommand);
                     
                 }
-            }
+            
            
 
             // Check for Player attack input
             if (OneShotPressed(Keys.Z))
             {
-                
-                attackFrames = 20; 
+
+                PlayerAttackCommand playerAttackCommand = (PlayerAttackCommand)commandManager.CommandMap[CommandEnum.PlayerAttackCommand];
+                playerAttackCommand.SetAttackIndex(0);
+                commandManager.Execute(CommandEnum.PlayerAttackCommand);
             }
             else if (OneShotPressed(Keys.N))
             {
-                attackFrames = 20;
+                PlayerAttackCommand playerAttackCommand = (PlayerAttackCommand)commandManager.CommandMap[CommandEnum.PlayerAttackCommand];
+                playerAttackCommand.SetAttackIndex(1);
+                commandManager.Execute(CommandEnum.PlayerAttackCommand);
             }
 
             // Check for Player damage applied
             if (OneShotPressed(Keys.E))
             {
-                PlayerTakeDamageCommand playerTakeDamageCommand = (PlayerTakeDamageCommand) commandManager.CommandMap[CommandEnum.PlayerTakeDamageCommand];
+                PlayerTakeDamageCommand playerTakeDamageCommand = (PlayerTakeDamageCommand)commandManager.CommandMap[CommandEnum.PlayerTakeDamageCommand];
                 playerTakeDamageCommand.SetDamage(10);
                 commandManager.Execute(CommandEnum.PlayerTakeDamageCommand);
             }
