@@ -1,18 +1,15 @@
 ﻿using PixelPushers.MonoZelda.Commands;
 using PixelPushers.MonoZelda.Sprites;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
-namespace MonoZelda.Player
+namespace PixelPushers.MonoZelda.Link
 {
     public interface IPlayer
     {
         void SetPlayerSpriteDict(SpriteDict spriteDict);
         void MovePlayer(PlayerMoveCommand moveCommand);
         void StandingPlayer(PlayerStandingCommand standCommand);
+        Vector2 getPlayerPosition();
         Direction PlayerDirection { get; }
     }
 }
