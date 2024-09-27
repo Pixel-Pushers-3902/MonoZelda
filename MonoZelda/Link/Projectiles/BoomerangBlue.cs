@@ -25,24 +25,6 @@ public class BoomerangBlue : Projectile, ILaunch
         InitialPosition = SetInitialPosition(Dimension);
     }
 
-    public void Launch()
-    {
-        if (tilesTraveled < 5)
-        {
-            Forward();
-        }
-        else if (tilesTraveled >= 5 && tilesTraveled < 10)
-        {
-            Reverse();
-        }
-        else
-        {
-            Finished = reachedDistance();
-            projectileDict.Enabled = false;
-        }
-        projectileDict.Position = projectilePosition.ToPoint();
-    }
-
     private void Forward()
     {
         switch (playerDirection)
@@ -91,6 +73,23 @@ public class BoomerangBlue : Projectile, ILaunch
             tilesTraveled++;
             InitialPosition = projectilePosition;
         }
+    }
+    public void Launch()
+    {
+        if (tilesTraveled < 5)
+        {
+            Forward();
+        }
+        else if (tilesTraveled >= 5 && tilesTraveled < 10)
+        {
+            Reverse();
+        }
+        else
+        {
+            Finished = reachedDistance();
+            projectileDict.Enabled = false;
+        }
+        projectileDict.Position = projectilePosition.ToPoint();
     }
 
     public bool reachedDistance()
