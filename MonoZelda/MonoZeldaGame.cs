@@ -7,9 +7,9 @@ using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
 using PixelPushers.MonoZelda.Commands;
 using PixelPushers.MonoZelda.Tiles;
-using MonoZelda.Player;
+using PixelPushers.MonoZelda.Link;
 using PixelPushers.MonoZelda.Items;
-
+using PixelPushers.MonoZelda.Link.Projectiles;
 
 namespace PixelPushers.MonoZelda;
 
@@ -73,6 +73,12 @@ public class MonoZeldaGame : Game
         var menuTexture = Content.Load<Texture2D>("Sprites/title");
         mainMenu = new MainMenu(menuTexture, GraphicsDevice);
 
+        //Create projectile dictionary
+        string projectilesCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Projectiles.csv";
+        var projectileDict = new SpriteDict(Content.Load<Texture2D>("Sprites/player"), projectilesCSVFileName, 0, new Point(0,0));
+        projectileDict.Enabled = false;
+        var projectiles = new Projectile(projectileDict, player);
+
         // Setup TileDemo
         string blocksCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Tiles Dungeon1.csv";
         var tileDict = new SpriteDict(Content.Load<Texture2D>("Sprites/tiles_dungeon1"), blocksCSVFileName, 0, new Point(300, 300));
@@ -89,6 +95,7 @@ public class MonoZeldaGame : Game
         commandManager.ReplaceCommand(CommandEnum.PlayerMoveCommand, new PlayerMoveCommand(player));
         commandManager.ReplaceCommand(CommandEnum.PlayerAttackCommand, new PlayerAttackCommand(player));
         commandManager.ReplaceCommand(CommandEnum.PlayerStandingCommand, new PlayerStandingCommand(player));
+        commandManager.ReplaceCommand(CommandEnum.PlayerUseItemCommand, new PlayerUseItemCommand(projectiles));
         //create spritedict to pass into player controller
         string playerCSVFileName = "Content/Source Rect CSVs/Sprite Source Rects - Player.csv";
         playerSpriteDict = new(Content.Load<Texture2D>("Sprites/player"), playerCSVFileName, 1, new Point(100, 100));

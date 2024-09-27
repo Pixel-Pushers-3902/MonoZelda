@@ -3,9 +3,7 @@ using PixelPushers.MonoZelda.Sprites;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 
-
-
-namespace MonoZelda.Player;
+namespace PixelPushers.MonoZelda.Link;
 
 public class Player : IPlayer
 {
@@ -20,8 +18,6 @@ public class Player : IPlayer
         playerPostition = new Vector2(100, 100);
 
     }
-
-    
 
     public void SetPlayerSpriteDict(SpriteDict spriteDict)
     {
@@ -87,12 +83,8 @@ public class Player : IPlayer
                 break;
         }
 
-
-
         playerSpriteDict.Position = playerPostition.ToPoint();
     }
-
-
 
     private void SetMovingPlayerSprite(PlayerMoveCommand moveCommand)
     {
@@ -116,14 +108,16 @@ public class Player : IPlayer
                 playerSpriteDict.SetSprite("walk_right");
                 break;
         }
-
-
-
         playerSpriteDict.Position = playerPostition.ToPoint();
     }
     public Direction PlayerDirection
     {
         get { return playerDirection; }
+    }
+
+    public Vector2 getPlayerPosition()
+    {
+        return playerPostition;
     }
 
 }
