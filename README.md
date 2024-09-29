@@ -9,6 +9,9 @@ Monogame implementation of OG Zelda by team Pixel Pushers
 - Om Kurkure
 - Robbie G
 
+# Code Metrics
+A weekly collection of code metrics and analysis can be found in `CodeMetrics.xlsx`.
+
 # Sprint 2
 
 ## Spring 2 Pull Requests
