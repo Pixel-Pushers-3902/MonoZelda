@@ -14,7 +14,7 @@ A weekly collection of code metrics and analysis can be found in `CodeMetrics.xl
 
 # Sprint 2
 
-## Spring 2 Pull Requests
+## Sprint 2 Pull Requests
 https://github.com/Pixel-Pushers-1/MonoZelda/pulls?q=is%3Apr+milestone%3ASprint2+
 
 ## Sprint 2 Burndown
