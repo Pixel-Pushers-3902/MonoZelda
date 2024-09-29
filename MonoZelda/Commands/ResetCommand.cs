@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
-using MonoZelda.Player;
 using PixelPushers.MonoZelda.Controllers;
-using PixelPushers.MonoZelda.Scenes;
 
 namespace PixelPushers.MonoZelda.Commands;
 
