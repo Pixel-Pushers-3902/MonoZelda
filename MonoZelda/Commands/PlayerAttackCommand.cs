@@ -23,6 +23,9 @@ public class PlayerAttackCommand : ICommand
 
     public GameState Execute()
     {
+        if (player == null)
+            return controller.GameState;
+
         Debug.WriteLine("Player using attack " + attackIdx);
         player.AttackingPlayer();
         // Keep GameState the same inside the controller

@@ -45,6 +45,8 @@ public class PlayerMoveCommand : ICommand
     
     public GameState Execute()
     {
+        if (player == null)
+            return controller.GameState;
        
         player.MovePlayer(this);
 

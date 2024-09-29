@@ -26,6 +26,9 @@
     <None Update="Content\Source Rect CSVs\Sprite Source Rects - Enemies.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Content\Source Rect CSVs\Sprite Source Rects - Projectiles.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Content\Source Rect CSVs\Sprite Source Rects - Title.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

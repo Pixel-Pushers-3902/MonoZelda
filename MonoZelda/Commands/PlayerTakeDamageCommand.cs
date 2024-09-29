@@ -21,6 +21,9 @@ public class PlayerTakeDamageCommand : ICommand
 
     public GameState Execute()
     {
+        if (player == null)
+            return controller.GameState;
+
         // Apply damage to player
         Debug.WriteLine("Player taking " + damage + " units of damage");
         player.PlayerTakeDamage();

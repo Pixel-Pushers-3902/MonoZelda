@@ -1,6 +1,8 @@
 # MonoZelda
 Monogame implementation of OG Zelda by team Pixel Pushers
 
+Press the return key to start the game.
+
 ## Developers
 - Josh S
 - Calvin L
