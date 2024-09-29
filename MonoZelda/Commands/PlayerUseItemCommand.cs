@@ -1,29 +1,36 @@
 ﻿using System;
-using System.Diagnostics;
-using MonoZelda.Player;
+using PixelPushers.MonoZelda.Link;
 using PixelPushers.MonoZelda.Controllers;
+using PixelPushers.MonoZelda.Link.Projectiles;
+
 
 namespace PixelPushers.MonoZelda.Commands;
 
 public class PlayerUseItemCommand : ICommand
 {
-    IController controller;
-    int itemIdx;
     Player player;  
+    private IController controller;
+    private int itemIdx;
+    private Projectile projectiles;
+    private ILaunch launchProjectile;
+    private bool projectileFired;
+    
     public PlayerUseItemCommand()
     {
     }
 
-    public PlayerUseItemCommand(Player player)
+    public PlayerUseItemCommand(Projectile projectile, Player player)
     {
+        this.projectiles = projectile;
         this.player = player;
     }
 
     public GameState Execute()
     {
         // Swap player item idx to itemIdx
-        Debug.WriteLine("Changing player item to " + itemIdx);
-        player.PlayerUseItem();
+        launchProjectile.Launch();
+        System.Diagnostics.Debug.WriteLine("Player is launching Projectile: " + projectiles.CurrentProjectile);
+
         // Keep GameState the same inside the controller
         return controller.GameState;
     }
@@ -33,13 +40,30 @@ public class PlayerUseItemCommand : ICommand
         throw new NotImplementedException();
     }
 
-    public void SetItemIndex(int itemIdx)
+    public void UseItem()
     {
-        this.itemIdx = itemIdx;
+        player.PlayerUseItem();
+    }
+
+    public void SetProjectile(int itemIdx)
+    {
+        projectiles.CurrentProjectile = (ProjectileType) itemIdx;
+        launchProjectile = projectiles.GetProjectileObject();
+        projectiles.enableDict();
     }
 
     public void SetController(IController controller)
     {
         this.controller = controller;
+    }
+
+    public bool getProjectileState()
+    {
+        projectileFired = launchProjectile.hasFinished();
+        if (projectileFired)
+        {
+            launchProjectile = null;
+        }
+        return projectileFired;
     }
 }

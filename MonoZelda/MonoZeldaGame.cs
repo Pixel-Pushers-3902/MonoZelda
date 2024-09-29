@@ -8,7 +8,6 @@ using PixelPushers.MonoZelda.Sprites;
 using PixelPushers.MonoZelda.Commands;
 using PixelPushers.MonoZelda.Scenes;
 
-
 namespace PixelPushers.MonoZelda;
 
 public enum GameState
