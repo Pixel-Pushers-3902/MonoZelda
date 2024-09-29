@@ -21,6 +21,9 @@ public class EnemyCycleCommand : ICommand
 
     public GameState Execute()
     {
+        if (enemyCycler == null)
+            return controller.GameState;
+
         // Apply cycle addition to enemy list
         enemyCycler.SetCycle(cycleAddition);
 

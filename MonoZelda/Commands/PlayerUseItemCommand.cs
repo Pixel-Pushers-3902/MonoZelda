@@ -27,6 +27,9 @@ public class PlayerUseItemCommand : ICommand
 
     public GameState Execute()
     {
+        if (launchProjectile == null)
+            return controller.GameState;
+
         // Swap player item idx to itemIdx
         launchProjectile.Launch();
         System.Diagnostics.Debug.WriteLine("Player is launching Projectile: " + projectiles.CurrentProjectile);
@@ -42,11 +45,17 @@ public class PlayerUseItemCommand : ICommand
 
     public void UseItem()
     {
+        if (player == null)
+            return;
+
         player.PlayerUseItem();
     }
 
     public void SetProjectile(int itemIdx)
     {
+        if (projectiles == null)
+            return;
+
         projectiles.CurrentProjectile = (ProjectileType) itemIdx;
         launchProjectile = projectiles.GetProjectileObject();
         projectiles.enableDict();
@@ -59,6 +68,9 @@ public class PlayerUseItemCommand : ICommand
 
     public bool getProjectileState()
     {
+        if(launchProjectile == null)
+            return true;
+
         projectileFired = launchProjectile.hasFinished();
         if (projectileFired)
         {
