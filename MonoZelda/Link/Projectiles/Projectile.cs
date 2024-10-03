@@ -1,6 +1,10 @@
 ﻿using PixelPushers.MonoZelda.Sprites;
 using Microsoft.Xna.Framework;
 using PixelPushers.MonoZelda.Commands;
+using PixelPushers.MonoZelda.Link.Projectiles.Arrows;
+using PixelPushers.MonoZelda.Link.Projectiles.Explosive;
+using PixelPushers.MonoZelda.Link.Projectiles.Fire;
+using PixelPushers.MonoZelda.Link.Projectiles.Boomerangs;
 using System;
 
 namespace PixelPushers.MonoZelda.Link.Projectiles;
@@ -80,13 +84,13 @@ public class Projectile
         ILaunch launchProjectile = null;
         switch (CurrentProjectile)
         {
-            case ProjectileType.arrow:
+            case ProjectileType.arrow_green:
                 launchProjectile = new Arrow(projectileDict,player);
                 break;
             case ProjectileType.arrow_blue:
                 launchProjectile = new ArrowBlue(projectileDict,player);
                 break;
-            case ProjectileType.boomerang:
+            case ProjectileType.boomerang_green:
                 launchProjectile = new Boomerang(projectileDict,player);
                 break;
             case ProjectileType.boomerang_blue:

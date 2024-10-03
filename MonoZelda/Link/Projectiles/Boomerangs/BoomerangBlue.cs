@@ -1,53 +1,63 @@
-﻿using PixelPushers.MonoZelda.Link;
-using PixelPushers.MonoZelda.Sprites;
+﻿using PixelPushers.MonoZelda.Sprites;
 using PixelPushers.MonoZelda.Commands;
 using Microsoft.Xna.Framework;
 using System;
 
-namespace PixelPushers.MonoZelda.Link.Projectiles;
+namespace PixelPushers.MonoZelda.Link.Projectiles.Boomerangs;
 
-public class ArrowBlue : Projectile, ILaunch
+public class BoomerangBlue : Projectile, ILaunch
 {
-
     private bool Finished;
     private Vector2 InitialPosition;
     private SpriteDict projectileDict;
     private Player player;
     private float projectileSpeed = 4f;
     private int tilesTraveled;
-    private Vector2 Dimension = new Vector2(8, 16);
+    private Vector2 Dimension = new Vector2(8, 8);
+    private TrackReturn tracker;
 
-    public ArrowBlue(SpriteDict projectileDict, Player player) : base(projectileDict, player)
+    public BoomerangBlue(SpriteDict projectileDict, Player player) : base(projectileDict, player)
     {
         this.projectileDict = projectileDict;
         this.player = player;
         Finished = false;
         tilesTraveled = 0;
+        SetProjectileSprite("boomerang_blue");
         InitialPosition = SetInitialPosition(Dimension);
+        UseTrackReturn();
     }
 
-    private void updatePosition()
+    private void UseTrackReturn()
+    {
+        tracker = TrackReturn.CreateInstance(this, player, projectileSpeed);
+    }
+
+    private void Forward()
     {
         switch (playerDirection)
         {
             case Direction.Up:
-                projectilePosition += projectileSpeed * (new Vector2(0, -1));
-                SetProjectileSprite("arrow_blue_up");
+                projectilePosition += projectileSpeed * new Vector2(0, -1);
                 break;
             case Direction.Down:
-                projectilePosition += projectileSpeed * (new Vector2(0, 1));
-                SetProjectileSprite("arrow_blue_down");
+                projectilePosition += projectileSpeed * new Vector2(0, 1);
                 break;
             case Direction.Left:
-                projectilePosition += projectileSpeed * (new Vector2(-1, 0));
-                SetProjectileSprite("arrow_blue_left");
+                projectilePosition += projectileSpeed * new Vector2(-1, 0);
                 break;
             case Direction.Right:
-                projectilePosition += projectileSpeed * (new Vector2(1, 0));
-                SetProjectileSprite("arrow_blue_right");
+                projectilePosition += projectileSpeed * new Vector2(1, 0);
                 break;
         }
+        updateTilesTraveled();
     }
+
+    private void ReturnToPlayer()
+    {
+        tracker.CheckResetOrigin(projectilePosition);
+        projectilePosition += tracker.getProjectileNextPosition();
+    }
+
     private void updateTilesTraveled()
     {
         double tolerance = 0.000001;
@@ -57,33 +67,28 @@ public class ArrowBlue : Projectile, ILaunch
             InitialPosition = projectilePosition;
         }
     }
-
     public void Launch()
     {
         if (tilesTraveled < 5)
         {
-            updatePosition();
-            projectileDict.Position = projectilePosition.ToPoint();
-            updateTilesTraveled();
+            Forward();
         }
-        else if (tilesTraveled == 5)
+        else if (!reachedDistance())
         {
-            SetProjectileSprite("poof");
-            tilesTraveled = 6;
+            ReturnToPlayer();
         }
-        else if (tilesTraveled == 6)
+        else
         {
-            projectileDict.Enabled = false;
             Finished = reachedDistance();
+            projectileDict.Enabled = false;
         }
-
+        projectileDict.Position = projectilePosition.ToPoint();
     }
 
     public bool reachedDistance()
     {
         bool reachedDistance = false;
-
-        if (tilesTraveled == 6)
+        if (tracker.Returned(projectilePosition))
         {
             reachedDistance = true;
         }

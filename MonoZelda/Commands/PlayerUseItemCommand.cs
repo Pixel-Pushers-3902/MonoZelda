@@ -8,12 +8,25 @@ namespace PixelPushers.MonoZelda.Commands;
 
 public class PlayerUseItemCommand : ICommand
 {
-    Player player;  
+    private Player player;  
     private IController controller;
     private int itemIdx;
     private Projectile projectiles;
     private ILaunch launchProjectile;
     private bool projectileFired;
+    private ProjectileType projectileType;
+
+    public ProjectileType Projectile
+    {
+        get
+        {
+            return projectileType;
+        }
+        set
+        {
+            projectileType = value;
+        }
+    }
     
     public PlayerUseItemCommand()
     {
@@ -45,6 +58,16 @@ public class PlayerUseItemCommand : ICommand
         player.PlayerUseItem();
     }
 
+    public bool getProjectileState()
+    {
+        projectileFired = launchProjectile.hasFinished();
+        if (projectileFired)
+        {
+            launchProjectile = null;
+        }
+        return projectileFired;
+    }
+
     public void SetProjectile(int itemIdx)
     {
         projectiles.CurrentProjectile = (ProjectileType) itemIdx;
@@ -55,15 +78,5 @@ public class PlayerUseItemCommand : ICommand
     public void SetController(IController controller)
     {
         this.controller = controller;
-    }
-
-    public bool getProjectileState()
-    {
-        projectileFired = launchProjectile.hasFinished();
-        if (projectileFired)
-        {
-            launchProjectile = null;
-        }
-        return projectileFired;
     }
 }
