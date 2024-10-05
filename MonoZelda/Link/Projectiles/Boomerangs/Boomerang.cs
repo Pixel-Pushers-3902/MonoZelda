@@ -5,7 +5,7 @@ using System;
 
 namespace PixelPushers.MonoZelda.Link.Projectiles.Boomerangs;
 
-public class Boomerang : Projectile, ILaunch
+public class Boomerang : Projectile, IProjectile
 {
     private bool Finished;
     private Vector2 InitialPosition;
@@ -68,7 +68,7 @@ public class Boomerang : Projectile, ILaunch
         }
     }
 
-    public void Launch()
+    public void updateProjectile()
     {
         if (tilesTraveled < 3)
         {

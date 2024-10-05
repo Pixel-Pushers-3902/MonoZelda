@@ -7,7 +7,7 @@ using PixelPushers.MonoZelda.Link.Projectiles;
 
 namespace PixelPushers.MonoZelda.Link.Projectiles.Arrows;
 
-public class ArrowBlue : Projectile, ILaunch
+public class ArrowBlue : Projectile, IProjectile
 {
 
     private bool Finished;
@@ -59,7 +59,7 @@ public class ArrowBlue : Projectile, ILaunch
         }
     }
 
-    public void Launch()
+    public void updateProjectile()
     {
         if (tilesTraveled < 5)
         {

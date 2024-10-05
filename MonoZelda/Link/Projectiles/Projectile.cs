@@ -18,18 +18,6 @@ public class Projectile
     protected Vector2 projectilePosition;
     protected Direction playerDirection;
 
-    public ProjectileType CurrentProjectile
-    {
-        get
-        {
-            return currentProjectile;
-        }
-        set
-        {
-            currentProjectile = value;  
-        }
-    }
-
     public Projectile(SpriteDict projectileDict,Player player)
     {
         this.projectileDict = projectileDict;
@@ -79,10 +67,11 @@ public class Projectile
     }
 
 
-    public ILaunch GetProjectileObject()
+    public IProjectile GetProjectileObject(int itemNumber)
     {
-        ILaunch launchProjectile = null;
-        switch (CurrentProjectile)
+        IProjectile launchProjectile = null;
+        currentProjectile = (ProjectileType)itemNumber;
+        switch (currentProjectile)
         {
             case ProjectileType.arrow_green:
                 launchProjectile = new Arrow(projectileDict,player);

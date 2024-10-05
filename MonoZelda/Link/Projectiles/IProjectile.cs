@@ -1,8 +1,8 @@
 ﻿namespace PixelPushers.MonoZelda.Link.Projectiles;
 
-public interface ILaunch
+public interface IProjectile
 {
-	void Launch();
+	void updateProjectile();
 
 	bool hasFinished();
 

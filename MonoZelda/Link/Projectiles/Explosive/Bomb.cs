@@ -6,7 +6,7 @@ using PixelPushers.MonoZelda.Link.Projectiles;
 
 namespace PixelPushers.MonoZelda.Link.Projectiles.Explosive;
 
-public class Bomb : Projectile, ILaunch
+public class Bomb : Projectile, IProjectile
 {
     private bool Finished;
     private Vector2 InitialPosition;
@@ -31,7 +31,7 @@ public class Bomb : Projectile, ILaunch
         Finished = reachedDistance();
     }
 
-    public void Launch()
+    public void updateProjectile()
     {
         if (timer < 14)
         {

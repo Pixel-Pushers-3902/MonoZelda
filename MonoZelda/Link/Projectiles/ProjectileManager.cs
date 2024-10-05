@@ -1,76 +1,51 @@
 ﻿using PixelPushers.MonoZelda.Commands;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 
 namespace PixelPushers.MonoZelda.Link.Projectiles;
 
 public class ProjectileManager
 {
-    private Dictionary<ProjectileType, bool> projectileStates;
-    private List<PlayerUseItemCommand> activeProjectiles;
-    public ProjectileManager() 
-    {
-        projectileStates = new Dictionary<ProjectileType, bool>
-        {
-            {ProjectileType.arrow_green,false},
-            {ProjectileType.arrow_blue,false},
-            {ProjectileType.boomerang_green,false},
-            {ProjectileType.boomerang_blue,false},
-            {ProjectileType.bomb,false},
-            {ProjectileType.candle_blue,false},
-        };
-        activeProjectiles = new List<PlayerUseItemCommand>();
-    }
+    private bool projectileFired;
+    private IProjectile itemFired;
     
-
-    public void AddProjectileToExecutionList(PlayerUseItemCommand firedProjectile)
+    public bool ProjectileFired
     {
-        activeProjectiles.Add(firedProjectile);
-        projectileStates[firedProjectile.Projectile] = true;
-    }
-
-    public void ExecuteProjectileList() 
-    {
-        for(int i = 0; i < activeProjectiles.Count;i++)
+        get
         {
-            PlayerUseItemCommand projectileFired = activeProjectiles[i];
-            projectileFired.Execute();
-            if (projectileFired.getProjectileState() == true)
-            {
-                projectileStates[projectileFired.Projectile] = false;
-                activeProjectiles.Remove(projectileFired);
-            }
+            return projectileFired;
+        }
+        set
+        {
+            projectileFired = value;
         }
     }
 
-    public bool GreenArrowLaunched()
+    public ProjectileManager() 
     {
-        return projectileStates[ProjectileType.arrow_green];
+        projectileFired = false;
+    }
+    
+    public void setProjectile(IProjectile projectile)
+    {
+        itemFired = projectile;
+        projectileFired = true;
     }
 
-    public bool BlueArrowLaunched()
+    public void executeProjectile()
     {
-        return projectileStates[ProjectileType.arrow_blue];
-    }
-
-    public bool GreenBoomerangLaunched()
-    {
-        return projectileStates[ProjectileType.boomerang_green];
-    }
-
-    public bool BlueBoomerangLaunched()
-    {
-        return projectileStates[ProjectileType.boomerang_blue];
-    }
-
-    public bool BombLaunched()
-    {
-        return projectileStates[ProjectileType.bomb];
-    }
-
-    public bool FireLaunched()
-    {
-        return projectileStates[ProjectileType.candle_blue];
+        if(itemFired != null)
+        {
+            if (!itemFired.hasFinished())
+            {
+                itemFired.updateProjectile();
+            }
+            else
+            {
+                projectileFired = false;
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@ using System;
 
 namespace PixelPushers.MonoZelda.Link.Projectiles.Fire;
 
-public class CandleBlue : Projectile, ILaunch
+public class CandleBlue : Projectile, IProjectile
 {
     private bool Finished;
     private Vector2 InitialPosition;
@@ -52,7 +52,7 @@ public class CandleBlue : Projectile, ILaunch
             InitialPosition = projectilePosition;
         }
     }
-    public void Launch()
+    public void updateProjectile()
     {
         if (tilesTraveled < 2)
         {

@@ -1,6 +1,5 @@
 ﻿using PixelPushers.MonoZelda.Commands;
 using PixelPushers.MonoZelda.Sprites;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 
 namespace PixelPushers.MonoZelda.Link;
@@ -27,7 +26,6 @@ public class Player : IPlayer
         if(frames == 0)
         {
             playerDirection = moveCommand.PlayerDirection;
-            Debug.WriteLine($"Player is moving in the {playerDirection} direction.");
             playerPostition += playerSpeed * moveCommand.PlayerVector;
             switch (playerDirection)
             {
@@ -79,9 +77,6 @@ public class Player : IPlayer
         {
             frames--;
         }
-        
-
-
 
         playerSpriteDict.Position = playerPostition.ToPoint();
     }
@@ -90,7 +85,6 @@ public class Player : IPlayer
     {
         if (frames == 0)
         {
-            Debug.WriteLine("HES ATTACKING");
             frames = 20;
             switch (playerDirection)
             {
@@ -117,10 +111,8 @@ public class Player : IPlayer
 
     public void PlayerUseItem()
     {
-
         if(frames == 0)
         {
-            Debug.WriteLine("Use ITEM");
             frames = 20;
             switch (playerDirection)
             {
@@ -151,7 +143,6 @@ public class Player : IPlayer
         if (frames == 0)
         {
             frames = 20;
-            Debug.WriteLine("Use take damage");
             switch (playerDirection)
             {
                 case Direction.Up:
