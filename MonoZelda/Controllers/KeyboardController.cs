@@ -77,6 +77,8 @@ public class KeyboardController : IController
         }
         else
         {
+            // this line makes sure playerUseItemCommand.Execute() is called in each update, if a projectile has been fired,
+            // so that it can keep moving
             projectileManager.executeProjectile();
 
             // Check for Player item swap input
