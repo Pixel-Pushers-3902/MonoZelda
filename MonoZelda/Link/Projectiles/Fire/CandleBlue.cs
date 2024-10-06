@@ -1,12 +1,11 @@
-﻿using PixelPushers.MonoZelda.Link;
-using PixelPushers.MonoZelda.Sprites;
+﻿using PixelPushers.MonoZelda.Sprites;
 using PixelPushers.MonoZelda.Commands;
 using Microsoft.Xna.Framework;
 using System;
 
-namespace PixelPushers.MonoZelda.Link.Projectiles;
+namespace PixelPushers.MonoZelda.Link.Projectiles.Fire;
 
-public class CandleBlue : Projectile, ILaunch
+public class CandleBlue : Projectile, IProjectile
 {
     private bool Finished;
     private Vector2 InitialPosition;
@@ -31,16 +30,16 @@ public class CandleBlue : Projectile, ILaunch
         switch (playerDirection)
         {
             case Direction.Up:
-                projectilePosition += projectileSpeed * (new Vector2(0, -1));
+                projectilePosition += projectileSpeed * new Vector2(0, -1);
                 break;
             case Direction.Down:
-                projectilePosition += projectileSpeed * (new Vector2(0, 1));
+                projectilePosition += projectileSpeed * new Vector2(0, 1);
                 break;
             case Direction.Left:
-                projectilePosition += projectileSpeed * (new Vector2(-1, 0));
+                projectilePosition += projectileSpeed * new Vector2(-1, 0);
                 break;
             case Direction.Right:
-                projectilePosition += projectileSpeed * (new Vector2(1, 0));
+                projectilePosition += projectileSpeed * new Vector2(1, 0);
                 break;
         }
     }
@@ -53,7 +52,7 @@ public class CandleBlue : Projectile, ILaunch
             InitialPosition = projectilePosition;
         }
     }
-    public void Launch()
+    public void updateProjectile()
     {
         if (tilesTraveled < 2)
         {

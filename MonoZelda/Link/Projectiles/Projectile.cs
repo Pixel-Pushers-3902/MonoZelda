@@ -1,6 +1,10 @@
 ﻿using PixelPushers.MonoZelda.Sprites;
 using Microsoft.Xna.Framework;
 using PixelPushers.MonoZelda.Commands;
+using PixelPushers.MonoZelda.Link.Projectiles.Arrows;
+using PixelPushers.MonoZelda.Link.Projectiles.Explosive;
+using PixelPushers.MonoZelda.Link.Projectiles.Fire;
+using PixelPushers.MonoZelda.Link.Projectiles.Boomerangs;
 using System;
 
 namespace PixelPushers.MonoZelda.Link.Projectiles;
@@ -13,18 +17,6 @@ public class Projectile
     private Player player;
     protected Vector2 projectilePosition;
     protected Direction playerDirection;
-
-    public ProjectileType CurrentProjectile
-    {
-        get
-        {
-            return currentProjectile;
-        }
-        set
-        {
-            currentProjectile = value;  
-        }
-    }
 
     public Projectile(SpriteDict projectileDict,Player player)
     {
@@ -75,18 +67,19 @@ public class Projectile
     }
 
 
-    public ILaunch GetProjectileObject()
+    public IProjectile GetProjectileObject(int itemNumber)
     {
-        ILaunch launchProjectile = null;
-        switch (CurrentProjectile)
+        IProjectile launchProjectile = null;
+        currentProjectile = (ProjectileType)itemNumber;
+        switch (currentProjectile)
         {
-            case ProjectileType.arrow:
+            case ProjectileType.arrow_green:
                 launchProjectile = new Arrow(projectileDict,player);
                 break;
             case ProjectileType.arrow_blue:
                 launchProjectile = new ArrowBlue(projectileDict,player);
                 break;
-            case ProjectileType.boomerang:
+            case ProjectileType.boomerang_green:
                 launchProjectile = new Boomerang(projectileDict,player);
                 break;
             case ProjectileType.boomerang_blue:

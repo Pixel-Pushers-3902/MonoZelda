@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using PixelPushers.MonoZelda.Link;
 using PixelPushers.MonoZelda.Commands;
-using System.Diagnostics;
-using System.Diagnostics.Tracing;
+using PixelPushers.MonoZelda.Link.Projectiles;
 
 
 namespace PixelPushers.MonoZelda.Controllers;
@@ -14,14 +12,13 @@ public class KeyboardController : IController
     private KeyboardState currentKeyboardState;
     private GameState gameState;
     private CommandManager commandManager;
-    private bool projectileFired;
-    private PlayerUseItemCommand projectileCommand;
+    private ProjectileManager projectileManager;
 
     public KeyboardController(CommandManager commandManager)
     {
         gameState = GameState.Title;
         this.commandManager = commandManager;
-        projectileFired = false;
+        projectileManager = new ProjectileManager();
     }
 
     // Properties
@@ -80,71 +77,51 @@ public class KeyboardController : IController
         }
         else
         {
-            if (projectileFired)
-            {
-                commandManager.Execute(CommandEnum.PlayerUseItemCommand);
-                projectileFired = !(projectileCommand.getProjectileState());
-            }
+            // this line makes sure playerUseItemCommand.Execute() is called in each update, if a projectile has been fired,
+            // so that it can keep moving
+            projectileManager.executeProjectile();
 
             // Check for Player item swap input
-            if (OneShotPressed(Keys.D1) && !projectileFired)
+            if (OneShotPressed(Keys.D1) && !projectileManager.ProjectileFired)
             {
                 // Player item 1 equip. Green Arrow
                 PlayerUseItemCommand playerUseItemCommand = (PlayerUseItemCommand)commandManager.CommandMap[CommandEnum.PlayerUseItemCommand];
-                playerUseItemCommand.SetProjectile(1);
-                projectileFired = true;
-                projectileCommand = playerUseItemCommand;
-                projectileCommand.UseItem();
+                playerUseItemCommand.CreateProjectile(1,projectileManager);
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
-            else if (OneShotPressed(Keys.D2) && !projectileFired)
+            else if (OneShotPressed(Keys.D2) && !projectileManager.ProjectileFired)
             {
                 // Player item 2 equip. Blue Arrow
                 PlayerUseItemCommand playerUseItemCommand = (PlayerUseItemCommand) commandManager.CommandMap[CommandEnum.PlayerUseItemCommand];
-                playerUseItemCommand.SetProjectile(2);
-                projectileFired = true;
-                projectileCommand = playerUseItemCommand;
-                projectileCommand.UseItem();
+                playerUseItemCommand.CreateProjectile(2,projectileManager);
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
-            else if (OneShotPressed(Keys.D3) && !projectileFired)
+            else if (OneShotPressed(Keys.D3) && !projectileManager.ProjectileFired)
             {
                 // Player item 3 equip. Boomerang
                 PlayerUseItemCommand playerUseItemCommand = (PlayerUseItemCommand) commandManager.CommandMap[CommandEnum.PlayerUseItemCommand];
-                playerUseItemCommand.SetProjectile(3);
-                projectileFired = true;
-                projectileCommand = playerUseItemCommand;
-                projectileCommand.UseItem();
+                playerUseItemCommand.CreateProjectile(3,projectileManager);
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
-            else if (OneShotPressed(Keys.D4) && !projectileFired)
+            else if (OneShotPressed(Keys.D4) && !projectileManager.ProjectileFired)
             {
                 // Player item 4 equip. Blue Boomerang
                 PlayerUseItemCommand playerUseItemCommand = (PlayerUseItemCommand) commandManager.CommandMap[CommandEnum.PlayerUseItemCommand];
-                playerUseItemCommand.SetProjectile(4);
-                projectileFired = true;
-                projectileCommand = playerUseItemCommand;
-                projectileCommand.UseItem();
+                playerUseItemCommand.CreateProjectile(4,projectileManager);
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
-            else if (OneShotPressed(Keys.D5) && !projectileFired)
+            else if (OneShotPressed(Keys.D5) && !projectileManager.ProjectileFired)
             {
                 // Player item 5 equip. Bomb
                 PlayerUseItemCommand playerUseItemCommand = (PlayerUseItemCommand)commandManager.CommandMap[CommandEnum.PlayerUseItemCommand];
-                playerUseItemCommand.SetProjectile(5);
-                projectileFired = true;
-                projectileCommand = playerUseItemCommand;
-                projectileCommand.UseItem();
+                playerUseItemCommand.CreateProjectile(5,projectileManager);
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
-            else if (OneShotPressed(Keys.D6) && !projectileFired)
+            else if (OneShotPressed(Keys.D6) && !projectileManager.ProjectileFired)
             {
                 // Player item 6 equip. Blue Candle
                 PlayerUseItemCommand playerUseItemCommand = (PlayerUseItemCommand)commandManager.CommandMap[CommandEnum.PlayerUseItemCommand];
-                playerUseItemCommand.SetProjectile(6);
-                projectileFired = true;
-                projectileCommand = playerUseItemCommand;
-                projectileCommand.UseItem();
+                playerUseItemCommand.CreateProjectile(6,projectileManager);
                 commandManager.Execute(CommandEnum.PlayerUseItemCommand);
             }
             else if (OneShotPressed(Keys.Enter))
@@ -184,18 +161,15 @@ public class KeyboardController : IController
                 }
                 else
                 {
-                    // Player move left
+                    // Player stay still
                     PlayerStandingCommand playerStandingCommand = (PlayerStandingCommand)commandManager.CommandMap[CommandEnum.PlayerStandingCommand];
                     commandManager.Execute(CommandEnum.PlayerStandingCommand);
                     
                 }
-            
-           
 
             // Check for Player attack input
             if (OneShotPressed(Keys.Z))
             {
-
                 PlayerAttackCommand playerAttackCommand = (PlayerAttackCommand)commandManager.CommandMap[CommandEnum.PlayerAttackCommand];
                 playerAttackCommand.SetAttackIndex(0);
                 commandManager.Execute(CommandEnum.PlayerAttackCommand);
@@ -205,56 +179,6 @@ public class KeyboardController : IController
                 PlayerAttackCommand playerAttackCommand = (PlayerAttackCommand)commandManager.CommandMap[CommandEnum.PlayerAttackCommand];
                 playerAttackCommand.SetAttackIndex(1);
                 commandManager.Execute(CommandEnum.PlayerAttackCommand);
-            }
-
-            // Check for Player damage applied
-            if (OneShotPressed(Keys.E))
-            {
-                PlayerTakeDamageCommand playerTakeDamageCommand = (PlayerTakeDamageCommand)commandManager.CommandMap[CommandEnum.PlayerTakeDamageCommand];
-                playerTakeDamageCommand.SetDamage(10);
-                commandManager.Execute(CommandEnum.PlayerTakeDamageCommand);
-            }
-
-            // Check for Block / Obstacle cycle input
-            if (OneShotPressed(Keys.Y))
-            {
-                var cycleCommand = (BlockCycleCommand)commandManager.CommandMap[CommandEnum.BlockCycleCommand];
-                cycleCommand.SetCycleAddition(1);
-                cycleCommand.Execute();
-            }
-            else if (OneShotPressed(Keys.T))
-            {
-                var cycleCommand = (BlockCycleCommand)commandManager.CommandMap[CommandEnum.BlockCycleCommand];
-                cycleCommand.SetCycleAddition(-1);
-                cycleCommand.Execute();
-            }
-
-            // Check for Item cycle input
-            if (OneShotPressed(Keys.I))
-            {
-                var cycleCommand = (ItemCycleCommand)commandManager.CommandMap[CommandEnum.ItemCycleCommand];
-                cycleCommand.SetCycleAddition(1);
-                cycleCommand.Execute();
-            }
-            else if (OneShotPressed(Keys.U))
-            {
-                var cycleCommand = (ItemCycleCommand)commandManager.CommandMap[CommandEnum.ItemCycleCommand];
-                cycleCommand.SetCycleAddition(-1);
-                cycleCommand.Execute();
-            }
-
-            // Check for Enemy / NPC cycle input
-            if (OneShotPressed(Keys.P))
-            {
-                EnemyCycleCommand enemyCycleCommand = (EnemyCycleCommand) commandManager.CommandMap[CommandEnum.EnemyCycleCommand];
-                enemyCycleCommand.SetCycleAddition(1);
-                commandManager.Execute(CommandEnum.EnemyCycleCommand);
-            }
-            else if (OneShotPressed(Keys.O))
-            {
-                EnemyCycleCommand enemyCycleCommand = (EnemyCycleCommand) commandManager.CommandMap[CommandEnum.EnemyCycleCommand];
-                enemyCycleCommand.SetCycleAddition(-1);
-                commandManager.Execute(CommandEnum.EnemyCycleCommand);
             }
         }
 

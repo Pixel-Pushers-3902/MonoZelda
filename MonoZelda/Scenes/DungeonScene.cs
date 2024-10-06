@@ -23,32 +23,17 @@ internal class DungeonScene : IScene
     {
         graphicsDevice = device;
         commandManager = cManager;
-
         player = new Player();
-
-        enemyCycler = new EnemyCycler(commandManager, gManager, game);
-        var cycleCommand = new EnemyCycleCommand(enemyCycler);
-        commandManager.ReplaceCommand(CommandEnum.EnemyCycleCommand, cycleCommand);
     }
 
     public void LoadContent(ContentManager contentManager)
     {
-        // Setup TileDemo
-        var tileDict = new SpriteDict(contentManager.Load<Texture2D>(TextureData.Blocks), SpriteCSVData.Blocks, 0, new Point(300, 300));
-        var demoTile = new TileCycleDemo(tileDict, new Point(300, 300));
-
-        //Setup ItemDemo
-        var itemDict = new SpriteDict(contentManager.Load<Texture2D>(TextureData.Items), SpriteCSVData.Items, 0, new Point(450, 100));
-        var demoItem = new ItemCycleDemo(itemDict, new Point(450, 100));
-
         // create projectile object and spriteDict
         var projectileDict = new SpriteDict(contentManager.Load<Texture2D>("Sprites/player"), SpriteCSVData.Projectiles, 0, new Point(0, 0));
         projectileDict.Enabled = false;
         var projectiles = new Projectile(projectileDict, player);
 
-        // create the cycle commands
-        commandManager.ReplaceCommand(CommandEnum.BlockCycleCommand, new BlockCycleCommand(demoTile));
-        commandManager.ReplaceCommand(CommandEnum.ItemCycleCommand, new ItemCycleCommand(demoItem));
+        // replace required commands
         commandManager.ReplaceCommand(CommandEnum.PlayerMoveCommand, new PlayerMoveCommand(player));
         commandManager.ReplaceCommand(CommandEnum.PlayerAttackCommand, new PlayerAttackCommand(player));
         commandManager.ReplaceCommand(CommandEnum.PlayerStandingCommand, new PlayerStandingCommand(player));
@@ -58,14 +43,10 @@ internal class DungeonScene : IScene
         // create spritedict to pass into player controller
         var playerSpriteDict = new SpriteDict(contentManager.Load<Texture2D>(TextureData.Player), SpriteCSVData.Player, 1, new Point(100, 100));
         player.SetPlayerSpriteDict(playerSpriteDict);
-
-        var enemySpriteDict = new SpriteDict(contentManager.Load<Texture2D>(TextureData.Enemies), SpriteCSVData.Enemies, 1, new Point(100, 100));
-        enemyCycler.SetSpriteDicts(enemySpriteDict);
     }
 
     public void Update(GameTime gameTime)
     {
-        enemyCycler.Update(gameTime);
+        // not doing anything currently
     }
-
 }

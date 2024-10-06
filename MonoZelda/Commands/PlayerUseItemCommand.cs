@@ -8,13 +8,13 @@ namespace PixelPushers.MonoZelda.Commands;
 
 public class PlayerUseItemCommand : ICommand
 {
-    Player player;  
+    private Player player;
     private IController controller;
-    private int itemIdx;
     private Projectile projectiles;
-    private ILaunch launchProjectile;
-    private bool projectileFired;
-    
+    private IProjectile launchedProjectile;
+    private ProjectileType projectileType;
+    private int itemIdx;
+
     public PlayerUseItemCommand()
     {
     }
@@ -27,37 +27,18 @@ public class PlayerUseItemCommand : ICommand
 
     public GameState Execute()
     {
-        if (launchProjectile == null)
-            return controller.GameState;
-
-        // Swap player item idx to itemIdx
-        launchProjectile.Launch();
-        System.Diagnostics.Debug.WriteLine("Player is launching Projectile: " + projectiles.CurrentProjectile);
+        // animate player throw projectile
+        player.PlayerUseItem();
+        launchedProjectile.updateProjectile();
 
         // Keep GameState the same inside the controller
         return controller.GameState;
     }
 
-    public GameState UnExecute()
+    public void CreateProjectile(int itemNumber,ProjectileManager projectileManager)
     {
-        throw new NotImplementedException();
-    }
-
-    public void UseItem()
-    {
-        if (player == null)
-            return;
-
-        player.PlayerUseItem();
-    }
-
-    public void SetProjectile(int itemIdx)
-    {
-        if (projectiles == null)
-            return;
-
-        projectiles.CurrentProjectile = (ProjectileType) itemIdx;
-        launchProjectile = projectiles.GetProjectileObject();
+        launchedProjectile = projectiles.GetProjectileObject(itemNumber);
+        projectileManager.setProjectile(launchedProjectile);
         projectiles.enableDict();
     }
 
@@ -66,16 +47,8 @@ public class PlayerUseItemCommand : ICommand
         this.controller = controller;
     }
 
-    public bool getProjectileState()
+    public GameState UnExecute()
     {
-        if(launchProjectile == null)
-            return true;
-
-        projectileFired = launchProjectile.hasFinished();
-        if (projectileFired)
-        {
-            launchProjectile = null;
-        }
-        return projectileFired;
+        throw new NotImplementedException();
     }
 }

@@ -3,21 +3,21 @@ using PixelPushers.MonoZelda.Sprites;
 using PixelPushers.MonoZelda.Commands;
 using Microsoft.Xna.Framework;
 using System;
+using PixelPushers.MonoZelda.Link.Projectiles;
 
-namespace PixelPushers.MonoZelda.Link.Projectiles;
+namespace PixelPushers.MonoZelda.Link.Projectiles.Arrows;
 
-public class ArrowBlue : Projectile, ILaunch
+public class Arrow : Projectile, IProjectile
 {
-
     private bool Finished;
     private Vector2 InitialPosition;
     private SpriteDict projectileDict;
     private Player player;
     private float projectileSpeed = 4f;
-    private int tilesTraveled;
     private Vector2 Dimension = new Vector2(8, 16);
+    private int tilesTraveled;
 
-    public ArrowBlue(SpriteDict projectileDict, Player player) : base(projectileDict, player)
+    public Arrow(SpriteDict projectileDict, Player player) : base(projectileDict, player)
     {
         this.projectileDict = projectileDict;
         this.player = player;
@@ -31,20 +31,20 @@ public class ArrowBlue : Projectile, ILaunch
         switch (playerDirection)
         {
             case Direction.Up:
-                projectilePosition += projectileSpeed * (new Vector2(0, -1));
-                SetProjectileSprite("arrow_blue_up");
+                projectilePosition += projectileSpeed * new Vector2(0, -1);
+                SetProjectileSprite("arrow_green_up");
                 break;
             case Direction.Down:
-                projectilePosition += projectileSpeed * (new Vector2(0, 1));
-                SetProjectileSprite("arrow_blue_down");
+                projectilePosition += projectileSpeed * new Vector2(0, 1);
+                SetProjectileSprite("arrow_green_down");
                 break;
             case Direction.Left:
-                projectilePosition += projectileSpeed * (new Vector2(-1, 0));
-                SetProjectileSprite("arrow_blue_left");
+                projectilePosition += projectileSpeed * new Vector2(-1, 0);
+                SetProjectileSprite("arrow_green_left");
                 break;
             case Direction.Right:
-                projectilePosition += projectileSpeed * (new Vector2(1, 0));
-                SetProjectileSprite("arrow_blue_right");
+                projectilePosition += projectileSpeed * new Vector2(1, 0);
+                SetProjectileSprite("arrow_green_right");
                 break;
         }
     }
@@ -58,20 +58,20 @@ public class ArrowBlue : Projectile, ILaunch
         }
     }
 
-    public void Launch()
+    public void updateProjectile()
     {
-        if (tilesTraveled < 5)
+        if (tilesTraveled < 3)
         {
             updatePosition();
             projectileDict.Position = projectilePosition.ToPoint();
             updateTilesTraveled();
         }
-        else if (tilesTraveled == 5)
+        else if (tilesTraveled == 3)
         {
             SetProjectileSprite("poof");
-            tilesTraveled = 6;
+            tilesTraveled = 4;
         }
-        else if (tilesTraveled == 6)
+        else if (tilesTraveled == 4)
         {
             projectileDict.Enabled = false;
             Finished = reachedDistance();
@@ -83,7 +83,7 @@ public class ArrowBlue : Projectile, ILaunch
     {
         bool reachedDistance = false;
 
-        if (tilesTraveled == 6)
+        if (tilesTraveled == 4)
         {
             reachedDistance = true;
         }
@@ -96,3 +96,5 @@ public class ArrowBlue : Projectile, ILaunch
         return Finished;
     }
 }
+
+

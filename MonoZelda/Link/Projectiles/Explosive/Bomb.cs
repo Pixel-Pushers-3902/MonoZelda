@@ -2,10 +2,11 @@
 using PixelPushers.MonoZelda.Sprites;
 using PixelPushers.MonoZelda.Commands;
 using Microsoft.Xna.Framework;
+using PixelPushers.MonoZelda.Link.Projectiles;
 
-namespace PixelPushers.MonoZelda.Link.Projectiles;
+namespace PixelPushers.MonoZelda.Link.Projectiles.Explosive;
 
-public class Bomb : Projectile, ILaunch
+public class Bomb : Projectile, IProjectile
 {
     private bool Finished;
     private Vector2 InitialPosition;
@@ -30,13 +31,13 @@ public class Bomb : Projectile, ILaunch
         Finished = reachedDistance();
     }
 
-    public void Launch()
+    public void updateProjectile()
     {
-        if(timer < 14)
+        if (timer < 14)
         {
             updatePosition();
         }
-        else if(timer == 15)
+        else if (timer == 15)
         {
             SetProjectileSprite("cloud");
         }
@@ -45,13 +46,13 @@ public class Bomb : Projectile, ILaunch
             Finished = reachedDistance();
         }
         timer++;
-        
+
     }
 
     public bool reachedDistance()
     {
         bool reachedDistance = false;
-        if(timer == 16)
+        if (timer == 16)
         {
             reachedDistance = true;
             projectileDict.Enabled = false;
