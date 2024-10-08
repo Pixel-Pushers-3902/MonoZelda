@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace MonoZelda
+namespace MonoZelda.Collision
 {
-    public class Collidable
+    public class Collidable : ICollidable
     {
         public Rectangle Bounds { get; set; }
 
@@ -16,12 +16,12 @@ namespace MonoZelda
             Bounds = bounds;
         }
 
-        public bool Intersects(Collidable other)
+        public bool Intersects(ICollidable other)
         {
             return Bounds.Intersects(other.Bounds);
         }
 
-        public Rectangle GetIntersectionArea(Collidable other)
+        public Rectangle GetIntersectionArea(ICollidable other)
         {
             return Rectangle.Intersect(Bounds, other.Bounds);
         }

@@ -1,44 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using PixelPushers.MonoZelda.Link;
 using System.Diagnostics;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using MonoZelda.Collision;
+using PixelPushers.MonoZelda.Link;
 
 namespace MonoZelda.Link
 {
     public class PlayerCollision
     {
-        private Rectangle boundingBox;
         private readonly int width;
         private readonly int height;
         private Player player;
-        private Vector2 playerPosition;
-
-
-        public PlayerCollision(Vector2 initialPosition)
+        private Collidable playerHitbox;
+        private CollisionHitboxDrawer collisionHitboxDrawer;
+        public PlayerCollision(Player player, Collidable playerHitbox, CollisionHitboxDrawer collisionHitboxDrawer)
         {
-            this.width = 16;
-            this.height = 16;
-            Update(initialPosition);
+            this.player = player;
+            this.playerHitbox = playerHitbox;
+            this.width = 64;
+            this.height = 64;
+
+            // Create initial hitbox for the player
+            Vector2 playerPosition = player.getPlayerPosition();
+            Rectangle bounds = new Rectangle(
+                (int)playerPosition.X - width / 2,
+                (int)playerPosition.Y - height / 2,
+                width,
+                height
+            );
+            this.collisionHitboxDrawer = collisionHitboxDrawer;
+
+            playerHitbox.Bounds = bounds;
         }
 
-        public void Update(Vector2 playerPosition)
+        public void Update()
         {
-            boundingBox.X = (int)playerPosition.X - width / 2;
-            boundingBox.Y = (int)playerPosition.Y - height / 2;
-
+            UpdateBoundingBox();
         }
 
-        public Rectangle GetBoundingBox()
+        private void UpdateBoundingBox()
         {
-            return boundingBox;
-        }
-        public bool Intersects(Rectangle otherBox)
-        {
-            return boundingBox.Intersects(otherBox);
+            Vector2 playerPosition = player.getPlayerPosition();
+            Rectangle newBounds = new Rectangle(
+                (int)playerPosition.X - width / 2,
+                (int)playerPosition.Y - height / 2,
+                width,
+                height
+            );
+
+            playerHitbox.Bounds = newBounds;
+
+            //check for collision
+            List<Collidable> allHitBoxes = collisionHitboxDrawer.GetHitboxes();
+            foreach (var hitbox in allHitBoxes)
+            {
+                if (hitbox == playerHitbox)
+                {
+                    continue; 
+                }
+                if (playerHitbox.Intersects(hitbox))
+                {
+                    Debug.WriteLine("Collision");
+                    break; // Exit the loop early if a collision is detected
+                }
+            }
         }
     }
 }
