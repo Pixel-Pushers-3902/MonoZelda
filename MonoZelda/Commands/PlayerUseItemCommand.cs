@@ -28,8 +28,11 @@ public class PlayerUseItemCommand : ICommand
     public GameState Execute()
     {
         // animate player throw projectile
-        player.PlayerUseItem();
-        launchedProjectile.updateProjectile();
+        if (player != null)
+        {
+            player.PlayerUseItem();
+            launchedProjectile.updateProjectile();
+        }
 
         // Keep GameState the same inside the controller
         return controller.GameState;

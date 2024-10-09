@@ -18,7 +18,7 @@ public enum CommandEnum
     PlayerUseItemCommand,
     ResetCommand,
     PlayerStandingCommand,
-    StartCommand,
+    StartGameCommand,
     None
 }
 
@@ -38,7 +38,7 @@ public class CommandManager
         AddCommand(CommandEnum.PlayerUseItemCommand, new PlayerUseItemCommand());
         AddCommand(CommandEnum.PlayerStandingCommand, new PlayerStandingCommand());
         AddCommand(CommandEnum.ResetCommand, new ResetCommand());
-        AddCommand(CommandEnum.StartCommand, new StartGameCommand());
+        AddCommand(CommandEnum.StartGameCommand, new StartGameCommand());
     }
 
     public Dictionary<CommandEnum, ICommand> CommandMap
@@ -63,7 +63,6 @@ public class CommandManager
         }
         else
         {
-            Debug.WriteLine("Command with same enum name not present in the dictionary.");
             return false;
         }
     }
@@ -72,7 +71,6 @@ public class CommandManager
     {
         if (commandMap.ContainsKey(commandName))
         {
-            Debug.WriteLine("Command with same enum name already present in the dictionary.");
             return false;
         }
         else

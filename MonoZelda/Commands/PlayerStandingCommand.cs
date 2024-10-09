@@ -22,9 +22,10 @@ namespace PixelPushers.MonoZelda.Commands
 
         public GameState Execute()
         {
+            // call player standing method
             if (player != null)
             {
-                lastDirection = player.PlayerDirection; 
+                lastDirection = player.PlayerDirection;
                 player.StandingPlayer(this);
             }
 

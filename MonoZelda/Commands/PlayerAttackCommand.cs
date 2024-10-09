@@ -23,10 +23,11 @@ public class PlayerAttackCommand : ICommand
 
     public GameState Execute()
     {
-        if (player == null)
-            return controller.GameState;
+        if (player != null)
+        {
+            player.AttackingPlayer();
+        }
 
-        player.AttackingPlayer();
         // Keep GameState the same inside the controller
         return controller.GameState;
     }

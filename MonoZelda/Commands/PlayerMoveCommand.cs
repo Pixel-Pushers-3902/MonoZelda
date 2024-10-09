@@ -45,10 +45,11 @@ public class PlayerMoveCommand : ICommand
     
     public GameState Execute()
     {
-        if (player == null)
-            return controller.GameState;
-       
-        player.MovePlayer(this);
+        // call player move method
+        if (player != null)
+        {
+            player.MovePlayer(this);
+        }
 
         // Keep GameState the same inside the controller
         return controller.GameState;
