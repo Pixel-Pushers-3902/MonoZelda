@@ -1,15 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System.Diagnostics;
-using MonoZelda.Enemies;
 using PixelPushers.MonoZelda.Controllers;
 using PixelPushers.MonoZelda.Sprites;
 using PixelPushers.MonoZelda.Commands;
 using PixelPushers.MonoZelda.Scenes;
-using System.Collections.Generic;
-using MonoZelda.Link;
-using PixelPushers.MonoZelda.Link;
 using MonoZelda.Collision;
 
 namespace PixelPushers.MonoZelda;
@@ -29,7 +23,7 @@ public class MonoZeldaGame : Game
     private KeyboardController keyboardController;
     private MouseController mouseController;
     private CommandManager commandManager;
-    private CollisionHitboxDrawer collisionhitboxDrawer;
+    private CollidablesManager collidableManager;
 
     private IScene scene;
 
@@ -48,6 +42,8 @@ public class MonoZeldaGame : Game
 
         keyboardController = new KeyboardController(commandManager);
         mouseController = new MouseController(commandManager);
+
+        collidableManager = new();
     }
 
     protected override void Initialize()
@@ -63,7 +59,6 @@ public class MonoZeldaGame : Game
     protected override void LoadContent()
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
-        collisionhitboxDrawer = new CollisionHitboxDrawer();
         
         // Start menu goes first
         StartMenu();
@@ -83,12 +78,9 @@ public class MonoZeldaGame : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         spriteBatch.Begin();
-        // Draw hitboxes (for debugging)
-        collisionhitboxDrawer.Draw(spriteBatch, Color.Red);
-        // SpriteDrawer draws all SpriteDicts
+
+        // SpriteDrawer draws all drawables
         SpriteDrawer.Draw(spriteBatch, gameTime);
-
-
 
         spriteBatch.End();
 
@@ -114,7 +106,7 @@ public class MonoZeldaGame : Game
         if (scene is MainMenu)
         {
             // TODO: Passing MonoZeldaGame smells. It's used by some things to LoadContent, SpriteDict multiple AddSprite()
-            LoadScene(new DungeonScene(GraphicsDevice, graphicsDeviceManager, commandManager, this, collisionhitboxDrawer));
+            LoadScene(new DungeonScene(GraphicsDevice, graphicsDeviceManager, commandManager, this, collidableManager));
         }
     }
 }
