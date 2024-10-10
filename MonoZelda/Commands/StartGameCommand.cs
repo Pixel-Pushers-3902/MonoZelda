@@ -6,8 +6,8 @@ namespace PixelPushers.MonoZelda.Commands;
 
 public class StartGameCommand : ICommand
 {
-    private IController _controller;
-    private MonoZeldaGame _game;
+    private IController controller;
+    private MonoZeldaGame game;
 
     public StartGameCommand()
     {
@@ -16,19 +16,19 @@ public class StartGameCommand : ICommand
 
     public StartGameCommand(MonoZeldaGame game)
     {
-        _game = game;
+        this.game = game;
     }
 
     public GameState Execute(Keys PressedKey)
     {
-        _game?.StartDungeon();
+        game?.StartDungeon();
 
         return GameState.Start;
     }
 
     public void SetController(IController controller)
     {
-        _controller = controller;
+        this.controller = controller;
     }
 
     public GameState UnExecute()

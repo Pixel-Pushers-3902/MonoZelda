@@ -5,6 +5,12 @@ using PixelPushers.MonoZelda.Controllers;
 
 namespace PixelPushers.MonoZelda.Commands;
 
+public enum OneShot
+{
+    YES,
+    NO,
+}
+
 public enum CommandEnum
 {
     // Commands for entire project

@@ -1,7 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework.Input;
 using PixelPushers.MonoZelda.Commands;
-using PixelPushers.MonoZelda.Link.Projectiles;
 using System;
 using System.Collections.Generic;
 
@@ -13,15 +11,39 @@ public class KeyboardController : IController
     private KeyboardState currentKeyboardState;
     private GameState gameState;
     private CommandManager commandManager;
-    private KeyManager keyManager;
+    private Dictionary<Tuple<Keys,OneShot>,CommandEnum> keyCommandDictionary;
 
     public KeyboardController(CommandManager commandManager)
     {
         gameState = GameState.Title;
         this.commandManager = commandManager;
+        keyCommandDictionary = new Dictionary<Tuple<Keys, OneShot>, CommandEnum>
+        {
+            {Tuple.Create(Keys.Enter,OneShot.YES), CommandEnum.StartGameCommand},
+            {Tuple.Create(Keys.W,OneShot.NO),CommandEnum.PlayerMoveCommand},
+            {Tuple.Create(Keys.Up,OneShot.NO),CommandEnum.PlayerMoveCommand},
+            {Tuple.Create(Keys.S,OneShot.NO),CommandEnum.PlayerMoveCommand},
+            {Tuple.Create(Keys.Down, OneShot.NO),CommandEnum.PlayerMoveCommand},
+            {Tuple.Create(Keys.D, OneShot.NO),CommandEnum.PlayerMoveCommand},
+            {Tuple.Create(Keys.Right, OneShot.NO),CommandEnum.PlayerMoveCommand},
+            {Tuple.Create(Keys.A, OneShot.NO),CommandEnum.PlayerMoveCommand},
+            {Tuple.Create(Keys.Left, OneShot.NO),CommandEnum.PlayerMoveCommand},
+            {Tuple.Create(Keys.D1, OneShot.YES),CommandEnum.PlayerUseItemCommand},
+            {Tuple.Create(Keys.D2, OneShot.YES),CommandEnum.PlayerUseItemCommand},
+            {Tuple.Create(Keys.D3, OneShot.YES),CommandEnum.PlayerUseItemCommand},
+            {Tuple.Create(Keys.D4, OneShot.YES),CommandEnum.PlayerUseItemCommand},
+            {Tuple.Create(Keys.D5, OneShot.YES),CommandEnum.PlayerUseItemCommand},
+            {Tuple.Create(Keys.D6, OneShot.YES),CommandEnum.PlayerUseItemCommand},
+            {Tuple.Create(Keys.Z, OneShot.YES),CommandEnum.PlayerAttackCommand},
+            {Tuple.Create(Keys.N, OneShot.YES),CommandEnum.PlayerAttackCommand},
+            {Tuple.Create(Keys.Q, OneShot.NO),CommandEnum.ExitCommand},
+            {Tuple.Create(Keys.R, OneShot.NO),CommandEnum.ResetCommand},
+            {Tuple.Create(Keys.None, OneShot.NO),CommandEnum.PlayerStandingCommand},
+        };
     }
 
     // Properties
+
     public KeyboardState CurrentKeyboardState
     {
         get
@@ -62,30 +84,23 @@ public class KeyboardController : IController
     {
         currentKeyboardState = Keyboard.GetState();
         GameState newState = gameState;
-        keyManager = new KeyManager(commandManager);
-
-        // Check for Start game 
-        if (OneShotPressed(Keys.Enter))
-        {
-            newState = commandManager.Execute(CommandEnum.StartGameCommand,Keys.Enter);
-        }
 
         // Set controller for all commands
         commandManager.SetController(this);
 
         // Iterate keyCommandDictionary to check input
-        foreach (var keyCommandPair in keyManager.KeyCommandDictionary)
+        foreach (var keyCommandPair in keyCommandDictionary)
         {
             Tuple<Keys, OneShot> keyOneShot = keyCommandPair.Key;
             if (keyOneShot.Item2 == OneShot.NO && (currentKeyboardState.IsKeyDown(keyOneShot.Item1) || keyOneShot.Item1 == Keys.None))
             {
-                keyCommandPair.Value.Execute(keyOneShot.Item1);
+                newState = commandManager.Execute(keyCommandPair.Value, keyOneShot.Item1);
                 break;
             }
             else if(keyOneShot.Item2 == OneShot.YES && OneShotPressed(keyOneShot.Item1))
             {
-               keyCommandPair.Value.Execute(keyOneShot.Item1);
-               break;
+                newState = commandManager.Execute(keyCommandPair.Value, keyOneShot.Item1);
+                break;
             }
         }
 
