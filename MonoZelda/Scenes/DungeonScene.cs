@@ -15,7 +15,9 @@ internal class DungeonScene : IScene
 {
     private GraphicsDevice graphicsDevice;
     private CommandManager commandManager;
+    private KeyManager keyManager;
     private Player player;
+    private ProjectileManager projectileManager;
 
     private EnemyCycler enemyCycler;
 
@@ -23,6 +25,7 @@ internal class DungeonScene : IScene
     {
         graphicsDevice = device;
         commandManager = cManager;
+
         player = new Player();
     }
 
@@ -32,12 +35,13 @@ internal class DungeonScene : IScene
         var projectileDict = new SpriteDict(contentManager.Load<Texture2D>("Sprites/player"), SpriteCSVData.Projectiles, 0, new Point(0, 0));
         projectileDict.Enabled = false;
         var projectiles = new Projectile(projectileDict, player);
+        projectileManager = new ProjectileManager();
 
         // replace required commands
         commandManager.ReplaceCommand(CommandEnum.PlayerMoveCommand, new PlayerMoveCommand(player));
         commandManager.ReplaceCommand(CommandEnum.PlayerAttackCommand, new PlayerAttackCommand(player));
         commandManager.ReplaceCommand(CommandEnum.PlayerStandingCommand, new PlayerStandingCommand(player));
-        commandManager.ReplaceCommand(CommandEnum.PlayerUseItemCommand, new PlayerUseItemCommand(projectiles,player));
+        commandManager.ReplaceCommand(CommandEnum.PlayerUseItemCommand, new PlayerUseItemCommand(projectiles,projectileManager, player));
         commandManager.ReplaceCommand(CommandEnum.PlayerTakeDamageCommand, new PlayerTakeDamageCommand(player));
 
         // create spritedict to pass into player controller
@@ -47,6 +51,10 @@ internal class DungeonScene : IScene
 
     public void Update(GameTime gameTime)
     {
+        if(projectileManager.ProjectileFired == true)
+        {
+            projectileManager.executeProjectile();
+        }
         // not doing anything currently
     }
 }

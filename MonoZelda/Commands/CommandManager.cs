@@ -1,15 +1,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Input;
 using PixelPushers.MonoZelda.Controllers;
 
 namespace PixelPushers.MonoZelda.Commands;
 
 public enum CommandEnum
 {
-    // Temporary Commands for Sprint2
-    BlockCycleCommand,
-    EnemyCycleCommand,
-    ItemCycleCommand,
     // Commands for entire project
     ExitCommand,
     PlayerAttackCommand,
@@ -28,13 +25,9 @@ public class CommandManager
     public CommandManager()
     {
         commandMap = new Dictionary<CommandEnum, ICommand>();
-        AddCommand(CommandEnum.BlockCycleCommand, new BlockCycleCommand());
-        AddCommand(CommandEnum.EnemyCycleCommand, new EnemyCycleCommand());
-        AddCommand(CommandEnum.ItemCycleCommand, new ItemCycleCommand());
         AddCommand(CommandEnum.ExitCommand, new ExitCommand());
         AddCommand(CommandEnum.PlayerAttackCommand, new PlayerAttackCommand());
         AddCommand(CommandEnum.PlayerMoveCommand, new PlayerMoveCommand());
-        AddCommand(CommandEnum.PlayerTakeDamageCommand, new PlayerTakeDamageCommand());
         AddCommand(CommandEnum.PlayerUseItemCommand, new PlayerUseItemCommand());
         AddCommand(CommandEnum.PlayerStandingCommand, new PlayerStandingCommand());
         AddCommand(CommandEnum.ResetCommand, new ResetCommand());
@@ -49,9 +42,9 @@ public class CommandManager
         }
     }
 
-    public GameState Execute(CommandEnum commandName)
+    public GameState Execute(CommandEnum commandName,Keys PressedKey)
     {
-        return commandMap[commandName].Execute();
+        return commandMap[commandName].Execute(PressedKey);
     }
 
     public bool ReplaceCommand(CommandEnum commandName, ICommand command)
