@@ -23,6 +23,7 @@ public class MonoZeldaGame : Game
     private KeyboardController keyboardController;
     private MouseController mouseController;
     private CommandManager commandManager;
+    private KeyManager keyManager;
     private CollidablesManager collidableManager;
 
     private IScene scene;
@@ -37,7 +38,7 @@ public class MonoZeldaGame : Game
 
         // Commands that use MonoZeldaGame reference
         commandManager.ReplaceCommand(CommandEnum.ExitCommand, new ExitCommand(this));
-        commandManager.ReplaceCommand(CommandEnum.StartCommand, new StartGameCommand(this));
+        commandManager.ReplaceCommand(CommandEnum.StartGameCommand, new StartGameCommand(this));
         commandManager.ReplaceCommand(CommandEnum.ResetCommand, new ResetCommand(this));
 
         keyboardController = new KeyboardController(commandManager);
