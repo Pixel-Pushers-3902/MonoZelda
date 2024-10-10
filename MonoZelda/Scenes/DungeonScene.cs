@@ -20,21 +20,26 @@ internal class DungeonScene : IScene
     private Player player;
     private PlayerCollision playerCollision;
     private EnemyCycler enemyCycler;
-    CollisionHitboxDrawer collisionHitboxDrawer;
-    public DungeonScene(GraphicsDevice device, GraphicsDeviceManager gManager, CommandManager cManager, MonoZeldaGame game, CollisionHitboxDrawer collisionHitboxManager) 
+    CollidablesManager collidableManager;
+
+    public DungeonScene(GraphicsDevice graphicsDevice, GraphicsDeviceManager gManager, CommandManager cManager, MonoZeldaGame game, CollidablesManager collidableManager) 
     {
-        graphicsDevice = device;
+        this.graphicsDevice = graphicsDevice;
         commandManager = cManager;
         player = new Player();
-        this.collisionHitboxDrawer = collisionHitboxManager;
-        Collidable playerHitbox = new Collidable(new Rectangle(100, 100, 50, 50));
-        collisionHitboxDrawer.AddHitbox(playerHitbox);
-        playerCollision = new PlayerCollision(player, playerHitbox, collisionHitboxDrawer);
+        this.collidableManager = collidableManager;
+        Collidable playerHitbox = new Collidable(new Rectangle(100, 100, 50, 50), graphicsDevice);
+        this.collidableManager.AddHitbox(playerHitbox);
+        playerCollision = new PlayerCollision(player, playerHitbox, this.collidableManager);
 
         //create some sample hitboxes
+        Collidable itemHitbox1 = new Collidable(new Rectangle(100, 200, 50, 50), graphicsDevice);
+        this.collidableManager.AddHitbox(itemHitbox1);
+        Collidable itemHitbox2 = new Collidable(new Rectangle(200, 200, 100, 100), graphicsDevice);
+        this.collidableManager.AddHitbox(itemHitbox2);
+        Collidable itemHitbox3 = new Collidable(new Rectangle(350, 250, 50, 50), graphicsDevice);
+        this.collidableManager.AddHitbox(itemHitbox3);
 
-        Collidable itemHitbox = new Collidable(new Rectangle(200, 200, 50, 50));
-        collisionHitboxDrawer.AddHitbox(itemHitbox);
 
     }
 

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoZelda.Collision
 {
@@ -11,9 +7,12 @@ namespace MonoZelda.Collision
     {
         public Rectangle Bounds { get; set; }
 
-        public Collidable(Rectangle bounds)
+        private readonly CollisionHitboxDraw hitbox;
+
+        public Collidable(Rectangle bounds, GraphicsDevice graphicsDevice)
         {
             Bounds = bounds;
+            hitbox = new CollisionHitboxDraw(this, graphicsDevice);
         }
 
         public bool Intersects(ICollidable other)
@@ -24,6 +23,14 @@ namespace MonoZelda.Collision
         public Rectangle GetIntersectionArea(ICollidable other)
         {
             return Rectangle.Intersect(Bounds, other.Bounds);
+        }
+
+        public void SetGizmoColor(Color color) {
+            hitbox.GizmoColor = color;
+        }
+
+        public void SetGizmoThickness(int thickness) {
+            hitbox.Thickness = thickness;
         }
     }
 }
