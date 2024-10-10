@@ -2,13 +2,14 @@
 using System.Diagnostics;
 using PixelPushers.MonoZelda.Link;
 using PixelPushers.MonoZelda.Controllers;
+using Microsoft.Xna.Framework.Input;
 
 namespace PixelPushers.MonoZelda.Commands;
 
 public class PlayerAttackCommand : ICommand
 {
-    IController controller;
-    int attackIdx;
+    private IController controller;
+    private int attackIdx;
     private Player player; 
 
     public PlayerAttackCommand()
@@ -21,8 +22,23 @@ public class PlayerAttackCommand : ICommand
         this.player = player;
     }
 
-    public GameState Execute()
+    private void SetAttackIndex(Keys PressedKey)
     {
+        if(PressedKey == Keys.Z)
+        {
+            this.attackIdx = 0;
+        }
+        else if (PressedKey == Keys.N)
+        {
+            this.attackIdx = 1;
+        }
+    }
+
+    public GameState Execute(Keys PressedKey)
+    {
+        // SetAttackIndex
+        SetAttackIndex(PressedKey);
+
         if (player != null)
         {
             player.AttackingPlayer();
@@ -35,11 +51,6 @@ public class PlayerAttackCommand : ICommand
     public GameState UnExecute()
     {
         throw new NotImplementedException();
-    }
-
-    public void SetAttackIndex(int attackIdx)
-    {
-        this.attackIdx = attackIdx;
     }
 
     public void SetController(IController controller)

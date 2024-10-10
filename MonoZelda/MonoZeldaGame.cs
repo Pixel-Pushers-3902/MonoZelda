@@ -25,6 +25,7 @@ public class MonoZeldaGame : Game
     private KeyboardController keyboardController;
     private MouseController mouseController;
     private CommandManager commandManager;
+    private KeyManager keyManager;
 
     private IScene scene;
 

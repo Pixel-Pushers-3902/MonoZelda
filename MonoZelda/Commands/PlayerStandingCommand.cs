@@ -1,6 +1,7 @@
 ﻿using System;
 using PixelPushers.MonoZelda.Link;
 using PixelPushers.MonoZelda.Controllers;
+using Microsoft.Xna.Framework.Input;
 
 namespace PixelPushers.MonoZelda.Commands
 {
@@ -20,7 +21,12 @@ namespace PixelPushers.MonoZelda.Commands
             this.player = player;   
         }
 
-        public GameState Execute()
+        public Direction PlayerDirection
+        {
+            get { return lastDirection; }
+        }
+
+        public GameState Execute(Keys PressedKey)
         {
             // call player standing method
             if (player != null)
@@ -38,10 +44,6 @@ namespace PixelPushers.MonoZelda.Commands
             throw new NotImplementedException();
         }
 
-        public Direction PlayerDirection
-        {
-            get { return lastDirection; }
-        }
         public void SetController(IController controller)
         {
             this.controller = controller;

@@ -1,4 +1,5 @@
-﻿using PixelPushers.MonoZelda.Controllers;
+﻿using Microsoft.Xna.Framework.Input;
+using PixelPushers.MonoZelda.Controllers;
 using System;
 
 namespace PixelPushers.MonoZelda.Commands;
@@ -18,7 +19,7 @@ public class StartGameCommand : ICommand
         _game = game;
     }
 
-    public GameState Execute()
+    public GameState Execute(Keys PressedKey)
     {
         _game?.StartDungeon();
 
