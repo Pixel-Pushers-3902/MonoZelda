@@ -17,7 +17,6 @@ internal class DungeonScene : IScene
 {
     private GraphicsDevice graphicsDevice;
     private CommandManager commandManager;
-    private KeyManager keyManager;
     private Player player;
     private ProjectileManager projectileManager;
 

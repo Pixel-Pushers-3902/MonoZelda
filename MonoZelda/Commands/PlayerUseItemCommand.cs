@@ -20,9 +20,9 @@ public class PlayerUseItemCommand : ICommand
     {
     }
 
-    public PlayerUseItemCommand(Projectile projectile, ProjectileManager projectileManager, Player player)
+    public PlayerUseItemCommand(Projectile projectiles, ProjectileManager projectileManager, Player player)
     {
-        this.projectiles = projectile;
+        this.projectiles = projectiles;
         this.projectileManager = projectileManager;
         this.player = player;
     }
@@ -37,7 +37,10 @@ public class PlayerUseItemCommand : ICommand
     public GameState Execute(Keys PressedKey)
     {
         // create projectile
-        CreateProjectile(PressedKey);
+        if(projectileManager.ProjectileFired != true)
+        {
+            CreateProjectile(PressedKey);
+        }
 
         // animate player throw projectile
         if (player != null)
